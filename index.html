@@ -251,7 +251,7 @@
     .mnotes{width:100%;background:transparent;border:none;border-bottom:1px solid var(--rule-lt);padding:3px 0;font-family:var(--fs);font-size:11px;color:var(--muted);outline:none;margin-top:5px;font-style:italic;}
     .mnotes::placeholder{color:var(--rule-lt);}
     /* EDUCATION */
-    .ecols{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--rule);margin-top:12px;}
+    .ecols{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid var(--rule);margin-top:12px;}.book-counter{background:var(--navy);padding:10px 17px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1);}.bc-label{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:#8a9dbb;}.bc-num{font-family:var(--fd);font-size:18px;font-weight:700;color:var(--gold-lt);}.bc-goal{font-family:var(--fn);font-size:9px;color:var(--muted-lt);margin-top:1px;text-align:right;}
     .ecol{border-right:1px solid var(--rule);}
     .ecol:last-child{border-right:none;}
     .ech{background:var(--navy);padding:12px 17px;border-bottom:2px solid var(--red);}
@@ -294,8 +294,76 @@
     .crminp::placeholder{color:var(--muted-lt);font-style:italic;}
     .empty{padding:14px 22px;font-family:var(--fs);font-size:12px;font-style:italic;color:var(--muted-lt);}
     @keyframes rowIn{from{opacity:0;transform:translateX(-3px);}to{opacity:1;transform:translateX(0);}}
-    @media(max-width:900px){.bg{grid-template-columns:1fr;}.bp{border-right:none;}.ag{grid-template-columns:repeat(2,1fr);}.tcols{grid-template-columns:1fr;}.ecols{grid-template-columns:1fr;}}
+    @media(max-width:900px){.bg{grid-template-columns:1fr;}.bp{border-right:none;}.ag{grid-template-columns:repeat(2,1fr);}.tcols{grid-template-columns:1fr;}.ecols{grid-template-columns:1fr;}.ecols>div:first-child{grid-column:span 1;}}
     @media(max-width:640px){.cw{padding:0 12px 60px;}.mh-inner{flex-direction:column;align-items:flex-start;}.ag{grid-template-columns:1fr 1fr;}.fg2{grid-template-columns:1fr;}.fgp.full{grid-column:span 1;}}
+
+    /* ── COLLAPSE / EXPAND ── */
+    .sec-head{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;}
+    .sec-toggle{font-size:11px;color:var(--muted-lt);transition:transform .2s;flex-shrink:0;line-height:1;}
+    .sec-head.collapsed .sec-toggle{transform:rotate(-90deg);}
+    .sec-body{overflow:hidden;transition:max-height .25s ease;}
+    .sec-body.collapsed{max-height:0!important;overflow:hidden;}
+    .sec-drill{margin-left:auto;font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:2px 8px;cursor:pointer;background:transparent;transition:all .15s;white-space:nowrap;}
+    .sec-drill:hover{background:var(--gold);color:var(--navy-deep);}
+    /* collapse toggle for tsh */
+    .tsh{cursor:pointer;}
+    .tsh .sec-toggle{color:#9a8f84;}
+    /* ── DETAIL MODAL ── */
+    #dm{position:fixed;inset:0;background:rgba(17,27,51,.92);display:none;align-items:flex-start;justify-content:center;z-index:7000;padding:24px 16px;overflow-y:auto;}
+    #dm.open{display:flex;}
+    .dm-box{background:var(--cream);width:100%;max-width:880px;border:1px solid var(--rule);border-top:3px solid var(--navy);margin:auto;animation:dmIn .2s ease both;}
+    @keyframes dmIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+    .dm-head{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--red);}
+    .dm-title{font-family:var(--fd);font-size:18px;font-weight:700;color:#fff;font-style:italic;}
+    .dm-sub{font-family:var(--fn);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a9dbb;margin-top:3px;}
+    .dm-close{background:none;border:none;color:#9aadcc;font-size:20px;cursor:pointer;line-height:1;padding:4px;}
+    .dm-close:hover{color:#fff;}
+    .dm-body{padding:20px 22px;max-height:80vh;overflow-y:auto;}
+    .dm-section{margin-bottom:22px;}
+    .dm-sec-lbl{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding-bottom:7px;border-bottom:1px solid var(--rule);margin-bottom:10px;}
+    /* detail task row */
+    .dm-task{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1px solid var(--rule-lt);background:var(--white);margin-bottom:5px;cursor:pointer;transition:background .1s;}
+    .dm-task:hover{background:var(--cream-dk);}
+    .dm-task.done{opacity:.4;}
+    .dm-task.done .dm-tt{text-decoration:line-through;}
+    .dm-cb{width:16px;height:16px;border:1.5px solid var(--rule);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;background:var(--white);}
+    .dm-task.done .dm-cb{background:var(--navy);border-color:var(--navy);}
+    .dm-tt{font-family:var(--fs);font-size:13px;color:var(--ink);flex:1;line-height:1.4;}
+    .dm-pri{font-family:var(--fn);font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:2px 6px;border:1px solid;flex-shrink:0;margin-top:2px;}
+    .dm-pri.h{color:var(--red-lt);border-color:var(--red-lt);}
+    .dm-pri.m{color:var(--gold);border-color:var(--gold);}
+    .dm-pri.l{color:var(--muted-lt);border-color:var(--rule);}
+    .dm-add{display:flex;gap:6px;margin-top:8px;}
+    .dm-inp{flex:1;background:var(--white);border:1px solid var(--rule);padding:7px 10px;font-family:var(--fs);font-size:13px;color:var(--ink);outline:none;}
+    .dm-inp:focus{border-color:var(--navy);}
+    .dm-inp::placeholder{color:var(--muted-lt);font-style:italic;}
+    /* detail post row */
+    .dm-post{padding:10px 13px;border:1px solid var(--rule-lt);background:var(--white);margin-bottom:5px;cursor:pointer;transition:background .1s;}
+    .dm-post:hover{background:var(--cream-dk);}
+    .dm-post-n{font-family:var(--fn);font-size:9px;color:var(--muted-lt);margin-bottom:2px;}
+    .dm-post-t{font-family:var(--fd);font-size:14px;font-weight:600;color:var(--ink);line-height:1.3;}
+    .dm-post-g{font-family:var(--fs);font-size:12px;font-style:italic;color:var(--muted);margin-top:2px;}
+    /* detail interview */
+    .dm-int{padding:12px 14px;border:1px solid var(--rule-lt);background:var(--white);margin-bottom:6px;}
+    .dm-int-name{font-family:var(--fd);font-size:15px;font-weight:600;color:var(--ink);margin-bottom:3px;}
+    .dm-int-topic{font-family:var(--fs);font-size:12px;font-style:italic;color:var(--muted);line-height:1.5;margin-bottom:8px;}
+    .dm-int-qs{margin-bottom:8px;}
+    .dm-q{font-family:var(--fs);font-size:12px;color:var(--ink-md);padding:5px 0;border-bottom:1px solid var(--rule-lt);line-height:1.4;}
+    .dm-q::before{content:'Q  ';font-family:var(--fn);font-size:9px;font-weight:700;color:var(--muted-lt);}
+    .dm-notes{width:100%;background:var(--cream-dk);border:1px solid var(--rule);padding:8px 10px;font-family:var(--fs);font-size:12.5px;color:var(--ink);outline:none;resize:vertical;min-height:70px;font-style:italic;margin-top:6px;}
+    .dm-notes:focus{border-color:var(--navy);}
+    .dm-notes::placeholder{color:var(--muted-lt);}
+    /* detail book */
+    .dm-book{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1px solid var(--rule-lt);background:var(--white);margin-bottom:5px;cursor:pointer;}
+    .dm-book:hover{background:var(--cream-dk);}
+    .dm-book.done{opacity:.38;}
+    .dm-book.done .dm-bt{text-decoration:line-through;}
+    .dm-bt{font-family:var(--fs);font-size:13px;font-style:italic;color:var(--ink);flex:1;line-height:1.4;}
+    .dm-ba{font-family:var(--fn);font-size:10px;color:var(--muted);margin-top:2px;}
+
+    /* WGU planner */
+    .wgu-term{transition:background .1s;}
+    .wgu-term:hover{background:rgba(36,48,88,.9)!important;}
   </style>
 </head>
 <body>
@@ -324,6 +392,17 @@
       <div id="user-list"></div>
       <div class="um-add"><input class="um-inp" id="new-user" placeholder="New username…" onkeydown="if(event.key==='Enter')addUser()"/><button class="ab" onclick="addUser()">Add</button></div>
     </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div id="dm">
+  <div class="dm-box">
+    <div class="dm-head">
+      <div><div class="dm-title" id="dm-title">Detail View</div><div class="dm-sub" id="dm-sub"></div></div>
+      <button class="dm-close" onclick="closeDM()">✕</button>
+    </div>
+    <div class="dm-body" id="dm-body"></div>
   </div>
 </div>
 
@@ -379,12 +458,14 @@
           <div class="dbn-full" id="df">—</div>
           <div class="dbn-phase">● Phase 1 Active — The Personal Record</div>
         </div>
-        <div class="tsh" style="margin-top:1px;"><span class="flag f-r"></span><span class="tsh-t">Priority — Non-Negotiable Today</span><span class="tsh-c" id="c-p"></span></div>
-        <div id="tl-priority"></div>
+        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)"><span class="sec-toggle">▾</span><span class="flag f-r"></span><span class="tsh-t">Priority — Non-Negotiable Today</span><span class="tsh-c" id="c-p"></span><button class="sec-drill" onclick="event.stopPropagation();drillTask('priority','Priority')">Priority Detail</button></div>
+        <div class="sec-body" style="max-height:2000px;"><div id="tl-priority"></div>
         <div class="ar"><input class="ai" id="ai-priority" placeholder="Add priority task…" onkeydown="if(event.key==='Enter')addT('priority')"/><button class="ab" onclick="addT('priority')">Add</button></div>
-        <div class="tsh" style="margin-top:1px;"><span class="flag f-g"></span><span class="tsh-t">Content — Writing · Publishing · Scheduling</span><span class="tsh-c" id="c-c"></span></div>
-        <div id="tl-content"></div>
+</div>
+        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)"><span class="sec-toggle">▾</span><span class="flag f-g"></span><span class="tsh-t">Content — Writing · Publishing · Scheduling</span><span class="tsh-c" id="c-c"></span><button class="sec-drill" onclick="event.stopPropagation();drillTask('content','Content')">Content Detail</button></div>
+        <div class="sec-body" style="max-height:2000px;"><div id="tl-content"></div>
         <div class="ar"><input class="ai" id="ai-content" placeholder="Add content task…" onkeydown="if(event.key==='Enter')addT('content')"/><button class="ab" onclick="addT('content')">Add</button></div>
+</div>
         <div class="tsh" style="margin-top:1px;"><span class="flag f-n"></span><span class="tsh-t">Comms Check — Email · DM · Platform</span></div>
         <div class="cg">
           <div class="cc" onclick="toggleComms(this)"><div class="cp">Email / Mailchimp</div><div class="cn">Inbox</div><div class="ch">Answer all outstanding emails</div></div>
@@ -395,12 +476,14 @@
         <div class="tsh" style="margin-top:1px;"><span class="flag f-gr"></span><span class="tsh-t">Team — Follow-Ups · Waiting On</span><span class="tsh-c" id="c-t"></span></div>
         <div id="tl-team"></div>
         <div class="ar"><input class="ai" id="ai-team" placeholder="Add team follow-up…" onkeydown="if(event.key==='Enter')addT('team')"/><button class="ab" onclick="addT('team')">Add</button></div>
-        <div class="tsh" style="margin-top:1px;"><span class="flag f-m"></span><span class="tsh-t">Outreach — Interview · Partnership · Media</span><span class="tsh-c" id="c-o"></span></div>
-        <div id="tl-outreach-daily"></div>
+        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)"><span class="sec-toggle">▾</span><span class="flag f-m"></span><span class="tsh-t">Outreach — Interview · Partnership · Media</span><span class="tsh-c" id="c-o"></span><button class="sec-drill" onclick="event.stopPropagation();drillTask('outreach-daily','Outreach')">Outreach Detail</button></div>
+        <div class="sec-body" style="max-height:2000px;"><div id="tl-outreach-daily"></div>
         <div class="ar"><input class="ai" id="ai-outreach-daily" placeholder="Add outreach task…" onkeydown="if(event.key==='Enter')addT('outreach-daily')"/><button class="ab" onclick="addT('outreach-daily')">Add</button></div>
-        <div class="tsh" style="margin-top:1px;"><span class="flag f-m"></span><span class="tsh-t">Education — WGU · Reading · Research</span><span class="tsh-c" id="c-e"></span></div>
-        <div id="tl-edu"></div>
+</div>
+        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)"><span class="sec-toggle">▾</span><span class="flag f-m"></span><span class="tsh-t">Education — WGU · Reading · Research</span><span class="tsh-c" id="c-e"></span><button class="sec-drill" onclick="event.stopPropagation();drillTask('edu','Education')">Education Detail</button></div>
+        <div class="sec-body" style="max-height:2000px;"><div id="tl-edu"></div>
         <div class="ar"><input class="ai" id="ai-edu" placeholder="Add education task…" onkeydown="if(event.key==='Enter')addT('edu')"/><button class="ab" onclick="addT('edu')">Add</button></div>
+</div>
       </div>
       <div class="bs">
         <div class="sbb">
@@ -421,6 +504,12 @@
           <div class="sbl">Top Priority Interviews</div>
           <div class="sc r"><div class="sc-ty">Rank #1 · Outreach Needed</div><div class="sc-ti">VP of Operations — Level 1 Trauma</div><div class="sc-d">Highest-leverage institutional interview on the calendar.</div><div class="sc-s out">● Outreach Needed</div></div>
           <div class="sc r"><div class="sc-ty">Rank #2 · Outreach Needed</div><div class="sc-ti">Brain Surgery Survivor</div><div class="sc-d">Two surgery patients. Different diagnoses, same table.</div><div class="sc-s out">● Outreach Needed</div></div>
+        </div>
+        <div class="sbb" style="padding:0;overflow:hidden;">
+          <div style="background:var(--navy-deep);padding:7px 14px;border-bottom:1px solid rgba(255,255,255,.08);">
+            <div style="font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#8a9dbb;">2026–27 Year at a Glance</div>
+          </div>
+          <div id="yag-body" style="padding:8px 14px;background:var(--white);"></div>
         </div>
         <div class="sbb">
           <div class="sbl">Team Status</div>
@@ -497,7 +586,7 @@
 <!-- EDUCATION -->
 <div class="page" id="page-education">
   <div class="cw">
-    <div class="sr"><div class="sr-line"></div><div class="sr-tag">Self-Education — Mission Reading List + WGU</div><div class="sr-line"></div></div>
+    <div class="sr"><div class="sr-line"></div><div class="sr-tag">Self-Education — Mission Reading · WGU BSHA · GoLife100/200 · GoBusiness200 · Goal: 100 Books/Year</div><div class="sr-line"></div></div>
     <div class="ecols" id="ecols"></div>
   </div>
 </div>
@@ -610,17 +699,58 @@ const S={
     {rank:16,guest:'Rare Disease Patient Advocate',topic:'Rare disease patients don\'t fit the algorithm. What they learned about surviving a system that wasn\'t built for their condition. When the system has no template.',phase:'P5',status:'outreach',notes:'',questions:['What does it feel like to walk into a system that has no framework for your condition?','What did you have to teach yourself to survive the medical system?','What does patient advocacy actually look like from the inside?','What broke you — and what rebuilt you?','What do you want newly diagnosed rare disease patients to know immediately?']},
     {rank:17,guest:'Business Development Leader — Vanderbilt Medical Center',topic:'From inside one of the country\'s top academic medical centers. The highest-level institutional voice on the calendar. The Osler gap from the boardroom of a flagship institution.',phase:'P5',status:'outreach',notes:'Natural connection given surgery at Vanderbilt — pursue through Vanderbilt network',questions:['How does Vanderbilt think about the gap between clinical excellence and patient experience?','Where do incentive structures inside a major academic center work against treating the whole person?','How does Vanderbilt approach the tension between volume, revenue, and humanity?','What would it actually take, institutionally, to close the Osler gap?','What does patient advocacy look like from a business development lens?']},
     {rank:18,guest:'Fellow Combat Medic — 68W',topic:'Two medics. Different units, different deployments, same job. What the training built and what it didn\'t. What you carry from downrange into every patient encounter for the rest of your career.',phase:'P3',status:'outreach',notes:'',questions:['What did deployment teach you about patient care that AIT never could?','What\'s the hardest part of transitioning from combat medicine to civilian healthcare?','What does treating someone under fire teach you about treating someone in a hospital bed?','What do you wish civilian providers understood about how medics are trained?','How has being a medic shaped how you navigate being a patient?']},
+    {rank:19,guest:'Anesthesiologist',topic:'The last provider you speak to before you go under. The consent form says everything went as expected. What actually happens in that room — and what the chart misses about the moment before consciousness ends.',phase:'P1+P5',status:'outreach',notes:'',questions:['What does informed consent actually look like versus what it\'s supposed to look like?','What do patients say in those last moments before anesthesia that stays with you?','What does the pre-op process fail to prepare patients for?','What does a chart entry for anesthesia actually capture — and what doesn\'t it?','What do you wish surgeons communicated to you better about their patients?']},
+    {rank:20,guest:'Pre-Op Nurse',topic:'You\'re the last nurse before the OR. You\'ve prepped thousands of patients. What the clinical record never captures about what happens in that room — the fear, the faith, the last conversation before the cutting starts.',phase:'P1',status:'outreach',notes:'',questions:['What do patients say in pre-op that they don\'t say anywhere else?','What does the chart tell you about a patient — and what does it miss entirely?','What do families do that helps — and what makes it harder for the patient?','Is there a moment you\'ve seen that changed how you do pre-op care?','What does "being ready" for surgery actually look like from your side?']},
+    {rank:21,guest:'Physical Therapist — Post-Surgical Recovery',topic:'The person who has to get you walking again when your body doesn\'t want to. What recovery actually looks like behind closed doors — the setbacks, the breakthroughs, the moment a patient decides to fight.',phase:'P2+P7',status:'outreach',notes:'',questions:['What\'s the difference between a patient who recovers and one who doesn\'t — beyond the clinical picture?','What does the surgical team\'s note miss about what you actually encounter in PT?','What does pain mean in the recovery room versus what it means on a pain scale?','What do patients tell you in PT sessions they haven\'t told anyone else?','What\'s the most underestimated part of post-surgical recovery?']},
+    {rank:22,guest:'Occupational Therapist',topic:'OTs work on the smallest things — buttoning a shirt, holding a fork — and those small things are where recovery is actually measured. What the clinical system misses about what it costs to rebuild function from scratch.',phase:'P2',status:'outreach',notes:'',questions:['What does it mean to lose the ability to do something you\'ve done your whole life?','What does a patient\'s first successful "small" task look like — and what does it mean?','Where does the clinical system undervalue what OTs see?','What does the discharge summary miss about where a patient actually is?','What do you wish the rest of the care team understood about occupational therapy?']},
+    {rank:23,guest:'Discharge Planner / Hospital Social Worker',topic:'The person who decides when you\'re "ready" to go home. What that decision actually looks like — the gap between clinical readiness and human readiness, and what falls through when you leave.',phase:'P3+P7',status:'outreach',notes:'',questions:['What does "medically cleared for discharge" mean versus what patients actually need?','What gets left out of the discharge plan that you know will matter in 72 hours?','What does the system not give you time to address before a patient walks out?','What do patients not understand about what happens when they leave?','What\'s the conversation you wish you could have with every patient before discharge?']},
+    {rank:24,guest:'Night Shift Nurse',topic:'What happens in a hospital between midnight and 6 AM that the day team never sees. The conversations patients have in the dark. What the chart at 0300 says versus what\'s actually happening in that room.',phase:'P2+P6',status:'outreach',notes:'',questions:['What do patients say at 3 AM that they never say during rounds?','What does the night shift see about a patient that the day team misses?','How does the culture of a unit change when the lights go down?','What does the 0300 chart note actually capture?','What do you wish the day team knew about what you hold overnight?']},
+    {rank:25,guest:'Case Manager — Hospital',topic:'The person who sees the whole picture: every department, every insurance denial, every gap between what the patient needs and what the system will pay for. The bureaucratic reality behind every care decision.',phase:'P3+P7',status:'outreach',notes:'',questions:['What does an insurance denial look like from inside the hospital — and what does it cost the patient?','What falls through the cracks between departments that nobody else catches?','What does a chart look like to you versus to the physician?','Where does the system make your job hardest when it comes to advocating for patients?','What do patients not understand about how their care decisions are actually made?']},
+    {rank:26,guest:'Chief Nursing Officer (CNO)',topic:'The person where bedside culture actually originates — or fails to. What the mission statement says versus what actually reaches the bedside, and what a CNO sees when they walk a floor at 2 AM.',phase:'P3',status:'outreach',notes:'',questions:['Where does the culture you\'re trying to build break down between your office and the bedside?','What do frontline nurses tell you that never makes it into policy?','What does patient experience data actually tell you — and what doesn\'t it?','What\'s the hardest part of maintaining care culture at scale?','What would you change tomorrow about how nurses are prepared to treat patients as people?']},
+    {rank:27,guest:'Medical Scribe',topic:'They watch every clinical interaction. They type everything. They say almost nothing. What a scribe sees in an exam room that the physician doesn\'t notice — and what never makes it into the note.',phase:'P3+P7',status:'outreach',notes:'',questions:['What do you see in an exam room that the physician doesn\'t seem to notice?','What gets left out of a note that actually happened in the room?','What does the physician\'s relationship with the patient look like from your seat?','What\'s the strangest gap between the note and the encounter you\'ve witnessed?','What do you wish providers understood about what you observe?']},
+    {rank:28,guest:'Hospitalist Physician',topic:'The doctor who knows you best while you\'re in the hospital — but you\'ve probably never heard the word "hospitalist." They see you every day. They\'re not your doctor. What that relationship actually is.',phase:'P5',status:'outreach',notes:'',questions:['What does it mean to be someone\'s doctor when you\'ll never see them again after discharge?','What does continuity of care mean when you\'re the only constant in a rotating team?','What do patients misunderstand most about who you are and what you do?','What does a chart tell you when you pick up a new patient — and what\'s the first thing you look for that isn\'t in it?','What\'s the most important conversation you have with a patient that nobody documents?']},
+    {rank:29,guest:'VA Primary Care Physician',topic:'On the inside of the system failing veterans — not a bureaucrat, an actual physician trying to do right by patients inside an institution that doesn\'t always let them. What they see that veterans never know.',phase:'P4+P7',status:'outreach',notes:'',questions:['What does it feel like to be a physician inside a system that your patients distrust — often rightfully?','Where does the VA\'s structure make it hardest to give veterans what they actually need?','What do veterans not understand about what you\'re dealing with on your end?','What would you change about VA primary care tomorrow if you had the authority?','What keeps you in the VA when you could practice elsewhere?']},
+    {rank:30,guest:'Military Chaplain',topic:'Spiritual care in uniform. What faith looks like downrange and in the barracks — and what it means to be the person a soldier talks to when they can\'t talk to their chain of command.',phase:'P4+P6',status:'outreach',notes:'Potential connection through Stonebridge or military chaplain network',questions:['What do soldiers say to you that they won\'t say to their NCO or commander?','What does spiritual crisis look like in a military context versus a civilian one?','How does faith function differently under the structure and pressure of military service?','What do you carry from your time in uniform that shapes how you care for people now?','What does the military miss about the spiritual needs of its people?']},
+    {rank:31,guest:'Transition Assistance Program (TAP) Counselor',topic:'The person who hands you the clipboard on the day you separate. What actually happens in that room — and what the transition misses about what veterans carry out the door.',phase:'P4',status:'outreach',notes:'',questions:['What does the average separating service member not understand about what\'s coming?','What does TAP actually prepare veterans for — and what does it miss entirely?','What do you see in that room that the military doesn\'t see?','What\'s the first thing that breaks down after a veteran leaves — and why?','What would you add to TAP if you could?']},
+    {rank:32,guest:'Diagnostic Radiologist',topic:'They read the images. They almost never meet the patient. Their report determines the next clinical decision — and they wrote it looking at a screen, not a person. What that disconnect costs.',phase:'P5',status:'outreach',notes:'',questions:['What does an image tell you about a patient — and what can\'t it tell you?','What would change about your reports if you met every patient whose scan you read?','What do ordering physicians miss when they read your report without the full clinical context?','What does it feel like to make a call that changes someone\'s life without being in the room?','What\'s the most common gap between what you report and what the patient actually experiences?']},
+    {rank:33,guest:'Pathologist',topic:'Like the lab scientist — invisible, central. Every tissue sample, every biopsy result, every cancer diagnosis flows through them. What it means to be the one who knows — and the one nobody sees.',phase:'P5',status:'outreach',notes:'',questions:['What would patients understand differently if they knew what you actually do?','What does it feel like to give a cancer diagnosis without ever speaking to the patient?','What does the gap between your report and how it\'s communicated to patients cost?','What do clinicians misunderstand about what a pathology report can and can\'t tell them?','What would you want every patient to know about the people reading their tissue?']},
+    {rank:34,guest:'Chronic Pain Patient',topic:'The person whose condition the system has no clean framework for. Years of being told it\'s normal, it\'s anxiety, it\'s in their head — before someone finally believed them. The disbelief gap in lived form.',phase:'P5',status:'outreach',notes:'',questions:['How many providers told you something was wrong with you before someone believed what you were experiencing?','What does it do to a person when the system repeatedly fails to explain their pain?','What did you have to learn to do — that you shouldn\'t have had to — to survive the medical system?','What\'s the most important thing a provider has ever said to you?','What do you want newly diagnosed chronic pain patients to know immediately?']},
+    {rank:35,guest:'Autoimmune Disease Patient',topic:'Invisible illness, diagnostic delay, years of disbelief. The system was built for acute presentations. She had a chronic, invisible, fluctuating condition — and learned what the Osler gap costs over a decade.',phase:'P5+P6',status:'outreach',notes:'',questions:['How long did it take to get your diagnosis — and what happened in that gap?','What did providers say to you during the years they couldn\'t explain what was happening?','What does it feel like to look healthy and feel destroyed?','What did you have to become — as a self-advocate — to survive this?','What would you tell someone in the diagnostic wilderness right now?']},
+    {rank:36,guest:'Medical Interpreter / Translator',topic:'Language access and the communication gap. What happens in a clinical encounter when the patient can\'t say what they mean and the provider can\'t hear what they\'re not saying.',phase:'P6',status:'outreach',notes:'',questions:['What gets lost between a patient and a provider that you have to carry?','What do you see in a room that neither the patient nor the provider notices?','What does it mean to translate not just words but fear, confusion, and pain?','What does the clinical system not understand about what language access actually requires?','What\'s the most important thing you\'ve ever had to say that wasn\'t in the script?']},
+    {rank:37,guest:'Health Literacy Researcher',topic:'Studies why patients don\'t understand what providers say — and what it costs when they don\'t. The academic case for what you\'re building empirically.',phase:'P6',status:'outreach',notes:'',questions:['What does health literacy actually mean — and what does low health literacy cost patients?','What does research show about how providers communicate versus how patients receive it?','Where does the clinical system consistently fail on plain language?','What would change if healthcare communication were designed around patients rather than providers?','What\'s the most important finding in your research that hasn\'t reached the bedside yet?']},
+    {rank:38,guest:'Palliative Care Nurse',topic:'The person who sits with suffering when the system has run out of fixes. What palliative care sees that curative medicine misses — and what it means to treat the person when the disease can\'t be beaten.',phase:'P6+P7',status:'outreach',notes:'',questions:['What does treating the person — not the disease — actually look like at end of life?','What do patients tell you in palliative care that they haven\'t told the clinical team?','Where does the curative system fail patients at the transition to palliative care?','What does the chart say about a dying patient versus what\'s actually happening?','What do families need that the system consistently fails to give them?']},
+    {rank:39,guest:'Grief Counselor',topic:'What the system hands patients when it runs out of clinical answers. The emotional aftermath of diagnosis, surgery, and survival that no chart captures. What grief looks like when the patient lived.',phase:'P6',status:'outreach',notes:'',questions:['What does grief look like in someone who survived something they expected to die from?','What does the medical system not give patients permission to feel?','What do surgery survivors carry that nobody names in a discharge summary?','What\'s the difference between clinical support and actually being with someone in their grief?','What do you wish the surgical team understood about what comes after the OR?']},
+    {rank:40,guest:'Health Information Management (HIM) Director',topic:'The person who controls the chart. Who can access it, what gets corrected, what gets released — and what the legal and institutional frameworks around the medical record mean for patients trying to understand what happened to them.',phase:'P7',status:'outreach',notes:'',questions:['What do patients not understand about who owns their medical record?','What\'s the process when a patient believes something in their chart is wrong?','What does HIPAA actually protect patients from — and what doesn\'t it?','What do providers not understand about what their documentation choices mean legally?','What would you change about how patients can access and understand their own records?']},
+    {rank:41,guest:'EHR Implementation Consultant',topic:'The person who actually installs Epic or Cerner. What the EHR system requires of providers — and how those requirements shape the care that patients receive, whether the system intended it or not.',phase:'P7',status:'outreach',notes:'',questions:['What does an EHR implementation actually require clinicians to change about how they work?','What does the system optimize for — and what gets deprioritized as a result?','What do providers do because the system requires it — even when it doesn\'t serve the patient?','What\'s the most common complaint you hear from clinicians about documentation requirements?','What would a patient-centered EHR actually look like?']},
+    {rank:42,guest:'Healthcare Attorney',topic:'What the medical record means in a legal context. What attorneys look for in a chart — and what those standards reveal about how documentation decisions shape patient outcomes.',phase:'P7',status:'outreach',notes:'',questions:['What\'s the first thing you look for in a medical record when evaluating a case?','What does good documentation protect — and who does it protect?','What does the gap between what happened and what was documented look like in a courtroom?','What do patients misunderstand about their rights regarding their medical records?','What would change about documentation if providers understood how records are read legally?']},
+    {rank:43,guest:'Patient Safety Officer',topic:'Root cause analysis, near-misses, sentinel events. The person whose job is to find what went wrong and why — and who sees the gap between what gets reported and what actually happened.',phase:'P7',status:'outreach',notes:'',questions:['What\'s the difference between a documented adverse event and what actually happened?','What makes providers reluctant to report near-misses — and what does that reluctance cost?','What does a root cause analysis actually find versus what gets written in the report?','Where does the patient safety system protect the institution more than the patient?','What would change if patients were full partners in the safety review process?']},
+    {rank:44,guest:'Community Health Worker',topic:'The bridge between the clinic and the community. The person who goes where providers don\'t — into homes, neighborhoods, and lives — and sees what the chart never captures.',phase:'P7',status:'outreach',notes:'',questions:['What do you see in a patient\'s home that their provider has never considered?','What does the clinical system miss about what actually determines health outcomes?','What does it mean to be the person who shows up between appointments?','What do providers not understand about what their patients\'s lives actually look like?','What\'s the most important thing you\'ve ever done that didn\'t involve any clinical skill?']},
+    {rank:45,guest:'Medical Trauma Therapist',topic:'The mental health therapist who specializes in patients traumatized by their own healthcare. The PTSD that comes not from combat or accidents but from hospitals, procedures, and the clinical system itself.',phase:'P5+P7',status:'outreach',notes:'',questions:['What does medical trauma actually look like — how does it present in patients?','What does a hospitalization do to a person psychologically that nobody names in the discharge summary?','What\'s the connection between being dismissed by providers and the psychological aftermath?','What do survivors of major surgery carry that isn\'t in any clinical note?','What do you wish the surgical team understood about what patients experience after they leave?']},
+    {rank:46,guest:'ICU Nurse — General',topic:'What happens in the ICU when patients are at their most vulnerable and least able to advocate for themselves. The clinical decisions made at the bedside — and what the family in the waiting room never knows.',phase:'P2+P3',status:'outreach',notes:'',questions:['What do ICU patients experience that they can\'t communicate — and what do you do about that?','What does family presence mean in the ICU — what does it help and what makes it harder?','What does the care team miss when they treat the disease and not the person in an ICU bed?','What does a good shift look like versus a shift that will stay with you?','What do you wish families knew about what their person is experiencing in the ICU?']},
+    {rank:47,guest:'Wound Care Nurse / Certified Wound Specialist',topic:'Wound care nurses spend extended time with patients — longer per visit than almost any other provider. What they see during that time, what patients say, and what the chart captures of a deeply human interaction.',phase:'P2',status:'outreach',notes:'',questions:['What do patients say during wound care that they don\'t say to anyone else?','What does extended clinical contact with the same patient teach you about them?','What does the chart note about wound care actually capture?','How do you manage the dual reality of clinical task and human conversation in the same moment?','What do you wish the rest of the care team knew about what happens during your visits?']},
+    {rank:48,guest:'Oncology Nurse',topic:'The person who sits with patients through chemotherapy — often for hours, often repeatedly. What the cancer ward sees about the human cost of treatment that clinical metrics don\'t capture.',phase:'P2+P5',status:'outreach',notes:'',questions:['What does the chemo chair teach you about a person that the clinic never could?','What do cancer patients say during infusion that they don\'t say anywhere else?','What does the system miss about what it costs patients to keep showing up for treatment?','What does "fighting cancer" actually look like from your side of the IV?','What would you want every oncologist to know about what happens when they\'re not in the room?']},
+    {rank:49,guest:'Pediatric Nurse — Children\'s Hospital',topic:'What it means to treat a child who can\'t always say what\'s wrong — and what it means to treat the parent watching it happen. Two patients in every room, and the chart only documents one of them.',phase:'P6',status:'outreach',notes:'',questions:['What does it mean to read a patient who can\'t tell you what they\'re experiencing?','What do parents go through in a pediatric admission that the clinical system ignores?','What does the chart say about a sick child versus what\'s actually happening in that room?','What\'s the hardest communication challenge you face — with the child or with the family?','What do you wish the system gave you more time or tools to do?']},
+    {rank:50,guest:'Rural Healthcare Provider',topic:'The solo provider in a county where the nearest specialist is two hours away. What the healthcare system looks like when there\'s no system to speak of — and what patient advocacy means when the patient has no options.',phase:'P3+P7',status:'outreach',notes:'',questions:['What does healthcare access actually mean in a rural context?','What does continuity of care look like when you\'re the only provider for a hundred miles?','What do rural patients do to manage conditions that urban patients would have specialists for?','What does the policy conversation about rural health miss about the lived reality?','What would actually change rural healthcare outcomes — and who\'s blocking it?']},
+    {rank:51,guest:'Healthcare Quality Improvement Director',topic:'The person whose job is to measure what\'s not working and fix it systematically. What quality improvement sees about patient care that clinical staff don\'t — and what the metrics consistently fail to capture.',phase:'P7',status:'outreach',notes:'',questions:['What does a quality metric tell you — and what does it hide?','Where do QI initiatives fail to reach the bedside even when the data looks good?','What does patient experience data miss about actual care quality?','What\'s the most important improvement your organization has made that the data didn\'t drive?','What would change if patients\'s own words were the primary quality metric?']},
+    {rank:52,guest:'Veteran with PTSD — Military Sexual Trauma (MST) Survivor',topic:'The veteran whose wound is invisible, whose condition the VA has historically mishandled, and whose fight for recognition mirrors the broader argument of the entire platform. The hardest version of the disbelief gap.',phase:'P4+P5',status:'outreach',notes:'Handle with significant care and preparation. Align with veteran advocacy contacts first.',questions:['What did the military\'s response to what happened to you look like?','What did the VA tell you when you sought help — and what did that response cost you?','What does it mean to have your experience dismissed by the institution you served?','What did it take to finally be believed — and what did the years before that cost?','What do you want other veterans who are in that same silence to know?']},
   ],
-  analytics:[
-    {key:'visitors',label:'Website Visitors',hint:'Total / month',value:'3000',notes:'First week ~3,000 — strong pre-surgery launch'},
-    {key:'subs',label:'Email Subscribers',hint:'Mailchimp list total',value:'80',notes:'80+ in first week — exceptional early traction'},
-    {key:'ig',label:'Instagram Followers',hint:'Profile count',value:'',notes:''},
-    {key:'fb',label:'Facebook Followers',hint:'Page likes / followers',value:'',notes:''},
-    {key:'openrate',label:'Email Open Rate',hint:'% — last campaign',value:'',notes:'Industry avg 20-25%. Aim for 40%+'},
-    {key:'igreach',label:'Instagram Reach',hint:'Accounts reached / 30 days',value:'',notes:''},
-    {key:'fbreach',label:'Facebook Reach',hint:'Post reach / 30 days',value:'',notes:''},
-    {key:'toppost',label:'Top Post Views',hint:'Single post all-time',value:'',notes:''},
-  ],
+  analytics:{
+    months:['Mar 26','Apr 26','May 26','Jun 26','Jul 26','Aug 26','Sep 26','Oct 26','Nov 26','Dec 26','Jan 27','Feb 27'],
+    metrics:[
+      {key:'visitors',label:'Website Visitors',hint:'Total sessions / mo',cat:'web',monthly:['3000','','','','','','','','','','',''],notes:'First week ~3,000 — strong launch'},
+      {key:'unique',label:'Unique Visitors',hint:'Unique users / mo',cat:'web',monthly:['','','','','','','','','','','',''],notes:''},
+      {key:'toppost',label:'Top Post Views',hint:'Best single post views',cat:'web',monthly:['','','','','','','','','','','',''],notes:''},
+      {key:'subs',label:'Email Subscribers',hint:'Mailchimp list total',cat:'email',monthly:['80','','','','','','','','','','',''],notes:'80+ in first week — exceptional early traction'},
+      {key:'openrate',label:'Email Open Rate',hint:'% last campaign',cat:'email',monthly:['','','','','','','','','','','',''],notes:'Industry avg 20–25%. Aim for 40%+'},
+      {key:'clickrate',label:'Email Click Rate',hint:'% last campaign',cat:'email',monthly:['','','','','','','','','','','',''],notes:'Industry avg 2–3%. Aim for 8%+'},
+      {key:'ig',label:'Instagram Followers',hint:'Profile total',cat:'social',monthly:['','','','','','','','','','','',''],notes:''},
+      {key:'igreach',label:'Instagram Reach',hint:'Accounts reached / mo',cat:'social',monthly:['','','','','','','','','','','',''],notes:''},
+      {key:'fb',label:'Facebook Followers',hint:'Page followers total',cat:'social',monthly:['','','','','','','','','','','',''],notes:''},
+      {key:'intdone',label:'Interviews Completed',hint:'Recorded this month',cat:'content',monthly:['','','','','','','','','','','',''],notes:'Goal: 52 over the year — ~4–5/mo'},
+      {key:'postslive',label:'Posts Published',hint:'Live this month',cat:'content',monthly:['','','','','','','','','','','',''],notes:'Goal: ~5–6 posts/mo'},
+      {key:'speakinq',label:'Speaking Inquiries',hint:'Inbound / outbound',cat:'speaking',monthly:['','','','','','','','','','','',''],notes:''},
+    ],
+  },
   books:{
     mission:[
       {title:"Man's Search for Meaning",author:'Viktor Frankl',done:false,tag:'core'},
@@ -631,21 +761,186 @@ const S={
       {title:'The Doctor and the Soul',author:'Viktor Frankl',done:false,tag:'core'},
       {title:'How Doctors Think',author:'Jerome Groopman',done:false,tag:'clin'},
       {title:'The House of God',author:'Samuel Shem',done:false,tag:'clin'},
-      {title:'Complications: A Surgeon\'s Notes on an Imperfect Science',author:'Atul Gawande',done:false,tag:'clin'},
+      {title:"Complications: A Surgeon's Notes on an Imperfect Science",author:'Atul Gawande',done:false,tag:'clin'},
       {title:'The Checklist Manifesto',author:'Atul Gawande',done:false,tag:'clin'},
       {title:'On Death and Dying',author:'Elisabeth Kübler-Ross',done:false,tag:'clin'},
       {title:'Mountains Beyond Mountains',author:'Tracy Kidder',done:false,tag:'rec'},
       {title:'The Emperor of All Maladies',author:'Siddhartha Mukherjee',done:false,tag:'rec'},
       {title:'Just Mercy',author:'Bryan Stevenson',done:false,tag:'rec'},
+      {title:'Good to Great',author:'Jim Collins',done:false,tag:'rec'},
+      {title:'Amusing Ourselves to Death',author:'Neil Postman',done:false,tag:'rec'},
       {title:'The Body Keeps the Score',author:'Bessel van der Kolk',done:false,tag:'vet'},
       {title:'Tribe: On Homecoming and Belonging',author:'Sebastian Junger',done:false,tag:'vet'},
+      {title:'Emotionally Healthy Spirituality',author:'Peter Scazzero',done:false,tag:'faith'},
+      {title:'LifeWork',author:'Darrow L. Miller',done:false,tag:'faith'},
+      {title:'Winning the Battle for the Minds of Men',author:'Dennis Peacocke',done:false,tag:'faith'},
+      {title:'On the Destiny of Nations: Resolving Our Economic Crisis',author:'Dennis Peacocke',done:false,tag:'faith'},
       {title:'The Road Back to You',author:'Ian Morgan Cron & Suzanne Stabile',done:false,tag:'faith'},
     ],
     wgu:[
-      {title:'Current Active WGU Module — update with course name',author:'WGU Coursework',done:false,tag:'wgu'},
-      {title:'Complete Pre-Assessment for next course in sequence',author:'WGU Coursework',done:false,tag:'wgu'},
-      {title:'Review WGU Degree Plan — confirm remaining courses to graduation',author:'WGU Coursework',done:false,tag:'wgu'},
-    ]
+      // ── TERM 1 ──
+      {title:'Organizational Behavior',term:1,cu:3,area:'Business Management',
+       desc:'Explores how to lead and manage effectively in diverse business environments. Apply organizational leadership theories and management strategies in scenario-based problems.',
+       comp:['Analyze organizational culture to work effectively within it','Analyze leadership theories and select appropriate leader behavior','Describe influences on individual behavior','Determine team type and leadership for a given task','Develop and implement effective performance evaluation processes','Recommend principles for guiding group development'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Fundamentals for Success in Business',term:1,cu:3,area:'Business Core',
+       desc:'Overview of the business field and how management, structure, communication, and leadership affect the business environment. Introduces power skills: time management, problem solving, emotional intelligence, ethics.',
+       comp:['Communicate ideas and information in a professional setting','Identify common ethical issues within organizations','Identify leadership opportunities to enhance organizational performance','Recognize organizational functions and values','Recognize emotional reactions in professional situations'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Emotional and Cultural Intelligence',term:1,cu:3,area:'Business Core',
+       desc:'Key personal awareness skills in written, verbal, and nonverbal communication. Covers emotional intelligence (EI), cultural awareness, and ethical self-awareness.',
+       comp:['Apply emotional intelligence to improve intrapersonal and interpersonal interactions','Demonstrate cultural intelligence within multicultural and business situations'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Health, Fitness, and Wellness',term:1,cu:4,area:'General Education',
+       desc:'Foundations of good health and physical fitness, addressing health, nutrition, fitness, and substance use and abuse.',
+       comp:['Identify factors influencing mental, emotional, and social wellness','Identify core competencies of social and emotional learning','Identify influence of disease, fitness, and lifestyle on the body','Identify principles of nutrition and components of a healthy diet'],
+       status:'not-started',notes:'',tag:'wgu'},
+      // ── TERM 2 ──
+      {title:'Values-Based Leadership',term:2,cu:3,area:'Business Management',
+       desc:'Learn by reflection, design, and scenario planning. Examines values-based leadership and creating a culture of care. Students identify personal values through assessment and map their influence on leadership.',
+       comp:['Demonstrate how leadership abilities (listening, influence, ethical responsibility) solve problems','Describe how interpersonal skills enable effective collaboration and leadership','Explain how leadership of cultures fosters diversity, inclusion, ethics','Identify personal values (honesty, integrity, respect, EI, ethical responsibility)'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Principles of Management',term:2,cu:4,area:'Business Core',
+       desc:'Introductory look at management in the business environment. Covers strategic planning, total quality, entrepreneurship, conflict and change, HR management, diversity, and organizational structure.',
+       comp:['Apply principles of human resource management','Establish a total quality management program','Describe how to promote an entrepreneurial emphasis','Explain the strategic planning process','Recommend an organizational structure to match a given situation','Recommend techniques for managing conflict and change','Respond appropriately to diversity issues'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Healthcare Administration Evolution, Systems, and Leadership',term:2,cu:3,area:'Healthcare Administration',
+       desc:'In-depth exploration of the U.S. healthcare system — its evolution, key stakeholders, business principles, leadership roles, health equity issues, and transformative influence of technology.',
+       comp:['Describe the evolution of healthcare administration structure and function','Describe the role of leadership and management in healthcare administration','Explain the influence of business principles on healthcare operations and delivery','Identify opportunities and solutions in healthcare administration'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Composition: Writing with a Strategy',term:2,cu:3,area:'General Education',
+       desc:'Three main topics: understanding purpose, context, and audience; writing strategies and techniques; editing and revising. Covers cross-cultural communication and common standards.',
+       comp:['Compose constructive feedback of written texts','Construct a written document with correct format, style, structure, and grammar','Formulate a strategy for editing and revising written text','Incorporate writing strategies and techniques','Write with purpose for a given context and target audience'],
+       status:'not-started',notes:'',tag:'wgu'},
+      // ── TERM 3 ──
+      {title:'Healthcare Leadership and Community Engagement',term:3,cu:3,area:'Leadership and Management',
+       desc:'Leadership principles in real-world contexts. Prepares students to analyze community needs and create change through community engagement and collaborative approaches.',
+       comp:['Analyze impact of micro, mezzo, and macro sociopolitical drivers on community engagement','Develop a performance management strategy supporting professional identity of care providers','Develop strategic partnerships between community and organization','Propose interprofessional team strategies in complex community environments'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Critical Thinking: Reason and Evidence',term:3,cu:3,area:'General Education',
+       desc:'Key critical thinking concepts applied to analysis and evaluation of reasons and evidence. Examines argument components, credibility of evidence, impact of bias, and constructing well-supported claims.',
+       comp:['Evaluate bias and its impact','Evaluate evidence based on source credibility','Evaluate the quality of an argument','Make claims based on evidence'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Applied Healthcare Statistics',term:3,cu:4,area:'General Education',
+       desc:'Foundational concepts in mathematics, introductory algebra, and statistics and probability applied to healthcare. Covers descriptive statistics, regression, correlation, and probability in clinical contexts.',
+       comp:['Apply probability-based mathematics to explain and solve problems','Apply operations of basic algebra to evaluate quantitative expressions','Apply basic arithmetic operations','Apply fractions, decimals, and percentages','Evaluate categorical and quantitative data using graphical displays','Evaluate relationship between two quantitative variables through correlation and regression'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Introduction to Business Accounting',term:3,cu:3,area:'Business Core',
+       desc:'Introduction to the discipline of accounting. Fundamental knowledge of financial and managerial accounting, financial statements, budgeting, and managing costs and profits.',
+       comp:['Explain how costs and profits are managed in business','Explain basic methods of budgeting','Explain the role of financial and managerial accounting','Explain the uses of financial statements'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Introduction to Communication: Connecting with Others',term:3,cu:4,area:'General Education',
+       desc:'Communication in the professional setting from multiple vantage points — communicating with others in varied contexts, across situations, and with diverse populations.',
+       comp:['Implement appropriate communication styles based on audience and setting','Use communication strategies for managing conflict','Use communication strategies to influence others'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Professional Practice Experience I: Technical',term:3,cu:4,area:'Professional Practice',
+       desc:'Uses EHRGo (electronic health record) to complete 42 structured activities experiencing how an HIM professional uses an EHR. Meets AHIMA Baccalaureate-level competencies. Earns 40 PPE hours.',
+       comp:['Apply basic health informatics and information management skills','Display professionalism, reflection, and ethical behaviors as a health informatics professional','Evaluate operational components demonstrating adherence to regulatory standards and quality improvement'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Introduction to Sociology',term:3,cu:4,area:'General Education',
+       desc:'Learn to think like a sociologist — understand the hidden rules by which people live. Covers socializing institutions, organizations, governments, deviance, and social change.',
+       comp:['Explain how societies are stratified across various social statuses','Explain major perspectives and key contributors to sociology','Explain reciprocal relationships between social institutions and individuals','Explain constructs of conformity and deviance from social norms','Identify components of culture and socialization'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Applied Algebra',term:3,cu:5,area:'General Education',
+       desc:'Competence in working with functions and the algebra of functions. Covers linear, polynomial, exponential, and logistic functions with real-life healthcare applications.',
+       comp:['Analyze graphical depictions of real-world situations using functional properties','Apply exponential functions to real-world problems','Apply linear functions to real-world problems','Apply logistic functions to real-world problems','Apply polynomial functions to real-world problems','Interpret real-world meaning of various functions','Verify the validity of a given model'],
+       status:'not-started',notes:'Prerequisite: Applied Healthcare Statistics',tag:'wgu'},
+      {title:'Human Growth and Development',term:3,cu:5,area:'General Education',
+       desc:'Three-module course examining the entire human lifetime, from conception to death. Focuses on physical, cognitive, and psychosocial growth, cultural influences, emotions, and resilience.',
+       comp:['Explain physical, cognitive, and psychosocial development conception through early childhood','Explain development from early adulthood to end of life','Explain development from middle childhood through adolescence','Explain influence of emotions and cultural perspectives from birth through early childhood','Explain influence of emotions from early adulthood to end of life','Explain influence of emotions from middle childhood through adolescence'],
+       status:'not-started',notes:'',tag:'wgu'},
+      // ── TERM 4 ──
+      {title:'Healthcare Policy and Governance',term:4,cu:4,area:'Healthcare Administration',
+       desc:'Comprehensive exploration of healthcare policies, regulations, and governance and their impact on operations, administration, and community health services. Covers legal and ethical considerations.',
+       comp:['Analyze impact of healthcare governance, policies, and regulations in various healthcare contexts','Explain the purpose of legal and regulatory frameworks in healthcare administration','Propose a healthcare administration solution that complies with policies and regulations'],
+       status:'not-started',notes:'',tag:'wgu'},
+      // ── TERM 5 ──
+      {title:'Fundamentals of Spreadsheets and Data Presentations',term:5,cu:3,area:'Business Core',
+       desc:'Overview of spreadsheet functions and methods for presenting data. Features and uses of MS Excel applied to real-world situations. Introduction to collecting, organizing, and presenting data.',
+       comp:['Create a presentation from a spreadsheet dataset','Perform common spreadsheet tasks requiring basic formatting, formulas, and functions','Prepare data for analysis'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Evidence-Based Healthcare Administration',term:5,cu:4,area:'Healthcare Administration',
+       desc:'Apply evidence-based practices in healthcare administration. Data analytics, research methodologies, and evidence-based decision-making. Covers machine learning, AI, data collection, and statistical tools.',
+       comp:['Apply data analytics to make decisions within healthcare administration','Explain how data supports decision-making in healthcare administration','Select applied research paradigms and methods in support of evidence-based practice (EBP)'],
+       status:'not-started',notes:'',tag:'wgu'},
+      // ── TERM 6 ──
+      {title:'Principles of Economics',term:6,cu:3,area:'Business Core',
+       desc:'Foundational economic theories on markets and market behavior. Covers microeconomics (supply, demand, elasticity, market structure) and macroeconomics (monetary policy, fiscal policy, international trade).',
+       comp:['Explain concepts in macroeconomics used in business and public policy','Explain concepts in microeconomics used in business and public policy','Explain fundamental economic principles'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Project Management',term:6,cu:3,area:'Business Management',
+       desc:'Manage projects from start to finish. Covers project-management methods, project profiling and phases, constraints, building teams, scheduling, and risk management.',
+       comp:['Apply elements of project planning to prepare key documents','Construct a project scheduling network diagram including critical path','Describe the project life cycle and how constraints impact a project','Explain how different types of project-management methods are used','Explain how project management helps organizations achieve goals','Explain key activities for executing, monitoring, controlling, and closing projects','Explain criteria and methods used for project selection'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Integrated Physical Sciences',term:6,cu:3,area:'General Education',
+       desc:'Overview of the basic principles and unifying ideas of the physical sciences: physics, chemistry, and earth sciences. Focus on scientific reasoning and practical applications.',
+       comp:['Describe the nature and process of science','Describe the underlying organization, interactions, and processes within the Earth system','Examine applications of key chemistry concepts including structure of matter','Examine applications of physics including forces, motion, energy, and waves'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Innovative and Strategic Thinking',term:6,cu:3,area:'Business Core',
+       desc:'Knowledge and skills used in building and implementing business strategy. Covers management, innovative thinking, risk management, and strategic concepts. Quantitative literacy and data analysis for strategy.',
+       comp:['Apply appropriate business practices to formulate recommendations impacting organizational effectiveness','Identify the impact of innovation in personal and professional settings','Utilize evidence-based techniques to make strategic decisions'],
+       status:'not-started',notes:'',tag:'wgu'},
+      // ── TERM 7 ──
+      {title:'Change Management',term:7,cu:3,area:'Business Management',
+       desc:'Understanding change and successfully managing it using various methods and tools. Change theories and best practices, including approaches to recognizing, diagnosing, implementing, and sustaining change.',
+       comp:['Describe different innovation strategies and the role leaders play in innovation','Explain how learning organizations develop and approach change','Explain how organizations diagnose the need for change and approaches for implementing it','Explain strategies, principles, roles, and models for sustaining change','Summarize theories related to change management'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Business Communication',term:7,cu:3,area:'Business Management',
+       desc:'Survey of communication skills needed in the business environment. Writing messages, reports, and résumés; delivering oral presentations. Emphasizes communication processes, writing skills, and message types.',
+       comp:['Apply business research and writing skills to present information','Apply effective communication techniques and principles to business environments','Apply principles of business writing to communicate','Compose multiple types of business messages','Create messages using technology and social media','Create professional communication documents for employment and advancement'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Introduction to Business Finance',term:7,cu:3,area:'Business Core',
+       desc:'The discipline of finance in the business environment. Financial ratios, time value of money concepts, and capital budgeting. Prerequisite: Introduction to Business Accounting.',
+       comp:['Describe capital budgeting','Describe the systems, structure, roles, and impact of finance in business','Describe the uses of financial ratios to manage a business','Explain the application of time value of money concepts to business'],
+       status:'not-started',notes:'Prerequisite: Introduction to Business Accounting',tag:'wgu'},
+      {title:'Emergency Management and Planning in Healthcare',term:7,cu:4,area:'Healthcare Administration',
+       desc:'Knowledge and skills to effectively manage emergencies in healthcare organizations. Covers crisis communication, ethical considerations, leadership in critical situations, public health, and community resilience.',
+       comp:['Apply emergency management principles in various healthcare settings','Evaluate the impact of emergencies on healthcare organizations','Recommend strategies for creating and improving emergency response plans'],
+       status:'not-started',notes:'',tag:'wgu'},
+      // ── TERM 8 ──
+      {title:'Strategic Training and Development',term:8,cu:3,area:'Human Resources',
+       desc:'Development of human capital by applying effective learning theories and practices for training and developing employees. Improving and empowering organizations through high-caliber training processes.',
+       comp:['Analyze training and development needs and solutions to support organizational goals','Apply best practices for developing training programs and measuring their effectiveness','Describe the development and impact of talent management programs'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Operations and Supply Chain Management',term:8,cu:3,area:'Business Management',
+       desc:'Introduction to efficiently producing goods and services, supply chain management strategies, and performance measurement. Covers forecasting, capacity planning, quality control, and inventory management.',
+       comp:['Analyze factors involved in process design, capacity planning, and location analysis','Analyze forecasting models, measurement techniques, and scheduling methods','Analyze how just-in-time, TPS, and lean systems improve operating efficiency','Analyze the supply chain for competitive advantage','Explain appropriate quality management strategies','Explain how a business achieves goals through operations and inventory management'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Concepts in Marketing, Sales, and Customer Contact',term:8,cu:3,area:'Business Core',
+       desc:'The discipline of marketing and its role in strategic and operational environments. Marketing planning, marketing mix, brand management, digital marketing, CRM, and personal selling.',
+       comp:['Describe basic elements used in marketing planning','Describe how strategic marketing influences overall success of a business','Identify personal selling and negotiating strategies within the sales management process'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'American Politics and the US Constitution',term:8,cu:3,area:'General Education',
+       desc:'Evolution of representative government and changing interpretations of civil rights and liberties protected by the Constitution. Covers powers of federal branches, federalism, and civic institutions.',
+       comp:['Describe the influence of competing political ideologies on U.S. government development','Examine influence of political parties and NGOs on elections and political processes','Examine influence of media, public opinion, and political discourse on democracy','Examine the struggle to balance individual liberty, public order, and state's rights','Explain how structure and powers of U.S. government interact to form public policy'],
+       status:'not-started',notes:'',tag:'wgu'},
+      // ── TERM 9 ──
+      {title:'Exploring Emerging Trends in Healthcare Administration',term:9,cu:4,area:'Healthcare Administration',
+       desc:'Impact of trends on healthcare administration, patient care, and industry transformation. Evaluates advancements transforming the healthcare industry. Integrates DEI principles, health disparities, and inclusive care.',
+       comp:['Analyze emerging and evolving trends in healthcare','Create an implementation plan for emerging and evolving trends to advance organizational goals','Evaluate the impact of emerging and evolving trends in healthcare management and operations'],
+       status:'not-started',notes:'',tag:'wgu'},
+      {title:'Healthcare Administration Capstone',term:9,cu:4,area:'Healthcare Administration',
+       desc:'Culminating experience of healthcare business administration. Integrates and synthesizes managerial skills with healthcare knowledge. Final project demonstrating professional managerial proficiency in a real-world scenario.',
+       comp:['Exhibit artifacts demonstrating competency across all program areas and evidence of professional growth'],
+       status:'not-started',notes:'Capstone project — apply learning to a real issue in your place of business',tag:'wgu'},
+    ],
+
+    faith:[
+      {title:'GoLife100 · Sec 1: Life as Discovery',author:'GoLife100 · Dudley Hall · biblical foundations, virtue, patience, love',done:false,tag:'faith'},
+      {title:'GoLife100 · Sec 2: Introduction to Worldview and Philosophy',author:'GoLife100 · Dr. Walter Duerr · metaphysics, ontology, ethics',done:false,tag:'faith'},
+      {title:'GoLife100 · Sec 3: Root Presuppositions of the Christian Faith',author:'GoLife100 · Nature of God, Man, and Truth',done:false,tag:'faith'},
+      {title:'GoLife100 · Sec 4: Becoming a Prophetic Voice to Your Culture',author:'GoLife100 · Five spheres of government · Kingdom citizenship',done:false,tag:'faith'},
+      {title:'GoLife200 · Sec 1: Embracing God\'s Sovereignty',author:"GoLife200 · Finding your place on the wall · destiny · God's call",done:false,tag:'faith'},
+      {title:'GoLife200 · Sec 2: Embracing Community',author:'GoLife200 · Covenant · relational joining · building generationally',done:false,tag:'faith'},
+      {title:'GoLife200 · Sec 3: Strategic Lifestyle',author:'GoLife200 · Strategic thinking · disciplines · discerning seasons · Sabbath',done:false,tag:'faith'},
+      {title:'GoLife200 · Sec 4: Problems as Opportunities',author:'GoLife200 · Becoming problem solvers · discerning the nature of a problem',done:false,tag:'faith'},
+      {title:'GoLife200 · Sec 5: Engaging Culture',author:"GoLife200 · Hard questions · God's green light · preserving spiritual growth",done:false,tag:'faith'},
+      {title:'GoBusiness200 · Sec 1: Foundations of Marketplace Ministry',author:'GoBusiness200 · Biblical economics · kings and priests · financial freedom',done:false,tag:'faith'},
+      {title:'GoBusiness200 · Sec 2: Spiritual Foundations for Building',author:'GoBusiness200 · Hearing God for business · discerning trust · spiritual warfare in orgs',done:false,tag:'faith'},
+      {title:'GoBusiness200 · Sec 3: Keys to Successful Business Life',author:'GoBusiness200 · Biblical ethics · organizational calling · transformation begins with you',done:false,tag:'faith'},
+      {title:'GoBusiness200 · Sec 4: Solving Problems God\'s Way',author:'GoBusiness200 · Problem solving · execution + delegation · stimulating commitment',done:false,tag:'faith'},
+      {title:'GoBusiness200 · Sec 5: Managing and Mentoring People with Destiny',author:'GoBusiness200 · Relational foundation · teaching vs training · knowing when the game is on',done:false,tag:'faith'},
+    ],
   },
   crm:[
     {name:'Patient Advocate Foundation',cat:'Patient Advocacy Org',note:'National org — partnership + content collaboration',date:'—',status:'research'},
@@ -673,8 +968,74 @@ const S={
     {name:'Patient Experience Institute (PXI)',cat:'Speaking / Conference',note:'Annual conference — submit speaker proposal',date:'—',status:'research'},
     {name:'HIMSS Global Conference',cat:'Speaking / Conference',note:'Health IT — Cerner/Epic post + documentation argument',date:'—',status:'research'},
     {name:'National Veterans Creative Arts Festival',cat:'Speaking / Veterans',note:'VA-affiliated arts + healing — faith angle strong',date:'—',status:'research'},
+    {name:'American Association for Patient Experience (AAPEx)',cat:'Speaking / Conference',note:'Patient experience keynote opportunity',date:'—',status:'research'},
+    {name:'Institute for Healthcare Improvement (IHI)',cat:'Healthcare Org',note:'Patient safety + quality — Osler argument alignment',date:'—',status:'research'},
+    {name:'Beryl Institute',cat:'Healthcare Org',note:'Patient experience community — content partnership',date:'—',status:'research'},
+    {name:'National Alliance for Mental Illness (NAMI)',cat:'Mental Health Org',note:'Medical trauma + phase 5 content angle',date:'—',status:'research'},
+    {name:'Caregiver Action Network',cat:'Caregiver Org',note:'Phase 7 caregivers post — partnership + distribution',date:'—',status:'research'},
+    {name:'Rare Disease Legislative Advocates (RDLA)',cat:'Patient Advocacy',note:'Rare disease interview + Phase 5 content',date:'—',status:'research'},
+    {name:'Global Genes — Rare Disease Alliance',cat:'Patient Advocacy',note:'Large rare disease network — content distribution',date:'—',status:'research'},
+    {name:'HealthStories Project',cat:'Patient Stories Media',note:'Patient narrative platform — strong content fit',date:'—',status:'research'},
+    {name:'Costs of Care',cat:'Healthcare Org',note:'Medical billing transparency — Phase 3 alignment',date:'—',status:'research'},
+    {name:'American College of Healthcare Executives (ACHE)',cat:'Healthcare Professional Org',note:'Admin audience — speaking + credibility building',date:'—',status:'research'},
+    {name:'NEJM Catalyst',cat:'Healthcare Journal',note:'Healthcare delivery innovation — submit op-ed',date:'—',status:'research'},
+    {name:'Health Affairs',cat:'Healthcare Policy Media',note:'Policy + admin — Phase 3 + 7 content',date:'—',status:'research'},
+    {name:'Modern Healthcare',cat:'Healthcare Media',note:'Healthcare business — VP of Operations interview hook',date:'—',status:'research'},
+    {name:'Doximity (DocsInProgress)',cat:'Healthcare Media',note:'Physician-facing platform — provider audience',date:'—',status:'research'},
+    {name:'Christianity Today',cat:'Faith Media',note:'Faith + suffering + meaning-making — Frankl angle',date:'—',status:'research'},
+    {name:'The Way Home Podcast (Carl Trueman)',cat:'Faith Podcast',note:'Christian worldview + culture — Phase 7 system critique',date:'—',status:'research'},
+    {name:'Military.com',cat:'Veteran Media',note:'Large veteran readership — medic-as-patient story',date:'—',status:'research'},
+    {name:'Task & Purpose',cat:'Veteran Media',note:'Younger veteran audience — strong social engagement',date:'—',status:'research'},
+    {name:'We Are The Mighty',cat:'Veteran Media',note:'Veteran culture + healthcare + identity',date:'—',status:'research'},
+    {name:'Vanderbilt University Medical Center — Communications',cat:'Healthcare Institution',note:'Surgery at Vanderbilt — pitch collaboration / editorial',date:'—',status:'research'},
   ]
 };
+
+
+const YAG=[
+  {q:'Q1 · Mar–May 2026',color:'var(--red)',items:[
+    {text:'Surgery recovery + site launch',done:false},
+    {text:'Publish Posts 01–12 (Phases 1–2)',done:false},
+    {text:'First 4 interviews recorded',done:false},
+    {text:'500 email subscribers',done:false},
+    {text:'Begin WGU Term 1',done:false},
+  ]},
+  {q:'Q2 · Jun–Aug 2026',color:'var(--gold)',items:[
+    {text:'Publish Posts 13–28 (Phases 2–3)',done:false},
+    {text:'8 interviews recorded total',done:false},
+    {text:'1,500 email subscribers',done:false},
+    {text:'First speaking inquiry',done:false},
+    {text:'WGU Term 2 complete',done:false},
+  ]},
+  {q:'Q3 · Sep–Nov 2026',color:'#3a8a50',items:[
+    {text:'Publish Posts 29–44 (Phases 4–5)',done:false},
+    {text:'20 interviews recorded total',done:false},
+    {text:'3,000 email subscribers',done:false},
+    {text:'First paid speaking engagement',done:false},
+    {text:'WGU Term 3 complete',done:false},
+  ]},
+  {q:'Q4 · Dec 26–Feb 27',color:'#9aadcc',items:[
+    {text:'Publish Posts 45–64 (Phases 6–7)',done:false},
+    {text:'52 interviews recorded total',done:false},
+    {text:'5,000 email subscribers',done:false},
+    {text:'Book proposal drafted',done:false},
+    {text:'WGU Term 4 complete',done:false},
+  ]},
+];
+function renderYAG(){
+  const el=document.getElementById('yag-body');if(!el)return;
+  el.innerHTML=YAG.map((q,qi)=>`
+    <div style="margin-bottom:12px;">
+      <div style="font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:${q.color};margin-bottom:5px;padding-bottom:4px;border-bottom:1px solid var(--rule-lt);">${q.q}</div>
+      ${q.items.map((it,ii)=>`<div style="display:flex;align-items:flex-start;gap:7px;padding:4px 0;cursor:pointer;" onclick="togYAG(${qi},${ii})">
+        <div style="width:13px;height:13px;border:1.5px solid ${it.done?'var(--navy)':'var(--rule)'};background:${it.done?'var(--navy)':'transparent'};flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;">
+          ${it.done?'<svg width="8" height="7" viewBox="0 0 8 7"><path d="M1 3.5L3 5.5L7 1" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>':''}
+        </div>
+        <div style="font-family:var(--fs);font-size:11.5px;color:${it.done?'var(--muted-lt)':'var(--ink-md)'};${it.done?'text-decoration:line-through;':''};line-height:1.3;">${it.text}</div>
+      </div>`).join('')}
+    </div>`).join('');
+}
+function togYAG(qi,ii){YAG[qi].items[ii].done=!YAG[qi].items[ii].done;renderYAG();}
 
 // TASKS
 function renderTasks(){
@@ -806,12 +1167,12 @@ function renderCal(){
   const sl={planned:'Planned',drafting:'Drafting',ready:'Ready',live:'Live'};
   let h='';
   CAL.forEach((ph,pi)=>{
-    h+=`<div class="cph"><span class="cph-t">${ph.ph}</span><span class="cph-s">${ph.posts.length} posts</span></div>`;
-    h+=`<table class="cal"><thead><tr><th style="width:36px;">#</th><th style="width:90px;">Type</th><th>Title &amp; Format / Guest</th><th style="width:86px;">Status</th></tr></thead><tbody>`;
+    h+=`<div class="cph sec-head" onclick="toggleSec(this)" style="cursor:pointer;"><span class="sec-toggle" style="color:#9aadbb;">▾</span><span class="cph-t">${ph.ph}</span><span class="cph-s">${ph.posts.length} posts</span><button class="sec-drill" onclick="event.stopPropagation();drillPhase(${pi})" style="margin-left:auto;">Phase Detail</button></div>`;
+    h+=`<div class="sec-body" style="max-height:6000px;"><table class="cal"><thead><tr><th style="width:36px;">#</th><th style="width:90px;">Type</th><th>Title &amp; Format / Guest</th><th style="width:86px;">Status</th></tr></thead><tbody>`;
     ph.posts.forEach((p,i)=>{
       h+=`<tr data-t="${p.t}"><td style="font-family:var(--fn);font-size:10px;color:var(--muted-lt);">${p.n}</td><td><span class="ctb ${bc[p.t]}">${bl[p.t]}</span></td><td><div class="cal-ti">${p.ti}</div><div class="cal-gu">${p.gu}</div></td><td><span class="stb ${sc[p.st]}" onclick="cycSt(${pi},${i},this)">${sl[p.st]}</span></td></tr>`;
     });
-    h+='</tbody></table>';
+    h+='</tbody></table></div>';
   });
   b.innerHTML=h;
 }
@@ -841,7 +1202,10 @@ function renderInt(){
       <td><div class="ig">${iv.guest}</div><div class="ito">${iv.topic}</div></td>
       <td><div class="iph">${iv.phase}</div></td>
       <td><span class="ist ${IN[iv.status]}" onclick="cycInt(${i},this,event)">${IL[iv.status]}</span></td>
-      <td style="text-align:center;color:var(--muted-lt);font-size:13px;">▾</td>
+      <td style="text-align:center;">
+        <span style="color:var(--muted-lt);font-size:13px);cursor:pointer;" onclick="togPrep(${i})">▾</span>
+        <button class="sec-drill" style="margin-left:4px;" onclick="event.stopPropagation();drillInt(${i})">Detail</button>
+      </td>
     </tr>
     <tr class="ipr" id="pr-${i}">
       <td colspan="5"><div class="ipr-in">
@@ -886,38 +1250,76 @@ function addTT(m){const i=document.getElementById('ta-'+m);if(!i||!i.value.trim(
 // ANALYTICS
 function renderAnalytics(){
   const el=document.getElementById('ag');if(!el)return;
-  el.innerHTML=S.analytics.map(m=>`
-    <div class="mc">
-      <div class="mlbl">${m.label}</div>
-      <input class="minp" placeholder="—" value="${m.value||''}" oninput="upM('${m.key}','value',this.value)"/>
-      <div class="mhint">${m.hint}</div>
-      <input class="mnotes" placeholder="Notes…" value="${m.notes||''}" oninput="upM('${m.key}','notes',this.value)"/>
-    </div>`).join('');
+  const cats={web:'Web Traffic',email:'Email',social:'Social',content:'Content Output',speaking:'Speaking'};
+  const months=S.analytics.months;
+  const catKeys=[...new Set(S.analytics.metrics.map(m=>m.cat))];
+  const postsLive=(S.analytics.metrics.find(m=>m.key==='postslive')?.monthly||[]).reduce((a,b)=>a+(parseInt(b)||0),0);
+  const intsDone=(S.analytics.metrics.find(m=>m.key==='intdone')?.monthly||[]).reduce((a,b)=>a+(parseInt(b)||0),0);
+  let html=`<div style="grid-column:1/-1;background:var(--navy);border:1px solid var(--rule);padding:11px 16px;display:flex;gap:28px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
+    <div style="font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#8a9dbb;">2026–27 Year Overview</div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;">
+      <div><div style="font-family:var(--fd);font-size:22px;font-weight:700;color:var(--gold-lt);line-height:1;">${postsLive}</div><div style="font-family:var(--fn);font-size:9px;color:#8a9dbb;letter-spacing:.1em;text-transform:uppercase;">Posts Live</div></div>
+      <div><div style="font-family:var(--fd);font-size:22px;font-weight:700;color:var(--gold-lt);line-height:1;">${intsDone}<span style="font-size:13px;color:#6a7a99;">/52</span></div><div style="font-family:var(--fn);font-size:9px;color:#8a9dbb;letter-spacing:.1em;text-transform:uppercase;">Interviews</div></div>
+    </div>
+  </div>`;
+  catKeys.forEach(cat=>{
+    const ms=S.analytics.metrics.filter(m=>m.cat===cat);
+    html+=`<div style="grid-column:1/-1;overflow-x:auto;margin-bottom:8px;border:1px solid var(--rule);">
+      <table style="width:100%;border-collapse:collapse;min-width:900px;">
+        <thead><tr>
+          <th style="background:var(--navy-mid);font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#9aadcc;padding:8px 12px;text-align:left;border-bottom:1px solid rgba(255,255,255,.12);white-space:nowrap;min-width:160px;">${cats[cat]||cat}</th>
+          ${months.map(mo=>`<th style="background:var(--navy-mid);font-family:var(--fn);font-size:9px;color:#7a8faa;padding:6px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.12);white-space:nowrap;min-width:68px;">${mo}</th>`).join('')}
+          <th style="background:var(--navy-mid);font-family:var(--fn);font-size:9px;color:#7a8faa;padding:6px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.12);min-width:140px;">Notes</th>
+        </tr></thead>
+        <tbody>${ms.map((m,ri)=>`<tr style="background:${ri%2===0?'var(--navy-deep)':'rgba(26,39,68,.65)'};">
+          <td style="font-family:var(--fn);font-size:11px;color:var(--cream);padding:7px 12px;border-right:1px solid rgba(255,255,255,.06);"><div>${m.label}</div><div style="font-size:9px;color:#6a7a99;margin-top:1px;">${m.hint}</div></td>
+          ${months.map((mo,mi)=>`<td style="padding:3px 4px;border-right:1px solid rgba(255,255,255,.04);text-align:center;"><input style="width:60px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:4px 5px;font-family:var(--fn);font-size:11px;color:var(--cream);text-align:center;outline:none;transition:border-color .15s;" value="${m.monthly[mi]||''}" placeholder="—" oninput="upM2('${m.key}',${mi},this.value)" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(255,255,255,.08)'"/></td>`).join('')}
+          <td style="padding:4px 8px;"><input style="width:100%;background:transparent;border:none;font-family:var(--fs);font-size:11px;font-style:italic;color:#8a9dbb;outline:none;" placeholder="Notes…" value="${m.notes||''}" oninput="upMnotes('${m.key}',this.value)"/></td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+  });
+  el.innerHTML=html;
+  el.style.gridColumn='1/-1';
 }
-function upM(k,f,v){const m=S.analytics.find(m=>m.key===k);if(m)m[f]=v;}
+function upM2(k,mi,v){const m=S.analytics.metrics.find(m=>m.key===k);if(m)m.monthly[mi]=v;}
+function upMnotes(k,v){const m=S.analytics.metrics.find(m=>m.key===k);if(m)m.notes=v;}
 
 // EDUCATION
 function renderEdu(){
   const el=document.getElementById('ecols');if(!el)return;
   const tc={core:'bcore',rec:'brec',clin:'bclin',vet:'bvet',wgu:'bwgu',faith:'bfaith'};
-  const cols=[{k:'mission',t:'Mission Reading List',s:'Patch Adams Project · Patient Advocacy · Personal Growth'},{k:'wgu',t:'WGU Coursework',s:"Bachelor's Degree Progress"}];
-  el.innerHTML=cols.map(c=>`
+  const GOAL=100;
+  // Count all done books across all lists for the annual counter
+  const allDone=Object.values(S.books).flat().filter(b=>b.done).length;
+  const allTotal=Object.values(S.books).flat().length;
+  const pct=Math.min(100,Math.round((allDone/GOAL)*100));
+  const cols=[
+    {k:'mission',t:'Mission Reading List',s:'Patient Advocacy · Faith · Veteran · Clinical'},
+    {k:'wgu',t:'WGU · BSHA Coursework',s:'Bachelor of Science, Healthcare Administration · 110 CU · 9 Terms'},
+    {k:'faith',t:'Faith Leadership Courses',s:'GoLife100 · GoLife200 · GoBusiness200 · Stonebridge'},
+  ];
+  el.innerHTML=`<div style="grid-column:span 3;background:var(--navy-deep);padding:11px 18px;display:flex;align-items:center;gap:20px;border-bottom:2px solid var(--gold);">
+    <div><div style="font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#8a9dbb;">Annual Reading Goal</div><div style="font-family:var(--fd);font-size:26px;font-weight:700;color:var(--gold-lt);line-height:1;">${allDone} <span style="font-size:13px;color:#6a7a99;">/ ${GOAL} books</span></div></div>
+    <div style="flex:1;"><div style="height:6px;background:rgba(255,255,255,.08);border-radius:1px;"><div style="height:100%;width:${pct}%;background:var(--gold);transition:width .4s;"></div></div><div style="font-family:var(--fn);font-size:9px;color:#6a7a99;margin-top:4px;">${pct}% · ${GOAL-allDone} remaining · Counts all lists including WGU and Faith courses</div></div>
+    <div style="font-family:var(--fs);font-size:11px;font-style:italic;color:#6a7a99;">${allTotal} total tracked</div>
+  </div>`+cols.map(c=>`
     <div class="ecol">
-      <div class="ech"><div class="ect">${c.t}</div><div class="ecs">${c.s}</div></div>
-      <div id="bl-${c.k}">${S.books[c.k].map((b,i)=>`
+      <div class="ech sec-head" onclick="toggleSec(this)" style="cursor:pointer;display:flex;align-items:center;gap:10px;"><span class="sec-toggle" style="color:#9aadbb;font-size:11px;">▾</span><div style="flex:1;"><div class="ect">${c.t}</div><div class="ecs">${c.s}</div></div><button class="sec-drill" onclick="event.stopPropagation();drillBooks('${c.k}','${c.t}','${c.s}')" style="font-size:8px;">Full View</button></div>
+      <div class="sec-body" style="max-height:5000px;"><div id="bl-${c.k}">${S.books[c.k].map((b,i)=>`
         <div class="br ${b.done?'done':''}" onclick="togBook('${c.k}',${i})">
           <div class="bcb">${CK}</div>
           <div class="bi"><div class="bt">${b.title}</div><div class="ba">${b.author}</div></div>
           <span class="btg ${tc[b.tag]||''}">${b.tag}</span>
         </div>`).join('')}</div>
-      <div class="ar" style="padding:7px 17px;">
-        <input class="ai" id="ba-${c.k}" placeholder="Add title…" onkeydown="if(event.key==='Enter')addBook('${c.k}')"/>
+      <div class="ar" style="padding:7px 17px;border-top:1px solid var(--rule-lt);">
+        <input class="ai" id="ba-${c.k}" placeholder="Add to ${c.t}…" onkeydown="if(event.key==='Enter')addBook('${c.k}')"/>
         <button class="ab" style="font-size:9px;padding:5px 10px;" onclick="addBook('${c.k}')">Add</button>
       </div>
     </div>`).join('');
 }
 function togBook(c,i){S.books[c][i].done=!S.books[c][i].done;renderEdu();}
-function addBook(c){const i=document.getElementById('ba-'+c);if(!i||!i.value.trim())return;S.books[c].push({title:i.value.trim(),author:'Author TBD',done:false,tag:'rec'});i.value='';renderEdu();}
+function addBook(c){const i=document.getElementById('ba-'+c);if(!i||!i.value.trim())return;S.books[c].push({title:i.value.trim(),author:'Added manually',done:false,tag:'rec'});i.value='';renderEdu();}
 
 // OUTREACH CRM
 const CRMN={research:'pitched',pitched:'replied',replied:'confirmed',confirmed:'passed',passed:'research'};
@@ -993,8 +1395,164 @@ function addUser(){
 function delUser(i){if(USERS.length<=1)return;USERS.splice(i,1);renderUserList();}
 // auto-login if session active
 if(sessionStorage.getItem("pm_auth")==="1")document.getElementById("login-screen").classList.add("hidden");
+
+// ═══ COLLAPSE / EXPAND ═══
+function toggleSec(headEl){
+  headEl.classList.toggle('collapsed');
+  const body=headEl.nextElementSibling;
+  if(body&&body.classList.contains('sec-body')){
+    body.classList.toggle('collapsed');
+  }
+}
+
+// ═══ DETAIL MODAL ═══
+function openDM(title,sub,bodyHTML){
+  document.getElementById('dm-title').textContent=title;
+  document.getElementById('dm-sub').textContent=sub;
+  document.getElementById('dm-body').innerHTML=bodyHTML;
+  document.getElementById('dm').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDM(){
+  document.getElementById('dm').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDM();});
+
+// ─── BRIEFING TASK DRILL-DOWN ───
+function drillTask(type,label){
+  const tasks=S.tasks[type];
+  const prL={h:'High',m:'Med',l:'Low'};
+  let body=`<div class="dm-section">
+    <div class="dm-sec-lbl">${label} — ${tasks.filter(t=>!t.done).length} remaining / ${tasks.length} total</div>`;
+  body+=tasks.map((t,i)=>`
+    <div class="dm-task ${t.done?'done':''}" onclick="dmToggleT('${type}',${t.id})">
+      <div class="dm-cb">${t.done?'<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</div>
+      <div style="flex:1;"><div class="dm-tt">${t.text}</div>${t.note?`<div style="font-family:var(--fs);font-size:11px;font-style:italic;color:var(--muted-lt);margin-top:2px;">${t.note}</div>`:''}</div>
+      <span class="dm-pri ${t.pr||'l'}">${prL[t.pr||'l']}</span>
+    </div>`).join('');
+  body+=`<div class="dm-add" style="margin-top:10px;">
+    <input class="dm-inp" id="dma-${type}" placeholder="Add task…" onkeydown="if(event.key==='Enter')dmAddT('${type}','${label}')"/>
+    <button class="ab" onclick="dmAddT('${type}','${label}')">Add</button>
+  </div></div>`;
+  openDM(label,'Daily Briefing · Task Lane Detail',body);
+}
+function dmToggleT(type,id){
+  const t=S.tasks[type].find(t=>t.id===id);
+  if(t){t.done=!t.done;}
+  renderTasks();
+  // refresh modal
+  const lbl={priority:'Priority',content:'Content',team:'Team','outreach-daily':'Outreach',edu:'Education'};
+  drillTask(type,lbl[type]||type);
+}
+function dmAddT(type,label){
+  const inp=document.getElementById('dma-'+type);
+  if(!inp||!inp.value.trim())return;
+  S.tasks[type].push({id:++_id,text:inp.value.trim(),pr:'m',done:false});
+  renderTasks();
+  drillTask(type,label);
+}
+
+// ─── CALENDAR PHASE DRILL-DOWN ───
+function drillPhase(pi){
+  const ph=CAL[pi];
+  const bc={ch:'ct-ch',sl:'ct-sl',in:'ct-in',co:'ct-co'};
+  const bl={ch:'Chart+Story',sl:'Solo',in:'Interview',co:'Collab'};
+  const sc={planned:'st-pl',drafting:'st-dr',ready:'st-rd',live:'st-lv'};
+  const sl={planned:'Planned',drafting:'Drafting',ready:'Ready',live:'Live'};
+  const live=ph.posts.filter(p=>p.st==='live').length;
+  let body=`<div class="dm-section"><div class="dm-sec-lbl">${ph.posts.length} posts · ${live} live · click status to advance</div>`;
+  ph.posts.forEach((p,i)=>{
+    body+=`<div class="dm-post">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+        <span class="dm-post-n">#${p.n}</span>
+        <span class="ctb ${bc[p.t]}" style="font-size:8px;">${bl[p.t]}</span>
+        <span class="stb ${sc[p.st]}" onclick="cycSt(${pi},${i},this);drillPhase(${pi})" style="margin-left:auto;">${sl[p.st]}</span>
+      </div>
+      <div class="dm-post-t">${p.ti}</div>
+      <div class="dm-post-g">${p.gu}</div>
+    </div>`;
+  });
+  body+='</div>';
+  openDM(ph.ph,'Content Calendar · Phase Detail',body);
+}
+
+// ─── INTERVIEW DRILL-DOWN ───
+function drillInt(i){
+  const iv=S.interviews[i];
+  const IN2={outreach:'is-ou',confirmed:'is-co',scheduled:'is-sc',recorded:'is-re',published:'is-pu'};
+  const IL2={outreach:'Outreach',confirmed:'Confirmed',scheduled:'Scheduled',recorded:'Recorded',published:'Published'};
+  let body=`<div class="dm-section">
+    <div class="dm-sec-lbl">Rank #${String(iv.rank).padStart(2,'0')} · <span class="ist ${IN2[iv.status]}" onclick="cycInt(${i},this,event);drillInt(${i})" style="cursor:pointer;">${IL2[iv.status]}</span> · Phase ${iv.phase}</div>
+    <div class="dm-int">
+      <div class="dm-int-name">${iv.guest}</div>
+      <div class="dm-int-topic">${iv.topic}</div>
+      ${iv.questions.length>0?`<div class="dm-sec-lbl" style="margin-top:10px;">Interview Questions</div><div class="dm-int-qs">${iv.questions.map(q=>`<div class="dm-q">${q}</div>`).join('')}</div>`:''}
+      <div class="dm-sec-lbl" style="margin-top:10px;">Prep Notes &amp; Scheduling</div>
+      <textarea class="dm-notes" placeholder="Contact info, scheduling notes, follow-ups, prep ideas…" oninput="S.interviews[${i}].notes=this.value;document.querySelectorAll('.pr-notes')[${i}]&&(document.querySelectorAll('.pr-notes')[${i}].value=this.value)">${iv.notes}</textarea>
+    </div>
+  </div>`;
+  openDM(iv.guest,'Interview Pipeline · Full Detail',body);
+}
+
+// ─── EDUCATION DRILL-DOWN ───
+function drillBooks(col,title,sub){
+  const books=S.books[col];
+  const tc2={core:'bcore',rec:'brec',clin:'bclin',vet:'bvet',wgu:'bwgu',faith:'bfaith'};
+  const done=books.filter(b=>b.done).length;
+  let body=`<div class="dm-section">
+    <div class="dm-sec-lbl">${done} completed / ${books.length} total</div>`;
+  books.forEach((b,i)=>{
+    body+=`<div class="dm-book ${b.done?'done':''}" onclick="togBook('${col}',${i});drillBooks('${col}','${title}','${sub}')">
+      <div class="dm-cb" style="flex-shrink:0;margin-top:3px;">${b.done?'<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</div>
+      <div style="flex:1;"><div class="dm-bt">${b.title}</div><div class="dm-ba">${b.author}</div></div>
+      <span class="btg ${tc2[b.tag]||''}">${b.tag}</span>
+    </div>`;
+  });
+  body+=`<div class="dm-add" style="margin-top:10px;">
+    <input class="dm-inp" id="dba-${col}" placeholder="Add title…" onkeydown="if(event.key==='Enter')dmAddBook('${col}','${title}','${sub}')"/>
+    <button class="ab" onclick="dmAddBook('${col}','${title}','${sub}')">Add</button>
+  </div></div>`;
+  openDM(title,sub,body);
+}
+function dmAddBook(col,title,sub){
+  const inp=document.getElementById('dba-'+col);
+  if(!inp||!inp.value.trim())return;
+  S.books[col].push({title:inp.value.trim(),author:'Added manually',done:false,tag:'rec'});
+  renderEdu();
+  drillBooks(col,title,sub);
+}
+
+
+// ── WGU COURSE FUNCTIONS ──
+function cycWGU(i){
+  const c=S.books.wgu[i];
+  const cyc={'not-started':'in-progress','in-progress':'complete','complete':'not-started'};
+  c.status=cyc[c.status]||'not-started';
+  renderEdu();
+}
+function drillWGU(i){
+  const c=S.books.wgu[i];
+  const stL={'not-started':'Not Started','in-progress':'In Progress','complete':'Complete'};
+  const stCyc={'not-started':'in-progress','in-progress':'complete','complete':'not-started'};
+  const stCol={'not-started':'color:var(--muted-lt);border-color:var(--rule);','in-progress':'color:var(--gold);border-color:var(--gold);','complete':'color:var(--green-lt);border-color:var(--green-lt);'};
+  const body=`<div class="dm-section">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <span style="font-family:var(--fn);font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border:1px solid;cursor:pointer;${stCol[c.status]}" onclick="cycWGU(${i});drillWGU(${i})">${stL[c.status]} — click to advance</span>
+      <span style="font-family:var(--fn);font-size:9px;color:var(--muted);">Term ${c.term} · ${c.cu} Competency Units · ${c.area}</span>
+    </div>
+    <div class="dm-sec-lbl">About This Course</div>
+    <div style="font-family:var(--fs);font-size:13.5px;line-height:1.65;color:var(--ink-md);margin-bottom:16px;">${c.desc}</div>
+    <div class="dm-sec-lbl">Competencies (${c.comp.length})</div>
+    <div style="margin-bottom:16px;">${c.comp.map(cp=>`<div style="font-family:var(--fs);font-size:12.5px;color:var(--ink-md);padding:6px 0;border-bottom:1px solid var(--rule-lt);line-height:1.4;"><span style="font-family:var(--fn);font-size:9px;font-weight:700;color:var(--muted-lt);margin-right:6px;">●</span>${cp}</div>`).join('')}</div>
+    <div class="dm-sec-lbl">Notes &amp; Prep</div>
+    <textarea class="dm-notes" placeholder="Study notes, links, key concepts, exam prep…" oninput="S.books.wgu[${i}].notes=this.value">${c.notes||''}</textarea>
+  </div>`;
+  openDM(c.title,`BSHA · Term ${c.term} · ${c.cu} CU · ${c.area}`,body);
+}
+
 tick();setInterval(tick,30000);
-renderTasks();renderCal();renderInt();renderTeam();renderAnalytics();renderEdu();renderCRM();
+renderTasks();renderCal();renderInt();renderTeam();renderAnalytics();renderEdu();renderCRM();renderYAG();
 </script>
 </body>
 </html>
