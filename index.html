@@ -8,8 +8,176 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="styles.css"/>
+  <style>
+    /* ── SPURGEON DAY THEME BANNER ── */
+    #spurgeon-banner {
+      background: var(--navy-deep, #0d1b2e);
+      border-bottom: 3px solid var(--gold, #c9a84c);
+      padding: 10px 20px 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    #spurgeon-banner .sb-day {
+      font-family: var(--fn, 'Playfair Display', serif);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--gold, #c9a84c);
+    }
+    #spurgeon-banner .sb-theme {
+      font-family: var(--fn, 'Playfair Display', serif);
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+    }
+    #spurgeon-banner .sb-onejob {
+      font-family: var(--fs, 'Source Serif 4', serif);
+      font-style: italic;
+      font-size: 12px;
+      color: #8a9dbb;
+      max-width: 420px;
+    }
+    #spurgeon-banner .sb-rest {
+      background: rgba(201,168,76,.13);
+      border: 1px solid rgba(201,168,76,.35);
+      border-radius: 4px;
+      padding: 3px 10px;
+      font-size: 11px;
+      color: var(--gold, #c9a84c);
+      font-weight: 700;
+      letter-spacing: .1em;
+    }
+
+    /* ── FOCUS MODE ── */
+    #focus-btn {
+      background: var(--gold, #c9a84c);
+      color: #0d1b2e;
+      border: none;
+      border-radius: 4px;
+      padding: 5px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity .15s;
+      white-space: nowrap;
+    }
+    #focus-btn:hover { opacity: .85; }
+    body.focus-mode .sec-body:not(#sec-priority-body),
+    body.focus-mode .sec-head:not(#sec-priority-head),
+    body.focus-mode .tsh:not(.priority-tsh),
+    body.focus-mode .ar:not(#ar-priority),
+    body.focus-mode #tl-team, body.focus-mode #tl-team + .ar,
+    body.focus-mode .bs,
+    body.focus-mode .util-links,
+    body.focus-mode .masthead .mh-stats { display: none !important; }
+    body.focus-mode #focus-btn { background: #e05; color: #fff; }
+
+    /* ── SIDEBAR TOGGLE ── */
+    #sidebar-toggle {
+      font-size: 11px;
+      color: #6a7a99;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 3px;
+      padding: 3px 9px;
+      background: transparent;
+      white-space: nowrap;
+    }
+    #sidebar-toggle:hover { color: #aaa; }
+    body.sidebar-hidden .bs { display: none !important; }
+    body.sidebar-hidden .bg { grid-template-columns: 1fr !important; }
+
+    /* ── PRIORITY SECTION — visually unmissable ── */
+    #sec-priority-head {
+      border-left: 4px solid #e05 !important;
+      background: rgba(220,30,50,.07) !important;
+    }
+    #sec-priority-head .tsh-t {
+      font-weight: 700 !important;
+      font-size: 13px !important;
+    }
+
+    /* ── SECTIONS COLLAPSED BY DEFAULT ── */
+    .sec-body.collapsed {
+      max-height: 0 !important;
+      overflow: hidden !important;
+      padding: 0 !important;
+    }
+    .sec-toggle.rotated { transform: rotate(-90deg); display: inline-block; }
+
+    /* ── TASK COMPLETION ANIMATION ── */
+    @keyframes taskDone {
+      0%   { background: rgba(80,200,120,.25); transform: scale(1.01); }
+      60%  { background: rgba(80,200,120,.1); }
+      100% { background: transparent; transform: scale(1); }
+    }
+    .task-just-done { animation: taskDone .55s ease-out forwards; }
+
+    /* ── DONE COUNTER REWARD ── */
+    @keyframes counterPop {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.35); color: #ffe066; }
+      100% { transform: scale(1); }
+    }
+    .counter-pop { animation: counterPop .4s ease-out forwards; }
+
+    /* ── REST DAY OVERLAY ── */
+    #rest-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(13,27,46,.96);
+      z-index: 9000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 18px;
+      text-align: center;
+    }
+    #rest-overlay.active { display: flex; }
+    #rest-overlay .ro-day {
+      font-family: var(--fn, 'Playfair Display', serif);
+      font-size: 13px; font-weight: 700; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--gold, #c9a84c);
+    }
+    #rest-overlay .ro-title {
+      font-family: var(--fn, 'Playfair Display', serif);
+      font-size: 32px; font-weight: 900; color: #fff;
+    }
+    #rest-overlay .ro-body {
+      font-family: var(--fs, 'Source Serif 4', serif);
+      font-style: italic; font-size: 16px; color: #8a9dbb;
+      max-width: 420px; line-height: 1.6;
+    }
+    #rest-overlay .ro-quote {
+      font-family: var(--fs, 'Source Serif 4', serif);
+      font-style: italic; font-size: 13px; color: #5a6a80;
+      max-width: 380px; line-height: 1.6;
+    }
+    #rest-override {
+      margin-top: 8px; background: transparent;
+      border: 1px solid rgba(255,255,255,.15); color: #5a6a80;
+      border-radius: 3px; padding: 6px 16px; font-size: 11px;
+      cursor: pointer; letter-spacing: .08em;
+    }
+    #rest-override:hover { color: #8a9dbb; }
+  </style>
 </head>
 <body>
+
+<!-- ═══ REST DAY OVERLAY ═══ -->
+<div id="rest-overlay">
+  <div class="ro-day">Wednesday · Mid-Week Sabbath</div>
+  <div class="ro-title">Rest is the Work Today.</div>
+  <div class="ro-body">Spurgeon protected Wednesday completely — no sermons, no letters, no ministry. He called it non-negotiable. So do you.</div>
+  <div class="ro-quote">"Whoever rests not one day in seven is in danger of breaking down." — C.H. Spurgeon</div>
+  <button id="rest-override" onclick="document.getElementById('rest-overlay').classList.remove('active')">I know what I'm doing — let me in</button>
+</div>
 
 <!-- ═══ LOGIN SCREEN ═══ -->
 <div id="login-screen">
@@ -20,8 +188,8 @@
       <div class="lbox-sub">Command Tracker · pecksmission.com</div>
     </div>
     <div class="lbox-body">
-      <div class="lfield"><label>Username</label><input type="text" id="l-user" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()"/></div>
-      <div class="lfield"><label>Password</label><input type="password" id="l-pass" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <div class="lfield"><label for="l-user">Username</label><input type="text" id="l-user" placeholder="Enter username" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <div class="lfield"><label for="l-pass">Password</label><input type="password" id="l-pass" placeholder="Enter password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
       <button class="lbtn" onclick="doLogin()">Enter</button>
       <div class="lerr" id="lerr"></div>
     </div>
@@ -31,7 +199,7 @@
 <!-- ═══ MANAGE USERS MODAL ═══ -->
 <div id="users-modal">
   <div class="um-box">
-    <div class="um-head"><div class="um-title">Manage Users</div><button class="um-close" onclick="closeUsers()">✕</button></div>
+    <div class="um-head"><div class="um-title">Manage Users</div><button class="um-close" aria-label="Close manage users" onclick="closeUsers()">✕</button></div>
     <div class="um-body">
       <div class="um-note">Approved usernames — all use the same password.</div>
       <div id="user-list"></div>
@@ -45,7 +213,7 @@
   <div class="dm-box">
     <div class="dm-head">
       <div><div class="dm-title" id="dm-title">Detail View</div><div class="dm-sub" id="dm-sub"></div></div>
-      <button class="dm-close" onclick="closeDM()">✕</button>
+      <button class="dm-close" aria-label="Close detail view" onclick="closeDM()">✕</button>
     </div>
     <div class="dm-body" id="dm-body"></div>
   </div>
@@ -53,11 +221,9 @@
 
 <!-- ═══ UTILITY BAR ═══ -->
 <div class="util-bar">
-  <div class="util-links">
-    <span class="ul" onclick="nav('briefing',this)">Briefing</span>
-    <span class="ul" onclick="nav('content',this)">Content</span>
-    <span class="ul" onclick="nav('interviews',this)">Interviews</span>
-    <span class="ul" onclick="nav('outreach',this)">Outreach</span>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <button id="focus-btn" onclick="toggleFocusMode()">⚡ Focus Mode</button>
+    <button id="sidebar-toggle" onclick="toggleSidebar()">Hide Sidebar</button>
   </div>
   <div style="display:flex;align-items:center;gap:16px;">
     <span class="ul" onclick="openUsers()" style="color:#6a7a99;">Manage Users</span>
@@ -105,6 +271,16 @@
 ════════════════════════════════════════════════════ -->
 <div class="page active" id="page-briefing">
   <div class="cw">
+    <!-- SPURGEON DAY THEME BANNER -->
+    <div id="spurgeon-banner">
+      <div>
+        <div class="sb-day" id="sb-day-label">—</div>
+        <div class="sb-theme" id="sb-theme-text">—</div>
+        <div class="sb-onejob" id="sb-onejob-text">—</div>
+      </div>
+      <div id="sb-rest-badge" class="sb-rest" style="display:none;">🛑 Rest Day</div>
+    </div>
+
     <div class="sr"><div class="sr-line"></div><div class="sr-tag" id="today-lbl">Daily Briefing</div><div class="sr-line"></div></div>
     <div class="bg">
       <!-- LEFT COLUMN -->
@@ -116,25 +292,25 @@
         </div>
 
         <!-- Priority -->
-        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)">
+        <div class="sec-head tsh" id="sec-priority-head" style="margin-top:1px;" onclick="toggleSec(this)">
           <span class="sec-toggle">▾</span><span class="flag f-r"></span>
           <span class="tsh-t">Priority — Non-Negotiable Today</span>
           <span class="tsh-c" id="c-p"></span>
           <button class="sec-drill" onclick="event.stopPropagation();drillTask('priority','Priority')">Priority Detail</button>
         </div>
-        <div class="sec-body" style="max-height:2000px;">
+        <div class="sec-body" id="sec-priority-body" style="max-height:2000px;">
           <div id="tl-priority"></div>
-          <div class="ar"><input class="ai" id="ai-priority" placeholder="Add priority task…" onkeydown="if(event.key==='Enter')addT('priority')"/><button class="ab" onclick="addT('priority')">Add</button></div>
+          <div class="ar" id="ar-priority"><input class="ai" id="ai-priority" placeholder="Add priority task…" onkeydown="if(event.key==='Enter')addT('priority')"/><button class="ab" onclick="addT('priority')">Add</button></div>
         </div>
 
         <!-- Content -->
         <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)">
-          <span class="sec-toggle">▾</span><span class="flag f-g"></span>
+          <span class="sec-toggle rotated">▾</span><span class="flag f-g"></span>
           <span class="tsh-t">Content — Writing · Publishing · Scheduling</span>
           <span class="tsh-c" id="c-c"></span>
           <button class="sec-drill" onclick="event.stopPropagation();drillTask('content','Content')">Content Detail</button>
         </div>
-        <div class="sec-body" style="max-height:2000px;">
+        <div class="sec-body collapsed" style="max-height:2000px;">
           <div id="tl-content"></div>
           <div class="ar"><input class="ai" id="ai-content" placeholder="Add content task…" onkeydown="if(event.key==='Enter')addT('content')"/><button class="ab" onclick="addT('content')">Add</button></div>
         </div>
@@ -155,24 +331,24 @@
 
         <!-- Outreach Daily -->
         <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)">
-          <span class="sec-toggle">▾</span><span class="flag f-m"></span>
+          <span class="sec-toggle rotated">▾</span><span class="flag f-m"></span>
           <span class="tsh-t">Outreach — Interview · Partnership · Media</span>
           <span class="tsh-c" id="c-o"></span>
           <button class="sec-drill" onclick="event.stopPropagation();drillTask('outreach-daily','Outreach')">Outreach Detail</button>
         </div>
-        <div class="sec-body" style="max-height:2000px;">
+        <div class="sec-body collapsed" style="max-height:2000px;">
           <div id="tl-outreach-daily"></div>
           <div class="ar"><input class="ai" id="ai-outreach-daily" placeholder="Add outreach task…" onkeydown="if(event.key==='Enter')addT('outreach-daily')"/><button class="ab" onclick="addT('outreach-daily')">Add</button></div>
         </div>
 
         <!-- Education Daily -->
         <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)">
-          <span class="sec-toggle">▾</span><span class="flag f-m"></span>
+          <span class="sec-toggle rotated">▾</span><span class="flag f-m"></span>
           <span class="tsh-t">Education — WGU · Reading · Research</span>
           <span class="tsh-c" id="c-e"></span>
           <button class="sec-drill" onclick="event.stopPropagation();drillTask('edu','Education')">Education Detail</button>
         </div>
-        <div class="sec-body" style="max-height:2000px;">
+        <div class="sec-body collapsed" style="max-height:2000px;">
           <div id="tl-edu"></div>
           <div class="ar"><input class="ai" id="ai-edu" placeholder="Add education task…" onkeydown="if(event.key==='Enter')addT('edu')"/><button class="ab" onclick="addT('edu')">Add</button></div>
         </div>
@@ -338,5 +514,103 @@
 <script src="drills.js"></script>
 <script src="init.js"></script>
 
+<script>
+/* ── SPURGEON DAILY THEMES ── */
+const SPURGEON_DAYS = {
+  0: { // Sunday
+    label: 'Sunday',
+    theme: 'Reflection & Recovery',
+    job: 'Review the week. Write one honest paragraph about what moved the mission forward.',
+    rest: false
+  },
+  1: { // Monday
+    label: 'Monday',
+    theme: 'Correspondence & Comms',
+    job: 'Clear every inbox. Answer every DM. Start the week with zero outstanding messages.',
+    rest: false
+  },
+  2: { // Tuesday
+    label: 'Tuesday',
+    theme: 'Content Day',
+    job: 'Write, record, or schedule one piece of content. That\'s the win for today.',
+    rest: false
+  },
+  3: { // Wednesday
+    label: 'Wednesday · Mid-Week Sabbath',
+    theme: 'Protected Rest',
+    job: 'Spurgeon took Wednesday completely off. No output. No decisions. Recharge.',
+    rest: true
+  },
+  4: { // Thursday
+    label: 'Thursday',
+    theme: 'Outreach & Interviews',
+    job: 'Send one pitch. Follow up on one lead. Move one interview closer to booked.',
+    rest: false
+  },
+  5: { // Friday
+    label: 'Friday',
+    theme: 'Deep Work & Education',
+    job: 'One hour of WGU or mission reading. No shallow tasks until this is done.',
+    rest: false
+  },
+  6: { // Saturday
+    label: 'Saturday',
+    theme: 'Review & Plan',
+    job: 'What\'s undone from this week? Set the three priorities for Monday. Then stop.',
+    rest: false
+  }
+};
+
+function initSpurgeonBanner() {
+  const day = new Date().getDay();
+  const d = SPURGEON_DAYS[day];
+  document.getElementById('sb-day-label').textContent = d.label;
+  document.getElementById('sb-theme-text').textContent = d.theme;
+  document.getElementById('sb-onejob-text').textContent = d.job;
+  if (d.rest) {
+    document.getElementById('sb-rest-badge').style.display = 'block';
+    document.getElementById('rest-overlay').classList.add('active');
+  }
+}
+
+/* ── FOCUS MODE ── */
+function toggleFocusMode() {
+  const on = document.body.classList.toggle('focus-mode');
+  document.getElementById('focus-btn').textContent = on ? '✕ Exit Focus' : '⚡ Focus Mode';
+}
+
+/* ── SIDEBAR TOGGLE ── */
+function toggleSidebar() {
+  const hidden = document.body.classList.toggle('sidebar-hidden');
+  document.getElementById('sidebar-toggle').textContent = hidden ? 'Show Sidebar' : 'Hide Sidebar';
+}
+
+/* ── PATCH toggleSec TO SUPPORT COLLAPSED CLASS ── */
+const _origToggleSec = typeof toggleSec === 'function' ? toggleSec : null;
+window.toggleSec = function(header) {
+  if (_origToggleSec) { _origToggleSec(header); return; }
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.sec-toggle');
+  if (!body) return;
+  body.classList.toggle('collapsed');
+  if (arrow) arrow.classList.toggle('rotated');
+};
+
+/* ── DONE COUNTER REWARD ANIMATION ── */
+const _sDoneEl = document.getElementById('s-done');
+if (_sDoneEl) {
+  const obs = new MutationObserver(() => {
+    _sDoneEl.classList.remove('counter-pop');
+    void _sDoneEl.offsetWidth; // reflow
+    _sDoneEl.classList.add('counter-pop');
+  });
+  obs.observe(_sDoneEl, { childList: true, characterData: true, subtree: true });
+}
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', initSpurgeonBanner);
+// fallback if DOMContentLoaded already fired
+if (document.readyState !== 'loading') initSpurgeonBanner();
+</script>
 </body>
 </html>
