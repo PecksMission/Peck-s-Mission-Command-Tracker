@@ -7,368 +7,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    :root{--navy:#1a2744;--navy-deep:#111b33;--navy-mid:#243058;--red:#9c1f28;--red-lt:#c0272f;--cream:#f5f0e8;--cream-dk:#ede8db;--cream-md:#e6dfd0;--rule:#c8b99a;--rule-lt:#ddd3c0;--ink:#1a1714;--ink-md:#3d3530;--muted:#6b5f52;--muted-lt:#9a8f84;--white:#faf7f2;--gold:#b8860b;--gold-lt:#d4a017;--green:#2d6b3f;--green-lt:#3a8a50;--fd:'Playfair Display',Georgia,serif;--fs:'Source Serif 4',Georgia,serif;--fn:'Source Sans 3',Helvetica,sans-serif;}
-    /* LOGIN */
-    #login-screen{position:fixed;inset:0;background:var(--navy-deep);display:flex;align-items:center;justify-content:center;z-index:9999;}
-    #login-screen.hidden{display:none;}
-    .lbox{width:380px;max-width:90vw;}
-    .lbox-top{background:var(--navy);padding:28px 32px 22px;border-top:3px solid var(--gold);border-bottom:2px solid var(--red);}
-    .lbox-seal{font-family:var(--fd);font-size:32px;font-weight:900;color:var(--gold-lt);letter-spacing:-.02em;margin-bottom:6px;}
-    .lbox-title{font-family:var(--fd);font-size:20px;font-weight:700;color:#fff;line-height:1.2;}
-    .lbox-sub{font-family:var(--fs);font-size:12px;font-style:italic;color:#8a9dbb;margin-top:5px;}
-    .lbox-body{background:var(--cream-dk);padding:24px 32px 28px;border:1px solid var(--rule);border-top:none;}
-    .lfield{margin-bottom:14px;}
-    .lfield label{display:block;font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
-    .lfield input{width:100%;background:var(--white);border:1px solid var(--rule);padding:9px 12px;font-family:var(--fs);font-size:14px;color:var(--ink);outline:none;transition:border-color .15s;}
-    .lfield input:focus{border-color:var(--navy);}
-    .lfield input::placeholder{color:var(--muted-lt);font-style:italic;}
-    .lbtn{width:100%;background:var(--navy);border:none;color:#fff;font-family:var(--fn);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding:12px;cursor:pointer;margin-top:6px;transition:background .15s;}
-    .lbtn:hover{background:var(--navy-deep);}
-    .lerr{font-family:var(--fn);font-size:11px;color:var(--red-lt);margin-top:8px;text-align:center;min-height:16px;letter-spacing:.03em;}
-    /* MANAGE USERS MODAL */
-    #users-modal{position:fixed;inset:0;background:rgba(17,27,51,.85);display:none;align-items:center;justify-content:center;z-index:8000;}
-    #users-modal.open{display:flex;}
-    .um-box{background:var(--cream);border:1px solid var(--rule);border-top:3px solid var(--navy);width:420px;max-width:92vw;max-height:80vh;display:flex;flex-direction:column;}
-    .um-head{background:var(--navy);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;}
-    .um-title{font-family:var(--fd);font-size:16px;font-weight:600;color:#fff;}
-    .um-close{background:none;border:none;color:#9aadcc;font-size:18px;cursor:pointer;line-height:1;}
-    .um-close:hover{color:#fff;}
-    .um-body{padding:16px 18px;overflow-y:auto;}
-    .um-note{font-family:var(--fs);font-size:12px;font-style:italic;color:var(--muted);margin-bottom:12px;}
-    .user-row{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border:1px solid var(--rule-lt);background:var(--white);margin-bottom:5px;}
-    .user-name{font-family:var(--fn);font-size:12px;font-weight:700;color:var(--ink);letter-spacing:.04em;}
-    .user-del{background:none;border:none;font-family:var(--fn);font-size:10px;color:var(--muted-lt);cursor:pointer;padding:2px 6px;}
-    .user-del:hover{color:var(--red-lt);}
-    .um-add{display:flex;gap:7px;margin-top:12px;}
-    .um-inp{flex:1;background:var(--white);border:1px solid var(--rule);padding:7px 10px;font-family:var(--fs);font-size:13px;color:var(--ink);outline:none;}
-    .um-inp:focus{border-color:var(--navy);}
-    .um-inp::placeholder{color:var(--muted-lt);font-style:italic;}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html{scroll-behavior:smooth;}
-    body{background:var(--cream);color:var(--ink);font-family:var(--fs);font-size:15px;line-height:1.65;min-height:100vh;}
-    .util-bar{background:var(--navy-deep);padding:0 32px;height:36px;display:flex;align-items:center;justify-content:space-between;}
-    .util-links{display:flex;gap:18px;}
-    .ul{font-family:var(--fn);font-size:11px;color:#9aadcc;cursor:pointer;letter-spacing:.03em;transition:color .15s;}
-    .ul:hover{color:#fff;}
-    .util-clock{font-family:var(--fn);font-size:11px;color:#6a7a99;letter-spacing:.06em;}
-    .masthead{background:var(--navy);padding:20px 32px 0;border-bottom:3px solid var(--red);position:relative;}
-    .masthead::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);}
-    .mh-inner{max-width:1300px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:16px;flex-wrap:wrap;gap:14px;}
-    .mh-brand{display:flex;align-items:flex-end;gap:18px;}
-    .mh-seal{width:62px;height:62px;border:2px solid rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);flex-shrink:0;}
-    .mh-seal-txt{font-family:var(--fd);font-size:21px;font-weight:900;color:var(--gold-lt);}
-    .mh-eyebrow{font-family:var(--fn);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-lt);margin-bottom:4px;}
-    .mh-title{font-family:var(--fd);font-size:clamp(22px,3.5vw,40px);font-weight:700;color:#fff;letter-spacing:-.01em;line-height:1.05;}
-    .mh-sub{font-family:var(--fs);font-size:13px;font-style:italic;color:#9aadcc;margin-top:4px;}
-    .mh-stats{display:flex;gap:26px;flex-wrap:wrap;}
-    .ms{text-align:right;}
-    .ms-num{font-family:var(--fd);font-size:27px;font-weight:700;color:#fff;line-height:1;}
-    .ms-num.gold{color:var(--gold-lt);}
-    .ms-num.red{color:#e07070;}
-    .ms-lbl{font-family:var(--fn);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:#6a7a99;margin-top:2px;}
-    .pnav{background:var(--navy-mid);border-bottom:1px solid rgba(255,255,255,.08);padding:0 32px;position:sticky;top:0;z-index:200;}
-    .pnav-inner{max-width:1300px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;}
-    .pnav-inner::-webkit-scrollbar{display:none;}
-    .ni{background:none;border:none;cursor:pointer;font-family:var(--fn);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#8a9dbb;padding:13px 15px;border-bottom:3px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:all .15s;}
-    .ni:hover{color:#c8d8ee;}
-    .ni.active{color:#fff;border-bottom-color:var(--red-lt);}
-    .page{display:none;}
-    .page.active{display:block;}
-    .cw{max-width:1300px;margin:0 auto;padding:0 32px 80px;}
-    .sr{display:flex;align-items:center;gap:14px;padding:22px 0 12px;}
-    .sr-line{flex:1;height:1px;background:var(--rule);}
-    .sr-tag{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:3px 12px;border:1px solid var(--rule);color:var(--muted);background:var(--cream-dk);white-space:nowrap;}
-    /* BRIEFING */
-    .bg{display:grid;grid-template-columns:1fr 295px;border:1px solid var(--rule);border-top:none;}
-    .bp{border-right:1px solid var(--rule);}
-    .bs{background:var(--white);}
-    .dbn{background:var(--navy);padding:13px 22px;display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--red);flex-wrap:wrap;}
-    .dbn-day{font-family:var(--fd);font-size:29px;font-weight:700;color:#fff;line-height:1;}
-    .dbn-full{font-family:var(--fn);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#8a9dbb;}
-    .dbn-phase{margin-left:auto;font-family:var(--fn);font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:var(--gold-lt);background:rgba(255,255,255,.06);padding:4px 11px;border:1px solid rgba(255,255,255,.1);}
-    .tsh{background:var(--cream-dk);border-bottom:1px solid var(--rule);border-top:1px solid var(--rule);padding:8px 22px;display:flex;align-items:center;gap:9px;}
-    .tsh-t{font-family:var(--fn);font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--ink-md);}
-    .tsh-c{margin-left:auto;font-family:var(--fn);font-size:10px;color:var(--muted-lt);}
-    .flag{display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0;}
-    .f-r{background:var(--red-lt);}
-    .f-g{background:var(--gold);}
-    .f-n{background:var(--navy);}
-    .f-gr{background:var(--green-lt);}
-    .f-m{background:var(--muted-lt);}
-    .tr{display:flex;align-items:flex-start;gap:9px;padding:9px 22px 9px 26px;border-bottom:1px solid var(--rule-lt);cursor:pointer;transition:background .1s;position:relative;animation:rowIn .2s ease both;}
-    .tr:hover{background:var(--cream-dk);}
-    .tr.done{opacity:.4;}
-    .tr.done .tt{text-decoration:line-through;}
-    .tpb{position:absolute;left:0;top:0;bottom:0;width:4px;}
-    .pr-h{background:var(--red-lt);}
-    .pr-m{background:var(--gold);}
-    .pr-l{background:var(--rule);}
-    .tcb{width:16px;height:16px;border:1.5px solid var(--rule);border-radius:1px;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;background:var(--white);transition:all .15s;}
-    .tr.done .tcb{background:var(--navy);border-color:var(--navy);}
-    .ck-svg{display:none;}
-    .tr.done .ck-svg{display:block;}
-    .tb{flex:1;}
-    .tt{font-family:var(--fs);font-size:13px;color:var(--ink);line-height:1.4;}
-    .tn{font-family:var(--fs);font-size:11px;font-style:italic;color:var(--muted-lt);margin-top:1px;}
-    .tdel{font-family:var(--fn);font-size:10px;color:var(--rule);cursor:pointer;margin-left:5px;opacity:0;}
-    .tr:hover .tdel{opacity:1;}
-    .tdel:hover{color:var(--red-lt);}
-    .ar{display:flex;gap:5px;padding:8px 22px;background:var(--cream-dk);border-bottom:1px solid var(--rule);}
-    .ai{flex:1;background:var(--white);border:1px solid var(--rule);padding:6px 9px;font-family:var(--fs);font-size:12.5px;color:var(--ink);outline:none;}
-    .ai:focus{border-color:var(--navy);}
-    .ai::placeholder{color:var(--muted-lt);font-style:italic;}
-    .ab{background:var(--navy);border:none;color:#fff;font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;padding:6px 13px;cursor:pointer;white-space:nowrap;}
-    .ab:hover{background:var(--navy-deep);}
-    .cg{display:grid;grid-template-columns:1fr 1fr;}
-    .cc{padding:13px 22px;border-right:1px solid var(--rule-lt);border-bottom:1px solid var(--rule-lt);cursor:pointer;transition:background .12s;}
-    .cc:hover{background:var(--cream-dk);}
-    .cc.cleared{opacity:.35;}
-    .cp{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-    .cn{font-family:var(--fd);font-size:24px;font-weight:700;color:var(--red-lt);line-height:1;}
-    .cn.neu{color:var(--ink-md);}
-    .ch{font-family:var(--fs);font-size:11px;font-style:italic;color:var(--muted-lt);margin-top:2px;}
-    /* SIDEBAR */
-    .sbb{border-bottom:1px solid var(--rule);padding:14px 16px;}
-    .sbl{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:9px;padding-bottom:6px;border-bottom:1px solid var(--rule-lt);}
-    .pi{margin-bottom:9px;}
-    .pi-lbs{display:flex;justify-content:space-between;font-family:var(--fn);font-size:10px;color:var(--muted);margin-bottom:3px;}
-    .pt{height:4px;background:var(--rule-lt);}
-    .pf{height:100%;transition:width .5s;}
-    .fn{background:var(--navy);}
-    .fg{background:var(--gold);}
-    .fgr{background:var(--green-lt);}
-    .oq{border-left:3px solid var(--navy);padding:9px 13px;background:var(--cream-dk);margin-top:10px;}
-    .oq-t{font-family:var(--fd);font-size:12px;font-style:italic;color:var(--ink-md);line-height:1.6;}
-    .oq-a{font-family:var(--fn);font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-top:4px;}
-    .sc{border:1px solid var(--rule);border-left:3px solid var(--navy);padding:10px 12px;background:var(--cream);margin-bottom:6px;}
-    .sc.r{border-left-color:var(--red-lt);}
-    .sc.g{border-left-color:var(--gold);}
-    .sc-ty{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
-    .sc-ti{font-family:var(--fd);font-size:13px;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:3px;}
-    .sc-d{font-family:var(--fs);font-size:11px;font-style:italic;color:var(--muted);line-height:1.45;}
-    .sc-s{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-top:4px;}
-    .sc-s.out{color:var(--red-lt);}
-    .sc-s.dr{color:var(--gold);}
-    .str{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--rule-lt);cursor:pointer;}
-    .str:last-child{border-bottom:none;}
-    .str:hover{opacity:.75;}
-    .sav{width:29px;height:29px;background:var(--navy);color:#9aadcc;display:flex;align-items:center;justify-content:center;font-family:var(--fn);font-size:10px;font-weight:700;flex-shrink:0;}
-    .stn{font-family:var(--fn);font-size:11px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;}
-    .str-r{font-family:var(--fs);font-size:10px;font-style:italic;color:var(--muted);}
-    .stp{margin-left:auto;font-family:var(--fn);font-size:10px;color:var(--gold);}
-    /* CALENDAR */
-    .cfb-bar{display:flex;gap:5px;padding:12px 0 5px;flex-wrap:wrap;}
-    .cfb{background:var(--white);border:1px solid var(--rule);cursor:pointer;font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);padding:4px 12px;transition:all .15s;}
-    .cfb:hover{border-color:var(--navy);color:var(--navy);}
-    .cfb.active{background:var(--navy);border-color:var(--navy);color:#fff;}
-    .cph{background:var(--navy);color:#fff;padding:8px 16px;display:flex;align-items:center;justify-content:space-between;margin-top:2px;}
-    .cph-t{font-family:var(--fd);font-size:14px;font-weight:600;font-style:italic;}
-    .cph-s{font-family:var(--fn);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#8a9dbb;}
-    table.cal{width:100%;border-collapse:collapse;background:var(--white);}
-    table.cal th{background:var(--cream-dk);border-bottom:2px solid var(--rule);border-right:1px solid var(--rule-lt);padding:7px 13px;font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);text-align:left;}
-    table.cal td{border-bottom:1px solid var(--rule-lt);border-right:1px solid var(--rule-lt);padding:9px 13px;vertical-align:top;}
-    table.cal tr:hover td{background:var(--cream);}
-    .ctb{display:inline-block;font-family:var(--fn);font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:2px 6px;border:1px solid;}
-    .ct-ch{color:var(--navy);border-color:var(--navy);background:rgba(26,39,68,.06);}
-    .ct-sl{color:var(--ink-md);border-color:var(--rule);background:var(--cream-dk);}
-    .ct-in{color:var(--green);border-color:var(--green);background:rgba(45,107,63,.06);}
-    .ct-co{color:var(--gold);border-color:var(--gold);background:rgba(184,134,11,.06);}
-    .cal-ti{font-family:var(--fs);font-size:13px;color:var(--ink);line-height:1.4;}
-    .cal-gu{font-family:var(--fs);font-size:11px;font-style:italic;color:var(--muted);margin-top:2px;}
-    .stb{display:inline-block;font-family:var(--fn);font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:2px 7px;border:1px solid;cursor:pointer;}
-    .st-pl{color:var(--muted-lt);border-color:var(--rule-lt);}
-    .st-dr{color:var(--gold);border-color:var(--gold);background:rgba(184,134,11,.07);}
-    .st-rd{color:var(--navy);border-color:var(--navy);background:rgba(26,39,68,.07);}
-    .st-lv{color:var(--green-lt);border-color:var(--green-lt);background:rgba(58,138,80,.07);}
-    /* INTERVIEWS */
-    table.it{width:100%;border-collapse:collapse;background:var(--white);}
-    table.it th{background:var(--navy);color:#9aadbb;padding:9px 15px;font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;text-align:left;border-right:1px solid rgba(255,255,255,.06);}
-    table.it td{padding:11px 15px;border-bottom:1px solid var(--rule-lt);border-right:1px solid var(--rule-lt);vertical-align:top;}
-    table.it tr.im:hover td{background:var(--cream);cursor:pointer;}
-    .ir{font-family:var(--fd);font-size:21px;font-weight:700;color:var(--rule);line-height:1;}
-    .ig{font-family:var(--fd);font-size:13px;font-weight:600;color:var(--ink);line-height:1.3;margin-bottom:3px;}
-    .ito{font-family:var(--fs);font-size:12px;font-style:italic;color:var(--muted);line-height:1.45;}
-    .iph{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.09em;color:var(--muted-lt);}
-    .ist{display:inline-block;font-family:var(--fn);font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 7px;border:1px solid;cursor:pointer;}
-    .is-ou{color:var(--red-lt);border-color:var(--red-lt);}
-    .is-co{color:var(--green-lt);border-color:var(--green-lt);background:rgba(58,138,80,.07);}
-    .is-sc{color:var(--navy);border-color:var(--navy);background:rgba(26,39,68,.07);}
-    .is-re{color:var(--gold);border-color:var(--gold);background:rgba(184,134,11,.07);}
-    .is-pu{color:var(--muted-lt);border-color:var(--rule);}
-    .ipr{display:none;background:var(--cream-dk);}
-    .ipr.open{display:table-row;}
-    .ipr-in{padding:13px 18px 13px 52px;}
-    .pr-lbl{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-    .pr-q{font-family:var(--fs);font-size:12px;color:var(--ink-md);padding:4px 0;border-bottom:1px solid var(--rule-lt);line-height:1.4;}
-    .pr-q::before{content:'Q  ';font-family:var(--fn);font-size:9px;font-weight:700;color:var(--muted-lt);letter-spacing:.09em;}
-    .pr-notes{width:100%;background:var(--white);border:1px solid var(--rule);padding:7px 9px;font-family:var(--fs);font-size:12px;color:var(--ink);outline:none;resize:vertical;min-height:56px;font-style:italic;margin-top:8px;}
-    .pr-notes:focus{border-color:var(--navy);}
-    .pr-notes::placeholder{color:var(--muted-lt);}
-    .aif{background:var(--cream-dk);border:1px solid var(--rule);border-top:2px solid var(--navy);padding:16px 18px;margin-top:2px;}
-    .aif-t{font-family:var(--fd);font-size:15px;font-weight:600;color:var(--ink);margin-bottom:11px;}
-    .fg2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
-    .fgp{display:flex;flex-direction:column;gap:3px;}
-    .fgp.full{grid-column:span 2;}
-    .flbl{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);}
-    .finp{background:var(--white);border:1px solid var(--rule);padding:6px 9px;font-family:var(--fs);font-size:13px;color:var(--ink);outline:none;}
-    .finp:focus{border-color:var(--navy);}
-    .finp::placeholder{color:var(--muted-lt);font-style:italic;}
-    /* TEAM */
-    .tcols{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--rule);margin-top:14px;}
-    .tcol{border-right:1px solid var(--rule);}
-    .tcol:last-child{border-right:none;}
-    .tch{background:var(--navy);padding:12px 15px;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--red);}
-    .tca{width:35px;height:35px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-family:var(--fn);font-size:11px;font-weight:700;color:#9aadcc;}
-    .tcn{font-family:var(--fd);font-size:14px;font-weight:600;color:#fff;}
-    .tcr{font-family:var(--fs);font-size:11px;font-style:italic;color:#8a9dbb;}
-    .ttask{display:flex;align-items:flex-start;gap:8px;padding:9px 15px;border-bottom:1px solid var(--rule-lt);cursor:pointer;background:var(--white);transition:background .1s;animation:rowIn .2s ease both;}
-    .ttask:hover{background:var(--cream);}
-    .ttask.done{opacity:.35;}
-    .ttask.done .ttt{text-decoration:line-through;}
-    .ttcb{width:15px;height:15px;border:1.5px solid var(--rule);background:var(--white);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;}
-    .ttask.done .ttcb{background:var(--navy);border-color:var(--navy);}
-    .ttcb .ck-svg{display:none;}
-    .ttask.done .ttcb .ck-svg{display:block;}
-    .ttt{font-family:var(--fs);font-size:12px;color:var(--ink);line-height:1.4;flex:1;}
-    .ttm{font-family:var(--fn);font-size:9px;color:var(--muted-lt);margin-top:1px;}
-    .ttd{font-family:var(--fn);font-size:10px;color:var(--rule);cursor:pointer;opacity:0;}
-    .ttask:hover .ttd{opacity:1;}
-    .ttd:hover{color:var(--red-lt);}
-    .tadd{display:flex;gap:5px;padding:7px 15px;background:var(--cream-dk);border-bottom:1px solid var(--rule-lt);}
-    .tainp{flex:1;background:var(--white);border:1px solid var(--rule);padding:5px 8px;font-family:var(--fs);font-size:12px;color:var(--ink);outline:none;}
-    .tainp:focus{border-color:var(--navy);}
-    .tainp::placeholder{color:var(--muted-lt);font-style:italic;}
-    /* ANALYTICS */
-    .ag{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--rule);margin-top:12px;}
-    .mc{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:16px 19px;background:var(--white);}
-    .mc:hover{background:var(--cream);}
-    .mlbl{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-    .minp{width:100%;background:transparent;border:none;border-bottom:1.5px solid var(--rule);padding:3px 0;font-family:var(--fd);font-size:28px;font-weight:700;color:var(--ink);outline:none;}
-    .minp::placeholder{color:var(--rule);}
-    .minp:focus{border-bottom-color:var(--navy);}
-    .mhint{font-family:var(--fs);font-size:10px;font-style:italic;color:var(--muted-lt);margin-top:3px;}
-    .mnotes{width:100%;background:transparent;border:none;border-bottom:1px solid var(--rule-lt);padding:3px 0;font-family:var(--fs);font-size:11px;color:var(--muted);outline:none;margin-top:5px;font-style:italic;}
-    .mnotes::placeholder{color:var(--rule-lt);}
-    /* EDUCATION */
-    .ecols{display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid var(--rule);margin-top:12px;}.book-counter{background:var(--navy);padding:10px 17px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1);}.bc-label{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:#8a9dbb;}.bc-num{font-family:var(--fd);font-size:18px;font-weight:700;color:var(--gold-lt);}.bc-goal{font-family:var(--fn);font-size:9px;color:var(--muted-lt);margin-top:1px;text-align:right;}
-    .ecol{border-right:1px solid var(--rule);}
-    .ecol:last-child{border-right:none;}
-    .ech{background:var(--navy);padding:12px 17px;border-bottom:2px solid var(--red);}
-    .ect{font-family:var(--fd);font-size:15px;font-weight:600;color:#fff;font-style:italic;}
-    .ecs{font-family:var(--fn);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:#8a9dbb;margin-top:2px;}
-    .br{display:flex;align-items:flex-start;gap:10px;padding:10px 17px;border-bottom:1px solid var(--rule-lt);background:var(--white);cursor:pointer;transition:background .1s;animation:rowIn .2s ease both;}
-    .br:hover{background:var(--cream);}
-    .br.done{opacity:.38;}
-    .br.done .bt{text-decoration:line-through;}
-    .bcb{width:15px;height:15px;border:1.5px solid var(--rule);background:var(--white);flex-shrink:0;margin-top:3px;display:flex;align-items:center;justify-content:center;}
-    .br.done .bcb{background:var(--navy);border-color:var(--navy);}
-    .bcb .ck-svg{display:none;}
-    .br.done .bcb .ck-svg{display:block;}
-    .bi{flex:1;}
-    .bt{font-family:var(--fs);font-size:13px;font-style:italic;color:var(--ink);line-height:1.4;}
-    .ba{font-family:var(--fn);font-size:10px;color:var(--muted);margin-top:2px;}
-    .btg{font-family:var(--fn);font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:2px 5px;border:1px solid;align-self:start;margin-top:3px;white-space:nowrap;}
-    .bcore{color:var(--red-lt);border-color:var(--red-lt);}
-    .brec{color:var(--gold);border-color:var(--gold);}
-    .bclin{color:var(--navy);border-color:var(--navy);}
-    .bvet{color:var(--green-lt);border-color:var(--green-lt);}
-    .bwgu{color:var(--green);border-color:var(--green);}
-    .bfaith{color:var(--muted);border-color:var(--rule);}
-    /* CRM */
-    table.crm{width:100%;border-collapse:collapse;background:var(--white);border:1px solid var(--rule);margin-top:12px;}
-    table.crm th{background:var(--navy);color:#9aadbb;padding:9px 15px;font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;text-align:left;border-right:1px solid rgba(255,255,255,.06);}
-    table.crm td{padding:10px 15px;border-bottom:1px solid var(--rule-lt);border-right:1px solid var(--rule-lt);vertical-align:middle;}
-    table.crm tr:hover td{background:var(--cream);cursor:pointer;}
-    .crm-n{font-family:var(--fs);font-size:13px;font-weight:600;color:var(--ink);}
-    .crm-o{font-family:var(--fs);font-size:11px;font-style:italic;color:var(--muted);}
-    .cst{display:inline-block;font-family:var(--fn);font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:2px 7px;border:1px solid;cursor:pointer;}
-    .cs-rs{color:var(--muted-lt);border-color:var(--rule);}
-    .cs-pi{color:var(--gold);border-color:var(--gold);background:rgba(184,134,11,.07);}
-    .cs-rp{color:var(--navy);border-color:var(--navy);background:rgba(26,39,68,.07);}
-    .cs-cf{color:var(--green-lt);border-color:var(--green-lt);background:rgba(58,138,80,.07);}
-    .cs-ps{color:var(--muted-lt);border-color:var(--rule);opacity:.5;}
-    .crm-add{display:flex;gap:7px;padding:11px 15px;background:var(--cream-dk);border-top:1px solid var(--rule);}
-    .crminp{background:var(--white);border:1px solid var(--rule);padding:6px 9px;font-family:var(--fs);font-size:12px;color:var(--ink);outline:none;}
-    .crminp:focus{border-color:var(--navy);}
-    .crminp::placeholder{color:var(--muted-lt);font-style:italic;}
-    .empty{padding:14px 22px;font-family:var(--fs);font-size:12px;font-style:italic;color:var(--muted-lt);}
-    @keyframes rowIn{from{opacity:0;transform:translateX(-3px);}to{opacity:1;transform:translateX(0);}}
-    @media(max-width:900px){.bg{grid-template-columns:1fr;}.bp{border-right:none;}.ag{grid-template-columns:repeat(2,1fr);}.tcols{grid-template-columns:1fr;}.ecols{grid-template-columns:1fr;}.ecols>div:first-child{grid-column:span 1;}}
-    @media(max-width:640px){.cw{padding:0 12px 60px;}.mh-inner{flex-direction:column;align-items:flex-start;}.ag{grid-template-columns:1fr 1fr;}.fg2{grid-template-columns:1fr;}.fgp.full{grid-column:span 1;}}
-
-    /* ── COLLAPSE / EXPAND ── */
-    .sec-head{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;}
-    .sec-toggle{font-size:11px;color:var(--muted-lt);transition:transform .2s;flex-shrink:0;line-height:1;}
-    .sec-head.collapsed .sec-toggle{transform:rotate(-90deg);}
-    .sec-body{overflow:hidden;transition:max-height .25s ease;}
-    .sec-body.collapsed{max-height:0!important;overflow:hidden;}
-    .sec-drill{margin-left:auto;font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:2px 8px;cursor:pointer;background:transparent;transition:all .15s;white-space:nowrap;}
-    .sec-drill:hover{background:var(--gold);color:var(--navy-deep);}
-    /* collapse toggle for tsh */
-    .tsh{cursor:pointer;}
-    .tsh .sec-toggle{color:#9a8f84;}
-    /* ── DETAIL MODAL ── */
-    #dm{position:fixed;inset:0;background:rgba(17,27,51,.92);display:none;align-items:flex-start;justify-content:center;z-index:7000;padding:24px 16px;overflow-y:auto;}
-    #dm.open{display:flex;}
-    .dm-box{background:var(--cream);width:100%;max-width:880px;border:1px solid var(--rule);border-top:3px solid var(--navy);margin:auto;animation:dmIn .2s ease both;}
-    @keyframes dmIn{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
-    .dm-head{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--red);}
-    .dm-title{font-family:var(--fd);font-size:18px;font-weight:700;color:#fff;font-style:italic;}
-    .dm-sub{font-family:var(--fn);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#8a9dbb;margin-top:3px;}
-    .dm-close{background:none;border:none;color:#9aadcc;font-size:20px;cursor:pointer;line-height:1;padding:4px;}
-    .dm-close:hover{color:#fff;}
-    .dm-body{padding:20px 22px;max-height:80vh;overflow-y:auto;}
-    .dm-section{margin-bottom:22px;}
-    .dm-sec-lbl{font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding-bottom:7px;border-bottom:1px solid var(--rule);margin-bottom:10px;}
-    /* detail task row */
-    .dm-task{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1px solid var(--rule-lt);background:var(--white);margin-bottom:5px;cursor:pointer;transition:background .1s;}
-    .dm-task:hover{background:var(--cream-dk);}
-    .dm-task.done{opacity:.4;}
-    .dm-task.done .dm-tt{text-decoration:line-through;}
-    .dm-cb{width:16px;height:16px;border:1.5px solid var(--rule);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;background:var(--white);}
-    .dm-task.done .dm-cb{background:var(--navy);border-color:var(--navy);}
-    .dm-tt{font-family:var(--fs);font-size:13px;color:var(--ink);flex:1;line-height:1.4;}
-    .dm-pri{font-family:var(--fn);font-size:8px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:2px 6px;border:1px solid;flex-shrink:0;margin-top:2px;}
-    .dm-pri.h{color:var(--red-lt);border-color:var(--red-lt);}
-    .dm-pri.m{color:var(--gold);border-color:var(--gold);}
-    .dm-pri.l{color:var(--muted-lt);border-color:var(--rule);}
-    .dm-add{display:flex;gap:6px;margin-top:8px;}
-    .dm-inp{flex:1;background:var(--white);border:1px solid var(--rule);padding:7px 10px;font-family:var(--fs);font-size:13px;color:var(--ink);outline:none;}
-    .dm-inp:focus{border-color:var(--navy);}
-    .dm-inp::placeholder{color:var(--muted-lt);font-style:italic;}
-    /* detail post row */
-    .dm-post{padding:10px 13px;border:1px solid var(--rule-lt);background:var(--white);margin-bottom:5px;cursor:pointer;transition:background .1s;}
-    .dm-post:hover{background:var(--cream-dk);}
-    .dm-post-n{font-family:var(--fn);font-size:9px;color:var(--muted-lt);margin-bottom:2px;}
-    .dm-post-t{font-family:var(--fd);font-size:14px;font-weight:600;color:var(--ink);line-height:1.3;}
-    .dm-post-g{font-family:var(--fs);font-size:12px;font-style:italic;color:var(--muted);margin-top:2px;}
-    /* detail interview */
-    .dm-int{padding:12px 14px;border:1px solid var(--rule-lt);background:var(--white);margin-bottom:6px;}
-    .dm-int-name{font-family:var(--fd);font-size:15px;font-weight:600;color:var(--ink);margin-bottom:3px;}
-    .dm-int-topic{font-family:var(--fs);font-size:12px;font-style:italic;color:var(--muted);line-height:1.5;margin-bottom:8px;}
-    .dm-int-qs{margin-bottom:8px;}
-    .dm-q{font-family:var(--fs);font-size:12px;color:var(--ink-md);padding:5px 0;border-bottom:1px solid var(--rule-lt);line-height:1.4;}
-    .dm-q::before{content:'Q  ';font-family:var(--fn);font-size:9px;font-weight:700;color:var(--muted-lt);}
-    .dm-notes{width:100%;background:var(--cream-dk);border:1px solid var(--rule);padding:8px 10px;font-family:var(--fs);font-size:12.5px;color:var(--ink);outline:none;resize:vertical;min-height:70px;font-style:italic;margin-top:6px;}
-    .dm-notes:focus{border-color:var(--navy);}
-    .dm-notes::placeholder{color:var(--muted-lt);}
-    /* detail book */
-    .dm-book{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:1px solid var(--rule-lt);background:var(--white);margin-bottom:5px;cursor:pointer;}
-    .dm-book:hover{background:var(--cream-dk);}
-    .dm-book.done{opacity:.38;}
-    .dm-book.done .dm-bt{text-decoration:line-through;}
-    .dm-bt{font-family:var(--fs);font-size:13px;font-style:italic;color:var(--ink);flex:1;line-height:1.4;}
-    .dm-ba{font-family:var(--fn);font-size:10px;color:var(--muted);margin-top:2px;}
-
-    /* WGU planner */
-    .wgu-term{transition:background .1s;}
-    .wgu-term:hover{background:rgba(36,48,88,.9)!important;}
-  </style>
+  <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
 
-<!-- LOGIN SCREEN -->
+<!-- ═══ LOGIN SCREEN ═══ -->
 <div id="login-screen">
   <div class="lbox">
     <div class="lbox-top">
@@ -384,6 +27,8 @@
     </div>
   </div>
 </div>
+
+<!-- ═══ MANAGE USERS MODAL ═══ -->
 <div id="users-modal">
   <div class="um-box">
     <div class="um-head"><div class="um-title">Manage Users</div><button class="um-close" onclick="closeUsers()">✕</button></div>
@@ -395,7 +40,7 @@
   </div>
 </div>
 
-<!-- DETAIL MODAL -->
+<!-- ═══ DETAIL MODAL ═══ -->
 <div id="dm">
   <div class="dm-box">
     <div class="dm-head">
@@ -406,6 +51,7 @@
   </div>
 </div>
 
+<!-- ═══ UTILITY BAR ═══ -->
 <div class="util-bar">
   <div class="util-links">
     <span class="ul" onclick="nav('briefing',this)">Briefing</span>
@@ -413,9 +59,14 @@
     <span class="ul" onclick="nav('interviews',this)">Interviews</span>
     <span class="ul" onclick="nav('outreach',this)">Outreach</span>
   </div>
-  <div style="display:flex;align-items:center;gap:16px;"><span class="ul" onclick="openUsers()" style="color:#6a7a99;">Manage Users</span><span class="ul" onclick="document.getElementById('login-screen').classList.remove('hidden');sessionStorage.removeItem('pm_auth')" style="color:#6a7a99;">Sign Out</span><div class="util-clock" id="clk">—</div></div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <span class="ul" onclick="openUsers()" style="color:#6a7a99;">Manage Users</span>
+    <span class="ul" onclick="signOut()" style="color:#6a7a99;">Sign Out</span>
+    <div class="util-clock" id="clk">—</div>
+  </div>
 </div>
 
+<!-- ═══ MASTHEAD ═══ -->
 <div class="masthead">
   <div class="mh-inner">
     <div class="mh-brand">
@@ -435,6 +86,7 @@
   </div>
 </div>
 
+<!-- ═══ PRIMARY NAV ═══ -->
 <nav class="pnav">
   <div class="pnav-inner">
     <button class="ni active" onclick="nav('briefing',this)">Daily Briefing</button>
@@ -447,25 +99,46 @@
   </div>
 </nav>
 
-<!-- BRIEFING -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: DAILY BRIEFING
+════════════════════════════════════════════════════ -->
 <div class="page active" id="page-briefing">
   <div class="cw">
     <div class="sr"><div class="sr-line"></div><div class="sr-tag" id="today-lbl">Daily Briefing</div><div class="sr-line"></div></div>
     <div class="bg">
+      <!-- LEFT COLUMN -->
       <div class="bp">
         <div class="dbn">
           <div class="dbn-day" id="dd">—</div>
           <div class="dbn-full" id="df">—</div>
           <div class="dbn-phase">● Phase 1 Active — The Personal Record</div>
         </div>
-        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)"><span class="sec-toggle">▾</span><span class="flag f-r"></span><span class="tsh-t">Priority — Non-Negotiable Today</span><span class="tsh-c" id="c-p"></span><button class="sec-drill" onclick="event.stopPropagation();drillTask('priority','Priority')">Priority Detail</button></div>
-        <div class="sec-body" style="max-height:2000px;"><div id="tl-priority"></div>
-        <div class="ar"><input class="ai" id="ai-priority" placeholder="Add priority task…" onkeydown="if(event.key==='Enter')addT('priority')"/><button class="ab" onclick="addT('priority')">Add</button></div>
-</div>
-        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)"><span class="sec-toggle">▾</span><span class="flag f-g"></span><span class="tsh-t">Content — Writing · Publishing · Scheduling</span><span class="tsh-c" id="c-c"></span><button class="sec-drill" onclick="event.stopPropagation();drillTask('content','Content')">Content Detail</button></div>
-        <div class="sec-body" style="max-height:2000px;"><div id="tl-content"></div>
-        <div class="ar"><input class="ai" id="ai-content" placeholder="Add content task…" onkeydown="if(event.key==='Enter')addT('content')"/><button class="ab" onclick="addT('content')">Add</button></div>
-</div>
+
+        <!-- Priority -->
+        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)">
+          <span class="sec-toggle">▾</span><span class="flag f-r"></span>
+          <span class="tsh-t">Priority — Non-Negotiable Today</span>
+          <span class="tsh-c" id="c-p"></span>
+          <button class="sec-drill" onclick="event.stopPropagation();drillTask('priority','Priority')">Priority Detail</button>
+        </div>
+        <div class="sec-body" style="max-height:2000px;">
+          <div id="tl-priority"></div>
+          <div class="ar"><input class="ai" id="ai-priority" placeholder="Add priority task…" onkeydown="if(event.key==='Enter')addT('priority')"/><button class="ab" onclick="addT('priority')">Add</button></div>
+        </div>
+
+        <!-- Content -->
+        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)">
+          <span class="sec-toggle">▾</span><span class="flag f-g"></span>
+          <span class="tsh-t">Content — Writing · Publishing · Scheduling</span>
+          <span class="tsh-c" id="c-c"></span>
+          <button class="sec-drill" onclick="event.stopPropagation();drillTask('content','Content')">Content Detail</button>
+        </div>
+        <div class="sec-body" style="max-height:2000px;">
+          <div id="tl-content"></div>
+          <div class="ar"><input class="ai" id="ai-content" placeholder="Add content task…" onkeydown="if(event.key==='Enter')addT('content')"/><button class="ab" onclick="addT('content')">Add</button></div>
+        </div>
+
+        <!-- Comms Check -->
         <div class="tsh" style="margin-top:1px;"><span class="flag f-n"></span><span class="tsh-t">Comms Check — Email · DM · Platform</span></div>
         <div class="cg">
           <div class="cc" onclick="toggleComms(this)"><div class="cp">Email / Mailchimp</div><div class="cn">Inbox</div><div class="ch">Answer all outstanding emails</div></div>
@@ -473,18 +146,38 @@
           <div class="cc" onclick="toggleComms(this)"><div class="cp">Facebook</div><div class="cn neu">Check</div><div class="ch">Comments + messages</div></div>
           <div class="cc" onclick="toggleComms(this)"><div class="cp">Texts / Interview Outreach</div><div class="cn neu">Check</div><div class="ch">Follow up on any outreach texts</div></div>
         </div>
+
+        <!-- Team -->
         <div class="tsh" style="margin-top:1px;"><span class="flag f-gr"></span><span class="tsh-t">Team — Follow-Ups · Waiting On</span><span class="tsh-c" id="c-t"></span></div>
         <div id="tl-team"></div>
         <div class="ar"><input class="ai" id="ai-team" placeholder="Add team follow-up…" onkeydown="if(event.key==='Enter')addT('team')"/><button class="ab" onclick="addT('team')">Add</button></div>
-        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)"><span class="sec-toggle">▾</span><span class="flag f-m"></span><span class="tsh-t">Outreach — Interview · Partnership · Media</span><span class="tsh-c" id="c-o"></span><button class="sec-drill" onclick="event.stopPropagation();drillTask('outreach-daily','Outreach')">Outreach Detail</button></div>
-        <div class="sec-body" style="max-height:2000px;"><div id="tl-outreach-daily"></div>
-        <div class="ar"><input class="ai" id="ai-outreach-daily" placeholder="Add outreach task…" onkeydown="if(event.key==='Enter')addT('outreach-daily')"/><button class="ab" onclick="addT('outreach-daily')">Add</button></div>
-</div>
-        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)"><span class="sec-toggle">▾</span><span class="flag f-m"></span><span class="tsh-t">Education — WGU · Reading · Research</span><span class="tsh-c" id="c-e"></span><button class="sec-drill" onclick="event.stopPropagation();drillTask('edu','Education')">Education Detail</button></div>
-        <div class="sec-body" style="max-height:2000px;"><div id="tl-edu"></div>
-        <div class="ar"><input class="ai" id="ai-edu" placeholder="Add education task…" onkeydown="if(event.key==='Enter')addT('edu')"/><button class="ab" onclick="addT('edu')">Add</button></div>
-</div>
+
+        <!-- Outreach Daily -->
+        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)">
+          <span class="sec-toggle">▾</span><span class="flag f-m"></span>
+          <span class="tsh-t">Outreach — Interview · Partnership · Media</span>
+          <span class="tsh-c" id="c-o"></span>
+          <button class="sec-drill" onclick="event.stopPropagation();drillTask('outreach-daily','Outreach')">Outreach Detail</button>
+        </div>
+        <div class="sec-body" style="max-height:2000px;">
+          <div id="tl-outreach-daily"></div>
+          <div class="ar"><input class="ai" id="ai-outreach-daily" placeholder="Add outreach task…" onkeydown="if(event.key==='Enter')addT('outreach-daily')"/><button class="ab" onclick="addT('outreach-daily')">Add</button></div>
+        </div>
+
+        <!-- Education Daily -->
+        <div class="sec-head tsh" style="margin-top:1px;" onclick="toggleSec(this)">
+          <span class="sec-toggle">▾</span><span class="flag f-m"></span>
+          <span class="tsh-t">Education — WGU · Reading · Research</span>
+          <span class="tsh-c" id="c-e"></span>
+          <button class="sec-drill" onclick="event.stopPropagation();drillTask('edu','Education')">Education Detail</button>
+        </div>
+        <div class="sec-body" style="max-height:2000px;">
+          <div id="tl-edu"></div>
+          <div class="ar"><input class="ai" id="ai-edu" placeholder="Add education task…" onkeydown="if(event.key==='Enter')addT('edu')"/><button class="ab" onclick="addT('edu')">Add</button></div>
+        </div>
       </div>
+
+      <!-- RIGHT SIDEBAR -->
       <div class="bs">
         <div class="sbb">
           <div class="sbl">Mission Progress</div>
@@ -522,7 +215,9 @@
   </div>
 </div>
 
-<!-- CONTENT CALENDAR -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: CONTENT CALENDAR
+════════════════════════════════════════════════════ -->
 <div class="page" id="page-content">
   <div class="cw">
     <div class="sr"><div class="sr-line"></div><div class="sr-tag">Content Calendar · 64 Posts · 7 Phases · 1 Argument</div><div class="sr-line"></div></div>
@@ -538,10 +233,12 @@
   </div>
 </div>
 
-<!-- INTERVIEWS -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: INTERVIEWS
+════════════════════════════════════════════════════ -->
 <div class="page" id="page-interviews">
   <div class="cw">
-    <div class="sr"><div class="sr-line"></div><div class="sr-tag">Interview Pipeline · 18 Guests · Ranked by Reach · Goal: 1/Week</div><div class="sr-line"></div></div>
+    <div class="sr"><div class="sr-line"></div><div class="sr-tag">Interview Pipeline · 52 Guests · Ranked by Reach · Goal: 1/Week</div><div class="sr-line"></div></div>
     <div style="font-family:var(--fs);font-style:italic;color:var(--muted);font-size:13px;padding:4px 0 8px;">Click any row to expand prep questions and notes. Click status badge to advance pipeline.</div>
     <table class="it" id="it">
       <thead><tr>
@@ -566,7 +263,9 @@
   </div>
 </div>
 
-<!-- TEAM -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: TEAM
+════════════════════════════════════════════════════ -->
 <div class="page" id="page-team">
   <div class="cw">
     <div class="sr"><div class="sr-line"></div><div class="sr-tag">Team Task Tracker — Jonah · Marketer · Artist</div><div class="sr-line"></div></div>
@@ -574,7 +273,9 @@
   </div>
 </div>
 
-<!-- ANALYTICS -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: ANALYTICS
+════════════════════════════════════════════════════ -->
 <div class="page" id="page-analytics">
   <div class="cw">
     <div class="sr"><div class="sr-line"></div><div class="sr-tag">Platform Analytics — Update Weekly</div><div class="sr-line"></div></div>
@@ -583,7 +284,9 @@
   </div>
 </div>
 
-<!-- EDUCATION -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: EDUCATION
+════════════════════════════════════════════════════ -->
 <div class="page" id="page-education">
   <div class="cw">
     <div class="sr"><div class="sr-line"></div><div class="sr-tag">Self-Education — Mission Reading · WGU BSHA · GoLife100/200 · GoBusiness200 · Goal: 100 Books/Year</div><div class="sr-line"></div></div>
@@ -591,10 +294,12 @@
   </div>
 </div>
 
-<!-- OUTREACH CRM -->
+<!-- ═══════════════════════════════════════════════════
+     PAGE: OUTREACH CRM
+════════════════════════════════════════════════════ -->
 <div class="page" id="page-outreach">
   <div class="cw">
-    <div class="sr"><div class="sr-line"></div><div class="sr-tag">Outreach CRM — 25 Contacts Preloaded · Click Row to Advance Status</div><div class="sr-line"></div></div>
+    <div class="sr"><div class="sr-line"></div><div class="sr-tag">Outreach CRM — 45 Contacts Preloaded · Click Row to Advance Status</div><div class="sr-line"></div></div>
     <div style="font-family:var(--fs);font-style:italic;color:var(--muted);font-size:13px;padding:4px 0 6px;">Research → Pitched → Replied → Confirmed → Passed. Contacts organized by category.</div>
     <table class="crm">
       <thead><tr>
@@ -614,945 +319,22 @@
   </div>
 </div>
 
-<script>
-const CK='<svg class="ck-svg" width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-let _id=500;
+<!-- ═══════════════════════════════════════════════════
+     SCRIPTS — load order matters
+════════════════════════════════════════════════════ -->
+<script src="js/shared.js"></script>
+<script src="js/interviews-data.js"></script>
+<script src="js/books-data.js"></script>
+<script src="js/calendar-data.js"></script>
+<script src="js/briefing.js"></script>
+<script src="js/calendar.js"></script>
+<script src="js/interviews.js"></script>
+<script src="js/team.js"></script>
+<script src="js/analytics.js"></script>
+<script src="js/education.js"></script>
+<script src="js/outreach.js"></script>
+<script src="js/drills.js"></script>
+<script src="js/init.js"></script>
 
-const S={
-  tasks:{
-    priority:[
-      {id:1,text:'Publish "Stand In Front of Me" — Phase 1, Post 01',pr:'h',done:false},
-      {id:2,text:'Answer every email in inbox — do not defer any',pr:'h',done:false},
-      {id:3,text:'Check Mailchimp — confirm welcome email sequence is firing correctly',pr:'h',done:false},
-      {id:4,text:'Post on Instagram + Facebook announcing Phase 1 launch today',pr:'m',done:false},
-    ],
-    content:[
-      {id:5,text:'Write opening paragraph for "Manage the Pain First" (Post 02)',pr:'h',done:false},
-      {id:6,text:'Pull exact Vanderbilt MyChart entries for Post 02 — MRI order, pain scores, medication log',pr:'h',done:false},
-      {id:7,text:'Review Sapp\'s surgery-day timeline entries for Post 01 accuracy before publishing',pr:'m',done:false},
-      {id:8,text:'Schedule all social posts for this week\'s published content (Buffer/Later)',pr:'m',done:false},
-      {id:9,text:'Update content calendar status badges for any completed posts',pr:'l',done:false},
-      {id:10,text:'Draft two headline options for Post 03 — "From the Other Side of the Table"',pr:'l',done:false},
-    ],
-    team:[
-      {id:11,text:'Follow up with Jonah — mobile nav bug resolution status, ETA?',pr:'m',done:false},
-      {id:12,text:'Send artist design brief: featured image template for Chart+Story posts',pr:'m',done:false},
-      {id:13,text:'Confirm Jonah has correct OG/meta tags on all Phase 1 posts before publish',pr:'l',done:false},
-    ],
-    'outreach-daily':[
-      {id:14,text:'Send cold outreach email to VP of Operations contact (Rank #1 interview)',pr:'h',done:false},
-      {id:15,text:'Reach out to Barnes Jewish connection re: Medical Lab Scientist interview',pr:'h',done:false},
-      {id:16,text:'Contact Patient Advocate Foundation — awareness partnership inquiry',pr:'m',done:false},
-      {id:17,text:'Follow up on any pending interview requests with no reply yet',pr:'m',done:false},
-    ],
-    edu:[
-      {id:18,text:'WGU — complete today\'s assigned module or assessment',pr:'m',done:false},
-      {id:19,text:'Read 20 pages: current book from mission reading list',pr:'l',done:false},
-    ]
-  },
-  teamTasks:{
-    jonah:[
-      {text:'Fix mobile navigation bug — hamburger menu broken on iOS Safari',done:false,meta:'Bug · Active'},
-      {text:'Update OG title + description meta tags for all Phase 1 posts',done:false,meta:'SEO'},
-      {text:'Verify Firebase real-time updates on surgery-day timeline page',done:false,meta:'Bug Check'},
-      {text:'Confirm Google Analytics 4 property is tracking page views correctly',done:false,meta:'Analytics'},
-      {text:'Optimize page load speed — target under 2 seconds on mobile',done:false,meta:'Performance'},
-      {text:'Add inline email subscribe form below each blog post',done:false,meta:'Growth / CRO'},
-      {text:'Audit all external links — verify nothing broken post-launch',done:false,meta:'QA'},
-    ],
-    marketer:[
-      {text:'Build Phase 1 social amplification plan — IG, FB, Pinterest breakdown',done:false,meta:'Strategy'},
-      {text:'Identify 20 patient advocacy orgs for cold outreach list',done:false,meta:'Outreach'},
-      {text:'Draft outreach email template for patient advocacy org pitch',done:false,meta:'Copywriting'},
-      {text:'Set up Instagram content posting schedule through end of Phase 1',done:false,meta:'Social'},
-      {text:'Research 10 relevant healthcare + veteran podcasts to pitch',done:false,meta:'Podcast Outreach'},
-      {text:'Build email list growth strategy — goal: 500 subscribers by Phase 1 end',done:false,meta:'Email'},
-      {text:'Draft one-page press kit / media overview for pecksmission.com',done:false,meta:'PR'},
-      {text:'Identify Pinterest strategy for patient advocacy + veteran content',done:false,meta:'Social'},
-    ],
-    artist:[
-      {text:'Create featured image template for Chart+Story posts — 16:9 + 1:1',done:false,meta:'Design'},
-      {text:'Design Phase 1 launch banner graphic for website header',done:false,meta:'Design'},
-      {text:'Deliver social card templates — 1080×1080 and 1080×1920 Stories',done:false,meta:'Design'},
-      {text:'Produce logo variations: favicon, dark background, light background',done:false,meta:'Brand'},
-      {text:'Create interview series thumbnail template',done:false,meta:'Design'},
-      {text:'Deliver brand style guide: fonts, colors, usage rules',done:false,meta:'Brand'},
-      {text:'Optimize profile photo for all platforms — circle-safe crop',done:false,meta:'Assets'},
-    ]
-  },
-  interviews:[
-    {rank:1,guest:'VP of Operations — Level 1 Trauma Hospital',topic:'Operational diagnosis of where the system breaks. Not a frontline complaint — an institutional reckoning. Documentation incentives, staffing models, how a Level 1 trauma center balances throughput and humanity.',phase:'P3+P7',status:'outreach',notes:'',questions:['What does the gap between your mission statement and daily operations actually look like?','Where does the system most reliably fail patients as people — not just cases?','What would you change tomorrow with no politics involved?','How do documentation incentives shape how providers think about patients?','What do frontline staff tell you that never makes it to the boardroom?']},
-    {rank:2,guest:'Brain Surgery Survivor',topic:'Two surgery patients. Different diagnoses, different surgeries, same table. What you both learned that you couldn\'t have learned any other way. The post every neurosurgery patient finds and shares with someone they love.',phase:'P1',status:'outreach',notes:'',questions:['What did nobody tell you before surgery that you wish someone had?','What was the moment you realized you had to advocate for yourself?','What did the clinical record miss about what actually happened to you?','What would you tell someone who just got your diagnosis?','What changed in how you see healthcare providers after going through this?']},
-    {rank:3,guest:'Agent Orange Survivor — Vietnam Veteran',topic:'He wasn\'t just failed by the VA. He was failed by a government that spent decades denying what it did to him. The extreme version of the core argument: when the condition is inconvenient, the system pretends it doesn\'t exist.',phase:'P4',status:'outreach',notes:'',questions:['When did you first know something was wrong, and how long until someone believed you?','What did the VA tell you in those early years?','What does it feel like to fight for recognition of something the government caused?','What do you want other veterans dealing with the VA to know?','How has your faith or community sustained you through this?']},
-    {rank:4,guest:'Nurse Who Had Cancer / Became the Patient',topic:'Years on the giving end of care, then she became the patient. What she saw from the bed she\'d never noticed from the floor. What changed in her practice afterward.',phase:'P3+P6',status:'outreach',notes:'',questions:['What did you notice as a patient that you had never seen from the floor?','Was there a specific moment that changed how you practice?','What do nurses get wrong most consistently, even with good intentions?','What did continuity of care mean to you when you were the one in the bed?','What do you wish you\'d known before you became the patient?']},
-    {rank:5,guest:'Combat Medic Drill Sergeant — 68W',topic:'The origin post. The person who decides what kind of medic gets built. Is emotional intelligence trained or assumed? You went through the pipeline — you\'re asking someone who shaped the version of you.',phase:'P3+P7',status:'outreach',notes:'',questions:['What are you actually trying to build in a 68W — technically or as a person?','Is empathy trained, or do you just select for it?','What does the pipeline produce that it doesn\'t intend to?','What do you wish you\'d had time to teach that the curriculum doesn\'t cover?','How do you think the medics you trained performed when they became patients themselves?']},
-    {rank:6,guest:'Emergency Physician',topic:'What a physician sees in the first five minutes that determines how a patient is treated as a person, not just a case. The triage of humanity before the triage of medicine.',phase:'P5',status:'outreach',notes:'',questions:['What happens in your mind in the first five minutes with a patient?','At what point in training did you start seeing people versus cases?','When does the system make it hardest to treat the person and not the disease?','What do patients do that makes a real difference in how they\'re treated?','What\'s the most important thing a patient can say to you when they walk in?']},
-    {rank:7,guest:'Veteran Service Officer (VSO)',topic:'VSOs sit at the exact intersection of military service, healthcare bureaucracy, and patient advocacy. They see the gaps every single day. The veteran who finally understands why their claim was denied.',phase:'P4+P7',status:'outreach',notes:'',questions:['What\'s the most common reason a veteran\'s claim gets denied that they never see coming?','What does the VA not tell veterans that you have to tell them yourself?','What does it look like when a veteran gives up on the system?','What would you change about how the VA communicates with veterans?','What should every veteran know the day they separate?']},
-    {rank:8,guest:'Neurologist',topic:'Imaging catches structural problems. It cannot catch what the patient was going through for the decade before the scan. What the imaging misses — and what a good neurologist looks for beyond the picture.',phase:'P5',status:'outreach',notes:'',questions:['What does a brain scan actually tell you — and what doesn\'t it?','How do you approach a patient who\'s been dismissed by other providers?','At what point does a symptom pattern become a story you need to hear?','What do patients say that makes you listen more carefully?','What does 25 years of undiagnosed neurological symptoms do to a person?']},
-    {rank:9,guest:'Car Accident Survivor',topic:'Survived something he shouldn\'t have. Walked again when the odds said he wouldn\'t. Two people who know what it means to fight your way back from an injury that redefined your baseline. Roy Benavidez lives in this post.',phase:'P2',status:'outreach',notes:'',questions:['What was the first moment you believed you would recover?','What did the medical team do that mattered most — and what fell short?','What does recovery actually feel like when it\'s not in a movie?','What did you have to unlearn about yourself to get better?','What would you tell someone starting a recovery that looks impossible?']},
-    {rank:10,guest:'Float Nurse',topic:'Float nurses see more variation in care culture across units than almost anyone in the hospital. What patterns show up everywhere. What the unit nurse is too close to notice. Appears twice in the calendar.',phase:'P2+P6',status:'outreach',notes:'',questions:['What patterns do you see across every unit that never change?','What does a unit\'s culture look like from the outside that insiders can\'t see?','What\'s the single biggest difference between units that treat patients well and those that don\'t?','What do patients do on their own behalf that actually works?','What happens at shift change that nobody talks about?']},
-    {rank:11,guest:'CVICU Nurse',topic:'You worked this floor. This nurse works it now. Your shared floor, two different vantage points across time. What the nurse sees from the other side of that bed.',phase:'P2',status:'outreach',notes:'',questions:['What do CVICU patients go through that providers miss even when they\'re right there?','What does a good shift look like versus a hard one — from a human standpoint?','What do patients say at 3 AM that they don\'t say during rounds?','What does continuity mean on a floor where acuity is this high?','What do you wish families knew about what their person is experiencing?']},
-    {rank:12,guest:'Ultrasound Technician',topic:'Techs spend more uninterrupted time with patients than almost any other provider and are trained to say almost nothing about what they\'re seeing. What does that silence feel like from their side?',phase:'P2',status:'outreach',notes:'',questions:['What does the silence feel like from your side of that probe?','What do patients ask you that you can\'t answer — and what do you wish you could say?','What does a patient do or say that stays with you?','What does the clinical note miss about what happened in that room?','What do you wish providers understood about your role?']},
-    {rank:13,guest:'Medical Lab Scientist — Barnes Jewish, St. Louis',topic:'She never sees you. You never see her. But her work drives nearly every clinical decision made about you. Your chart is full of her results and her name isn\'t anywhere a patient would look.',phase:'P1',status:'outreach',notes:'Personal connection through St. Louis — reach out through Barnes Jewish network',questions:['What would patients understand differently if they knew what you actually do?','When a result comes back and you know what it means for that patient — what does that feel like?','What does it mean to work in a system where you\'re central but invisible to the people you serve?','What\'s the most misunderstood part of what a medical lab scientist does?','What do you wish clinical providers communicated better to you about their patients?']},
-    {rank:14,guest:"Physician Assistant (PA)",topic:"What separates a provider who treats a disease from one who treats a person — from inside the clinical system. Where the training pipeline fails, where the system makes the human thing hardest.",phase:'P3+P7',status:'outreach',notes:'',questions:["Where does PA training teach you to treat the person — and where does it teach you to treat the case?","What does the clinical relationship look like when the system works versus when it breaks?","What do patients do that helps you care for them better?","Where does documentation get in the way of the actual patient relationship?","What would you change about how PAs are trained to communicate?"]},
-    {rank:15,guest:'Hospital Chaplain',topic:'Chaplains go where clinical providers don\'t. What the chart never captures. The spiritual and emotional layer the system has no language for. The room nobody thinks to enter.',phase:'P6',status:'outreach',notes:'Potential connection through Stonebridge Bible Church or Vanderbilt chaplaincy program',questions:['What do people say to you that they won\'t say to their doctor or nurse?','What does faith look like at 3 AM in a hospital room?','What does the clinical system miss about what patients actually need?','What have you seen that changed how you understand suffering?','What do you wish the clinical team understood about spiritual care?']},
-    {rank:16,guest:'Rare Disease Patient Advocate',topic:'Rare disease patients don\'t fit the algorithm. What they learned about surviving a system that wasn\'t built for their condition. When the system has no template.',phase:'P5',status:'outreach',notes:'',questions:['What does it feel like to walk into a system that has no framework for your condition?','What did you have to teach yourself to survive the medical system?','What does patient advocacy actually look like from the inside?','What broke you — and what rebuilt you?','What do you want newly diagnosed rare disease patients to know immediately?']},
-    {rank:17,guest:'Business Development Leader — Vanderbilt Medical Center',topic:'From inside one of the country\'s top academic medical centers. The highest-level institutional voice on the calendar. The Osler gap from the boardroom of a flagship institution.',phase:'P5',status:'outreach',notes:'Natural connection given surgery at Vanderbilt — pursue through Vanderbilt network',questions:['How does Vanderbilt think about the gap between clinical excellence and patient experience?','Where do incentive structures inside a major academic center work against treating the whole person?','How does Vanderbilt approach the tension between volume, revenue, and humanity?','What would it actually take, institutionally, to close the Osler gap?','What does patient advocacy look like from a business development lens?']},
-    {rank:18,guest:'Fellow Combat Medic — 68W',topic:'Two medics. Different units, different deployments, same job. What the training built and what it didn\'t. What you carry from downrange into every patient encounter for the rest of your career.',phase:'P3',status:'outreach',notes:'',questions:['What did deployment teach you about patient care that AIT never could?','What\'s the hardest part of transitioning from combat medicine to civilian healthcare?','What does treating someone under fire teach you about treating someone in a hospital bed?','What do you wish civilian providers understood about how medics are trained?','How has being a medic shaped how you navigate being a patient?']},
-    {rank:19,guest:'Anesthesiologist',topic:'The last provider you speak to before you go under. The consent form says everything went as expected. What actually happens in that room — and what the chart misses about the moment before consciousness ends.',phase:'P1+P5',status:'outreach',notes:'',questions:['What does informed consent actually look like versus what it\'s supposed to look like?','What do patients say in those last moments before anesthesia that stays with you?','What does the pre-op process fail to prepare patients for?','What does a chart entry for anesthesia actually capture — and what doesn\'t it?','What do you wish surgeons communicated to you better about their patients?']},
-    {rank:20,guest:'Pre-Op Nurse',topic:'You\'re the last nurse before the OR. You\'ve prepped thousands of patients. What the clinical record never captures about what happens in that room — the fear, the faith, the last conversation before the cutting starts.',phase:'P1',status:'outreach',notes:'',questions:['What do patients say in pre-op that they don\'t say anywhere else?','What does the chart tell you about a patient — and what does it miss entirely?','What do families do that helps — and what makes it harder for the patient?','Is there a moment you\'ve seen that changed how you do pre-op care?','What does "being ready" for surgery actually look like from your side?']},
-    {rank:21,guest:'Physical Therapist — Post-Surgical Recovery',topic:'The person who has to get you walking again when your body doesn\'t want to. What recovery actually looks like behind closed doors — the setbacks, the breakthroughs, the moment a patient decides to fight.',phase:'P2+P7',status:'outreach',notes:'',questions:['What\'s the difference between a patient who recovers and one who doesn\'t — beyond the clinical picture?','What does the surgical team\'s note miss about what you actually encounter in PT?','What does pain mean in the recovery room versus what it means on a pain scale?','What do patients tell you in PT sessions they haven\'t told anyone else?','What\'s the most underestimated part of post-surgical recovery?']},
-    {rank:22,guest:'Occupational Therapist',topic:'OTs work on the smallest things — buttoning a shirt, holding a fork — and those small things are where recovery is actually measured. What the clinical system misses about what it costs to rebuild function from scratch.',phase:'P2',status:'outreach',notes:'',questions:['What does it mean to lose the ability to do something you\'ve done your whole life?','What does a patient\'s first successful "small" task look like — and what does it mean?','Where does the clinical system undervalue what OTs see?','What does the discharge summary miss about where a patient actually is?','What do you wish the rest of the care team understood about occupational therapy?']},
-    {rank:23,guest:'Discharge Planner / Hospital Social Worker',topic:'The person who decides when you\'re "ready" to go home. What that decision actually looks like — the gap between clinical readiness and human readiness, and what falls through when you leave.',phase:'P3+P7',status:'outreach',notes:'',questions:['What does "medically cleared for discharge" mean versus what patients actually need?','What gets left out of the discharge plan that you know will matter in 72 hours?','What does the system not give you time to address before a patient walks out?','What do patients not understand about what happens when they leave?','What\'s the conversation you wish you could have with every patient before discharge?']},
-    {rank:24,guest:'Night Shift Nurse',topic:'What happens in a hospital between midnight and 6 AM that the day team never sees. The conversations patients have in the dark. What the chart at 0300 says versus what\'s actually happening in that room.',phase:'P2+P6',status:'outreach',notes:'',questions:['What do patients say at 3 AM that they never say during rounds?','What does the night shift see about a patient that the day team misses?','How does the culture of a unit change when the lights go down?','What does the 0300 chart note actually capture?','What do you wish the day team knew about what you hold overnight?']},
-    {rank:25,guest:'Case Manager — Hospital',topic:'The person who sees the whole picture: every department, every insurance denial, every gap between what the patient needs and what the system will pay for. The bureaucratic reality behind every care decision.',phase:'P3+P7',status:'outreach',notes:'',questions:['What does an insurance denial look like from inside the hospital — and what does it cost the patient?','What falls through the cracks between departments that nobody else catches?','What does a chart look like to you versus to the physician?','Where does the system make your job hardest when it comes to advocating for patients?','What do patients not understand about how their care decisions are actually made?']},
-    {rank:26,guest:'Chief Nursing Officer (CNO)',topic:'The person where bedside culture actually originates — or fails to. What the mission statement says versus what actually reaches the bedside, and what a CNO sees when they walk a floor at 2 AM.',phase:'P3',status:'outreach',notes:'',questions:['Where does the culture you\'re trying to build break down between your office and the bedside?','What do frontline nurses tell you that never makes it into policy?','What does patient experience data actually tell you — and what doesn\'t it?','What\'s the hardest part of maintaining care culture at scale?','What would you change tomorrow about how nurses are prepared to treat patients as people?']},
-    {rank:27,guest:'Medical Scribe',topic:'They watch every clinical interaction. They type everything. They say almost nothing. What a scribe sees in an exam room that the physician doesn\'t notice — and what never makes it into the note.',phase:'P3+P7',status:'outreach',notes:'',questions:['What do you see in an exam room that the physician doesn\'t seem to notice?','What gets left out of a note that actually happened in the room?','What does the physician\'s relationship with the patient look like from your seat?','What\'s the strangest gap between the note and the encounter you\'ve witnessed?','What do you wish providers understood about what you observe?']},
-    {rank:28,guest:'Hospitalist Physician',topic:'The doctor who knows you best while you\'re in the hospital — but you\'ve probably never heard the word "hospitalist." They see you every day. They\'re not your doctor. What that relationship actually is.',phase:'P5',status:'outreach',notes:'',questions:['What does it mean to be someone\'s doctor when you\'ll never see them again after discharge?','What does continuity of care mean when you\'re the only constant in a rotating team?','What do patients misunderstand most about who you are and what you do?','What does a chart tell you when you pick up a new patient — and what\'s the first thing you look for that isn\'t in it?','What\'s the most important conversation you have with a patient that nobody documents?']},
-    {rank:29,guest:'VA Primary Care Physician',topic:'On the inside of the system failing veterans — not a bureaucrat, an actual physician trying to do right by patients inside an institution that doesn\'t always let them. What they see that veterans never know.',phase:'P4+P7',status:'outreach',notes:'',questions:['What does it feel like to be a physician inside a system that your patients distrust — often rightfully?','Where does the VA\'s structure make it hardest to give veterans what they actually need?','What do veterans not understand about what you\'re dealing with on your end?','What would you change about VA primary care tomorrow if you had the authority?','What keeps you in the VA when you could practice elsewhere?']},
-    {rank:30,guest:'Military Chaplain',topic:'Spiritual care in uniform. What faith looks like downrange and in the barracks — and what it means to be the person a soldier talks to when they can\'t talk to their chain of command.',phase:'P4+P6',status:'outreach',notes:'Potential connection through Stonebridge or military chaplain network',questions:['What do soldiers say to you that they won\'t say to their NCO or commander?','What does spiritual crisis look like in a military context versus a civilian one?','How does faith function differently under the structure and pressure of military service?','What do you carry from your time in uniform that shapes how you care for people now?','What does the military miss about the spiritual needs of its people?']},
-    {rank:31,guest:'Transition Assistance Program (TAP) Counselor',topic:'The person who hands you the clipboard on the day you separate. What actually happens in that room — and what the transition misses about what veterans carry out the door.',phase:'P4',status:'outreach',notes:'',questions:['What does the average separating service member not understand about what\'s coming?','What does TAP actually prepare veterans for — and what does it miss entirely?','What do you see in that room that the military doesn\'t see?','What\'s the first thing that breaks down after a veteran leaves — and why?','What would you add to TAP if you could?']},
-    {rank:32,guest:'Diagnostic Radiologist',topic:'They read the images. They almost never meet the patient. Their report determines the next clinical decision — and they wrote it looking at a screen, not a person. What that disconnect costs.',phase:'P5',status:'outreach',notes:'',questions:['What does an image tell you about a patient — and what can\'t it tell you?','What would change about your reports if you met every patient whose scan you read?','What do ordering physicians miss when they read your report without the full clinical context?','What does it feel like to make a call that changes someone\'s life without being in the room?','What\'s the most common gap between what you report and what the patient actually experiences?']},
-    {rank:33,guest:'Pathologist',topic:'Like the lab scientist — invisible, central. Every tissue sample, every biopsy result, every cancer diagnosis flows through them. What it means to be the one who knows — and the one nobody sees.',phase:'P5',status:'outreach',notes:'',questions:['What would patients understand differently if they knew what you actually do?','What does it feel like to give a cancer diagnosis without ever speaking to the patient?','What does the gap between your report and how it\'s communicated to patients cost?','What do clinicians misunderstand about what a pathology report can and can\'t tell them?','What would you want every patient to know about the people reading their tissue?']},
-    {rank:34,guest:'Chronic Pain Patient',topic:'The person whose condition the system has no clean framework for. Years of being told it\'s normal, it\'s anxiety, it\'s in their head — before someone finally believed them. The disbelief gap in lived form.',phase:'P5',status:'outreach',notes:'',questions:['How many providers told you something was wrong with you before someone believed what you were experiencing?','What does it do to a person when the system repeatedly fails to explain their pain?','What did you have to learn to do — that you shouldn\'t have had to — to survive the medical system?','What\'s the most important thing a provider has ever said to you?','What do you want newly diagnosed chronic pain patients to know immediately?']},
-    {rank:35,guest:'Autoimmune Disease Patient',topic:'Invisible illness, diagnostic delay, years of disbelief. The system was built for acute presentations. She had a chronic, invisible, fluctuating condition — and learned what the Osler gap costs over a decade.',phase:'P5+P6',status:'outreach',notes:'',questions:['How long did it take to get your diagnosis — and what happened in that gap?','What did providers say to you during the years they couldn\'t explain what was happening?','What does it feel like to look healthy and feel destroyed?','What did you have to become — as a self-advocate — to survive this?','What would you tell someone in the diagnostic wilderness right now?']},
-    {rank:36,guest:'Medical Interpreter / Translator',topic:'Language access and the communication gap. What happens in a clinical encounter when the patient can\'t say what they mean and the provider can\'t hear what they\'re not saying.',phase:'P6',status:'outreach',notes:'',questions:['What gets lost between a patient and a provider that you have to carry?','What do you see in a room that neither the patient nor the provider notices?','What does it mean to translate not just words but fear, confusion, and pain?','What does the clinical system not understand about what language access actually requires?','What\'s the most important thing you\'ve ever had to say that wasn\'t in the script?']},
-    {rank:37,guest:'Health Literacy Researcher',topic:'Studies why patients don\'t understand what providers say — and what it costs when they don\'t. The academic case for what you\'re building empirically.',phase:'P6',status:'outreach',notes:'',questions:['What does health literacy actually mean — and what does low health literacy cost patients?','What does research show about how providers communicate versus how patients receive it?','Where does the clinical system consistently fail on plain language?','What would change if healthcare communication were designed around patients rather than providers?','What\'s the most important finding in your research that hasn\'t reached the bedside yet?']},
-    {rank:38,guest:'Palliative Care Nurse',topic:'The person who sits with suffering when the system has run out of fixes. What palliative care sees that curative medicine misses — and what it means to treat the person when the disease can\'t be beaten.',phase:'P6+P7',status:'outreach',notes:'',questions:['What does treating the person — not the disease — actually look like at end of life?','What do patients tell you in palliative care that they haven\'t told the clinical team?','Where does the curative system fail patients at the transition to palliative care?','What does the chart say about a dying patient versus what\'s actually happening?','What do families need that the system consistently fails to give them?']},
-    {rank:39,guest:'Grief Counselor',topic:'What the system hands patients when it runs out of clinical answers. The emotional aftermath of diagnosis, surgery, and survival that no chart captures. What grief looks like when the patient lived.',phase:'P6',status:'outreach',notes:'',questions:['What does grief look like in someone who survived something they expected to die from?','What does the medical system not give patients permission to feel?','What do surgery survivors carry that nobody names in a discharge summary?','What\'s the difference between clinical support and actually being with someone in their grief?','What do you wish the surgical team understood about what comes after the OR?']},
-    {rank:40,guest:'Health Information Management (HIM) Director',topic:'The person who controls the chart. Who can access it, what gets corrected, what gets released — and what the legal and institutional frameworks around the medical record mean for patients trying to understand what happened to them.',phase:'P7',status:'outreach',notes:'',questions:['What do patients not understand about who owns their medical record?','What\'s the process when a patient believes something in their chart is wrong?','What does HIPAA actually protect patients from — and what doesn\'t it?','What do providers not understand about what their documentation choices mean legally?','What would you change about how patients can access and understand their own records?']},
-    {rank:41,guest:'EHR Implementation Consultant',topic:'The person who actually installs Epic or Cerner. What the EHR system requires of providers — and how those requirements shape the care that patients receive, whether the system intended it or not.',phase:'P7',status:'outreach',notes:'',questions:['What does an EHR implementation actually require clinicians to change about how they work?','What does the system optimize for — and what gets deprioritized as a result?','What do providers do because the system requires it — even when it doesn\'t serve the patient?','What\'s the most common complaint you hear from clinicians about documentation requirements?','What would a patient-centered EHR actually look like?']},
-    {rank:42,guest:'Healthcare Attorney',topic:'What the medical record means in a legal context. What attorneys look for in a chart — and what those standards reveal about how documentation decisions shape patient outcomes.',phase:'P7',status:'outreach',notes:'',questions:['What\'s the first thing you look for in a medical record when evaluating a case?','What does good documentation protect — and who does it protect?','What does the gap between what happened and what was documented look like in a courtroom?','What do patients misunderstand about their rights regarding their medical records?','What would change about documentation if providers understood how records are read legally?']},
-    {rank:43,guest:'Patient Safety Officer',topic:'Root cause analysis, near-misses, sentinel events. The person whose job is to find what went wrong and why — and who sees the gap between what gets reported and what actually happened.',phase:'P7',status:'outreach',notes:'',questions:['What\'s the difference between a documented adverse event and what actually happened?','What makes providers reluctant to report near-misses — and what does that reluctance cost?','What does a root cause analysis actually find versus what gets written in the report?','Where does the patient safety system protect the institution more than the patient?','What would change if patients were full partners in the safety review process?']},
-    {rank:44,guest:'Community Health Worker',topic:'The bridge between the clinic and the community. The person who goes where providers don\'t — into homes, neighborhoods, and lives — and sees what the chart never captures.',phase:'P7',status:'outreach',notes:'',questions:['What do you see in a patient\'s home that their provider has never considered?','What does the clinical system miss about what actually determines health outcomes?','What does it mean to be the person who shows up between appointments?','What do providers not understand about what their patients\'s lives actually look like?','What\'s the most important thing you\'ve ever done that didn\'t involve any clinical skill?']},
-    {rank:45,guest:'Medical Trauma Therapist',topic:'The mental health therapist who specializes in patients traumatized by their own healthcare. The PTSD that comes not from combat or accidents but from hospitals, procedures, and the clinical system itself.',phase:'P5+P7',status:'outreach',notes:'',questions:['What does medical trauma actually look like — how does it present in patients?','What does a hospitalization do to a person psychologically that nobody names in the discharge summary?','What\'s the connection between being dismissed by providers and the psychological aftermath?','What do survivors of major surgery carry that isn\'t in any clinical note?','What do you wish the surgical team understood about what patients experience after they leave?']},
-    {rank:46,guest:'ICU Nurse — General',topic:'What happens in the ICU when patients are at their most vulnerable and least able to advocate for themselves. The clinical decisions made at the bedside — and what the family in the waiting room never knows.',phase:'P2+P3',status:'outreach',notes:'',questions:['What do ICU patients experience that they can\'t communicate — and what do you do about that?','What does family presence mean in the ICU — what does it help and what makes it harder?','What does the care team miss when they treat the disease and not the person in an ICU bed?','What does a good shift look like versus a shift that will stay with you?','What do you wish families knew about what their person is experiencing in the ICU?']},
-    {rank:47,guest:'Wound Care Nurse / Certified Wound Specialist',topic:'Wound care nurses spend extended time with patients — longer per visit than almost any other provider. What they see during that time, what patients say, and what the chart captures of a deeply human interaction.',phase:'P2',status:'outreach',notes:'',questions:['What do patients say during wound care that they don\'t say to anyone else?','What does extended clinical contact with the same patient teach you about them?','What does the chart note about wound care actually capture?','How do you manage the dual reality of clinical task and human conversation in the same moment?','What do you wish the rest of the care team knew about what happens during your visits?']},
-    {rank:48,guest:'Oncology Nurse',topic:'The person who sits with patients through chemotherapy — often for hours, often repeatedly. What the cancer ward sees about the human cost of treatment that clinical metrics don\'t capture.',phase:'P2+P5',status:'outreach',notes:'',questions:['What does the chemo chair teach you about a person that the clinic never could?','What do cancer patients say during infusion that they don\'t say anywhere else?','What does the system miss about what it costs patients to keep showing up for treatment?','What does "fighting cancer" actually look like from your side of the IV?','What would you want every oncologist to know about what happens when they\'re not in the room?']},
-    {rank:49,guest:'Pediatric Nurse — Children\'s Hospital',topic:'What it means to treat a child who can\'t always say what\'s wrong — and what it means to treat the parent watching it happen. Two patients in every room, and the chart only documents one of them.',phase:'P6',status:'outreach',notes:'',questions:['What does it mean to read a patient who can\'t tell you what they\'re experiencing?','What do parents go through in a pediatric admission that the clinical system ignores?','What does the chart say about a sick child versus what\'s actually happening in that room?','What\'s the hardest communication challenge you face — with the child or with the family?','What do you wish the system gave you more time or tools to do?']},
-    {rank:50,guest:'Rural Healthcare Provider',topic:'The solo provider in a county where the nearest specialist is two hours away. What the healthcare system looks like when there\'s no system to speak of — and what patient advocacy means when the patient has no options.',phase:'P3+P7',status:'outreach',notes:'',questions:['What does healthcare access actually mean in a rural context?','What does continuity of care look like when you\'re the only provider for a hundred miles?','What do rural patients do to manage conditions that urban patients would have specialists for?','What does the policy conversation about rural health miss about the lived reality?','What would actually change rural healthcare outcomes — and who\'s blocking it?']},
-    {rank:51,guest:'Healthcare Quality Improvement Director',topic:'The person whose job is to measure what\'s not working and fix it systematically. What quality improvement sees about patient care that clinical staff don\'t — and what the metrics consistently fail to capture.',phase:'P7',status:'outreach',notes:'',questions:['What does a quality metric tell you — and what does it hide?','Where do QI initiatives fail to reach the bedside even when the data looks good?','What does patient experience data miss about actual care quality?','What\'s the most important improvement your organization has made that the data didn\'t drive?','What would change if patients\'s own words were the primary quality metric?']},
-    {rank:52,guest:'Veteran with PTSD — Military Sexual Trauma (MST) Survivor',topic:'The veteran whose wound is invisible, whose condition the VA has historically mishandled, and whose fight for recognition mirrors the broader argument of the entire platform. The hardest version of the disbelief gap.',phase:'P4+P5',status:'outreach',notes:'Handle with significant care and preparation. Align with veteran advocacy contacts first.',questions:['What did the military\'s response to what happened to you look like?','What did the VA tell you when you sought help — and what did that response cost you?','What does it mean to have your experience dismissed by the institution you served?','What did it take to finally be believed — and what did the years before that cost?','What do you want other veterans who are in that same silence to know?']},
-  ],
-  analytics:{
-    months:['Mar 26','Apr 26','May 26','Jun 26','Jul 26','Aug 26','Sep 26','Oct 26','Nov 26','Dec 26','Jan 27','Feb 27'],
-    metrics:[
-      {key:'visitors',label:'Website Visitors',hint:'Total sessions / mo',cat:'web',monthly:['3000','','','','','','','','','','',''],notes:'First week ~3,000 — strong launch'},
-      {key:'unique',label:'Unique Visitors',hint:'Unique users / mo',cat:'web',monthly:['','','','','','','','','','','',''],notes:''},
-      {key:'toppost',label:'Top Post Views',hint:'Best single post views',cat:'web',monthly:['','','','','','','','','','','',''],notes:''},
-      {key:'subs',label:'Email Subscribers',hint:'Mailchimp list total',cat:'email',monthly:['80','','','','','','','','','','',''],notes:'80+ in first week — exceptional early traction'},
-      {key:'openrate',label:'Email Open Rate',hint:'% last campaign',cat:'email',monthly:['','','','','','','','','','','',''],notes:'Industry avg 20–25%. Aim for 40%+'},
-      {key:'clickrate',label:'Email Click Rate',hint:'% last campaign',cat:'email',monthly:['','','','','','','','','','','',''],notes:'Industry avg 2–3%. Aim for 8%+'},
-      {key:'ig',label:'Instagram Followers',hint:'Profile total',cat:'social',monthly:['','','','','','','','','','','',''],notes:''},
-      {key:'igreach',label:'Instagram Reach',hint:'Accounts reached / mo',cat:'social',monthly:['','','','','','','','','','','',''],notes:''},
-      {key:'fb',label:'Facebook Followers',hint:'Page followers total',cat:'social',monthly:['','','','','','','','','','','',''],notes:''},
-      {key:'intdone',label:'Interviews Completed',hint:'Recorded this month',cat:'content',monthly:['','','','','','','','','','','',''],notes:'Goal: 52 over the year — ~4–5/mo'},
-      {key:'postslive',label:'Posts Published',hint:'Live this month',cat:'content',monthly:['','','','','','','','','','','',''],notes:'Goal: ~5–6 posts/mo'},
-      {key:'speakinq',label:'Speaking Inquiries',hint:'Inbound / outbound',cat:'speaking',monthly:['','','','','','','','','','','',''],notes:''},
-    ],
-  },
-  books:{
-    mission:[
-      {title:"Man's Search for Meaning",author:'Viktor Frankl',done:false,tag:'core'},
-      {title:'Gesundheit! — Bringing Good Health to You, the Medical System, and Society',author:'Patch Adams',done:false,tag:'core'},
-      {title:'Being Mortal: Medicine and What Matters in the End',author:'Atul Gawande',done:false,tag:'core'},
-      {title:'The Spirit Catches You and You Fall Down',author:'Anne Fadiman',done:false,tag:'core'},
-      {title:'When Breath Becomes Air',author:'Paul Kalanithi',done:false,tag:'core'},
-      {title:'The Doctor and the Soul',author:'Viktor Frankl',done:false,tag:'core'},
-      {title:'How Doctors Think',author:'Jerome Groopman',done:false,tag:'clin'},
-      {title:'The House of God',author:'Samuel Shem',done:false,tag:'clin'},
-      {title:"Complications: A Surgeon's Notes on an Imperfect Science",author:'Atul Gawande',done:false,tag:'clin'},
-      {title:'The Checklist Manifesto',author:'Atul Gawande',done:false,tag:'clin'},
-      {title:'On Death and Dying',author:'Elisabeth Kübler-Ross',done:false,tag:'clin'},
-      {title:'Mountains Beyond Mountains',author:'Tracy Kidder',done:false,tag:'rec'},
-      {title:'The Emperor of All Maladies',author:'Siddhartha Mukherjee',done:false,tag:'rec'},
-      {title:'Just Mercy',author:'Bryan Stevenson',done:false,tag:'rec'},
-      {title:'Good to Great',author:'Jim Collins',done:false,tag:'rec'},
-      {title:'Amusing Ourselves to Death',author:'Neil Postman',done:false,tag:'rec'},
-      {title:'The Body Keeps the Score',author:'Bessel van der Kolk',done:false,tag:'vet'},
-      {title:'Tribe: On Homecoming and Belonging',author:'Sebastian Junger',done:false,tag:'vet'},
-      {title:'Emotionally Healthy Spirituality',author:'Peter Scazzero',done:false,tag:'faith'},
-      {title:'LifeWork',author:'Darrow L. Miller',done:false,tag:'faith'},
-      {title:'Winning the Battle for the Minds of Men',author:'Dennis Peacocke',done:false,tag:'faith'},
-      {title:'On the Destiny of Nations: Resolving Our Economic Crisis',author:'Dennis Peacocke',done:false,tag:'faith'},
-      {title:'The Road Back to You',author:'Ian Morgan Cron & Suzanne Stabile',done:false,tag:'faith'},
-    ],
-    wgu:[
-      // ── TERM 1 ──
-      {title:'Organizational Behavior',term:1,cu:3,area:'Business Management',
-       desc:'Explores how to lead and manage effectively in diverse business environments. Apply organizational leadership theories and management strategies in scenario-based problems.',
-       comp:['Analyze organizational culture to work effectively within it','Analyze leadership theories and select appropriate leader behavior','Describe influences on individual behavior','Determine team type and leadership for a given task','Develop and implement effective performance evaluation processes','Recommend principles for guiding group development'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Fundamentals for Success in Business',term:1,cu:3,area:'Business Core',
-       desc:'Overview of the business field and how management, structure, communication, and leadership affect the business environment. Introduces power skills: time management, problem solving, emotional intelligence, ethics.',
-       comp:['Communicate ideas and information in a professional setting','Identify common ethical issues within organizations','Identify leadership opportunities to enhance organizational performance','Recognize organizational functions and values','Recognize emotional reactions in professional situations'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Emotional and Cultural Intelligence',term:1,cu:3,area:'Business Core',
-       desc:'Key personal awareness skills in written, verbal, and nonverbal communication. Covers emotional intelligence (EI), cultural awareness, and ethical self-awareness.',
-       comp:['Apply emotional intelligence to improve intrapersonal and interpersonal interactions','Demonstrate cultural intelligence within multicultural and business situations'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Health, Fitness, and Wellness',term:1,cu:4,area:'General Education',
-       desc:'Foundations of good health and physical fitness, addressing health, nutrition, fitness, and substance use and abuse.',
-       comp:['Identify factors influencing mental, emotional, and social wellness','Identify core competencies of social and emotional learning','Identify influence of disease, fitness, and lifestyle on the body','Identify principles of nutrition and components of a healthy diet'],
-       status:'not-started',notes:'',tag:'wgu'},
-      // ── TERM 2 ──
-      {title:'Values-Based Leadership',term:2,cu:3,area:'Business Management',
-       desc:'Learn by reflection, design, and scenario planning. Examines values-based leadership and creating a culture of care. Students identify personal values through assessment and map their influence on leadership.',
-       comp:['Demonstrate how leadership abilities (listening, influence, ethical responsibility) solve problems','Describe how interpersonal skills enable effective collaboration and leadership','Explain how leadership of cultures fosters diversity, inclusion, ethics','Identify personal values (honesty, integrity, respect, EI, ethical responsibility)'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Principles of Management',term:2,cu:4,area:'Business Core',
-       desc:'Introductory look at management in the business environment. Covers strategic planning, total quality, entrepreneurship, conflict and change, HR management, diversity, and organizational structure.',
-       comp:['Apply principles of human resource management','Establish a total quality management program','Describe how to promote an entrepreneurial emphasis','Explain the strategic planning process','Recommend an organizational structure to match a given situation','Recommend techniques for managing conflict and change','Respond appropriately to diversity issues'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Healthcare Administration Evolution, Systems, and Leadership',term:2,cu:3,area:'Healthcare Administration',
-       desc:'In-depth exploration of the U.S. healthcare system — its evolution, key stakeholders, business principles, leadership roles, health equity issues, and transformative influence of technology.',
-       comp:['Describe the evolution of healthcare administration structure and function','Describe the role of leadership and management in healthcare administration','Explain the influence of business principles on healthcare operations and delivery','Identify opportunities and solutions in healthcare administration'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Composition: Writing with a Strategy',term:2,cu:3,area:'General Education',
-       desc:'Three main topics: understanding purpose, context, and audience; writing strategies and techniques; editing and revising. Covers cross-cultural communication and common standards.',
-       comp:['Compose constructive feedback of written texts','Construct a written document with correct format, style, structure, and grammar','Formulate a strategy for editing and revising written text','Incorporate writing strategies and techniques','Write with purpose for a given context and target audience'],
-       status:'not-started',notes:'',tag:'wgu'},
-      // ── TERM 3 ──
-      {title:'Healthcare Leadership and Community Engagement',term:3,cu:3,area:'Leadership and Management',
-       desc:'Leadership principles in real-world contexts. Prepares students to analyze community needs and create change through community engagement and collaborative approaches.',
-       comp:['Analyze impact of micro, mezzo, and macro sociopolitical drivers on community engagement','Develop a performance management strategy supporting professional identity of care providers','Develop strategic partnerships between community and organization','Propose interprofessional team strategies in complex community environments'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Critical Thinking: Reason and Evidence',term:3,cu:3,area:'General Education',
-       desc:'Key critical thinking concepts applied to analysis and evaluation of reasons and evidence. Examines argument components, credibility of evidence, impact of bias, and constructing well-supported claims.',
-       comp:['Evaluate bias and its impact','Evaluate evidence based on source credibility','Evaluate the quality of an argument','Make claims based on evidence'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Applied Healthcare Statistics',term:3,cu:4,area:'General Education',
-       desc:'Foundational concepts in mathematics, introductory algebra, and statistics and probability applied to healthcare. Covers descriptive statistics, regression, correlation, and probability in clinical contexts.',
-       comp:['Apply probability-based mathematics to explain and solve problems','Apply operations of basic algebra to evaluate quantitative expressions','Apply basic arithmetic operations','Apply fractions, decimals, and percentages','Evaluate categorical and quantitative data using graphical displays','Evaluate relationship between two quantitative variables through correlation and regression'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Introduction to Business Accounting',term:3,cu:3,area:'Business Core',
-       desc:'Introduction to the discipline of accounting. Fundamental knowledge of financial and managerial accounting, financial statements, budgeting, and managing costs and profits.',
-       comp:['Explain how costs and profits are managed in business','Explain basic methods of budgeting','Explain the role of financial and managerial accounting','Explain the uses of financial statements'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Introduction to Communication: Connecting with Others',term:3,cu:4,area:'General Education',
-       desc:'Communication in the professional setting from multiple vantage points — communicating with others in varied contexts, across situations, and with diverse populations.',
-       comp:['Implement appropriate communication styles based on audience and setting','Use communication strategies for managing conflict','Use communication strategies to influence others'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Professional Practice Experience I: Technical',term:3,cu:4,area:'Professional Practice',
-       desc:'Uses EHRGo (electronic health record) to complete 42 structured activities experiencing how an HIM professional uses an EHR. Meets AHIMA Baccalaureate-level competencies. Earns 40 PPE hours.',
-       comp:['Apply basic health informatics and information management skills','Display professionalism, reflection, and ethical behaviors as a health informatics professional','Evaluate operational components demonstrating adherence to regulatory standards and quality improvement'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Introduction to Sociology',term:3,cu:4,area:'General Education',
-       desc:'Learn to think like a sociologist — understand the hidden rules by which people live. Covers socializing institutions, organizations, governments, deviance, and social change.',
-       comp:['Explain how societies are stratified across various social statuses','Explain major perspectives and key contributors to sociology','Explain reciprocal relationships between social institutions and individuals','Explain constructs of conformity and deviance from social norms','Identify components of culture and socialization'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Applied Algebra',term:3,cu:5,area:'General Education',
-       desc:'Competence in working with functions and the algebra of functions. Covers linear, polynomial, exponential, and logistic functions with real-life healthcare applications.',
-       comp:['Analyze graphical depictions of real-world situations using functional properties','Apply exponential functions to real-world problems','Apply linear functions to real-world problems','Apply logistic functions to real-world problems','Apply polynomial functions to real-world problems','Interpret real-world meaning of various functions','Verify the validity of a given model'],
-       status:'not-started',notes:'Prerequisite: Applied Healthcare Statistics',tag:'wgu'},
-      {title:'Human Growth and Development',term:3,cu:5,area:'General Education',
-       desc:'Three-module course examining the entire human lifetime, from conception to death. Focuses on physical, cognitive, and psychosocial growth, cultural influences, emotions, and resilience.',
-       comp:['Explain physical, cognitive, and psychosocial development conception through early childhood','Explain development from early adulthood to end of life','Explain development from middle childhood through adolescence','Explain influence of emotions and cultural perspectives from birth through early childhood','Explain influence of emotions from early adulthood to end of life','Explain influence of emotions from middle childhood through adolescence'],
-       status:'not-started',notes:'',tag:'wgu'},
-      // ── TERM 4 ──
-      {title:'Healthcare Policy and Governance',term:4,cu:4,area:'Healthcare Administration',
-       desc:'Comprehensive exploration of healthcare policies, regulations, and governance and their impact on operations, administration, and community health services. Covers legal and ethical considerations.',
-       comp:['Analyze impact of healthcare governance, policies, and regulations in various healthcare contexts','Explain the purpose of legal and regulatory frameworks in healthcare administration','Propose a healthcare administration solution that complies with policies and regulations'],
-       status:'not-started',notes:'',tag:'wgu'},
-      // ── TERM 5 ──
-      {title:'Fundamentals of Spreadsheets and Data Presentations',term:5,cu:3,area:'Business Core',
-       desc:'Overview of spreadsheet functions and methods for presenting data. Features and uses of MS Excel applied to real-world situations. Introduction to collecting, organizing, and presenting data.',
-       comp:['Create a presentation from a spreadsheet dataset','Perform common spreadsheet tasks requiring basic formatting, formulas, and functions','Prepare data for analysis'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Evidence-Based Healthcare Administration',term:5,cu:4,area:'Healthcare Administration',
-       desc:'Apply evidence-based practices in healthcare administration. Data analytics, research methodologies, and evidence-based decision-making. Covers machine learning, AI, data collection, and statistical tools.',
-       comp:['Apply data analytics to make decisions within healthcare administration','Explain how data supports decision-making in healthcare administration','Select applied research paradigms and methods in support of evidence-based practice (EBP)'],
-       status:'not-started',notes:'',tag:'wgu'},
-      // ── TERM 6 ──
-      {title:'Principles of Economics',term:6,cu:3,area:'Business Core',
-       desc:'Foundational economic theories on markets and market behavior. Covers microeconomics (supply, demand, elasticity, market structure) and macroeconomics (monetary policy, fiscal policy, international trade).',
-       comp:['Explain concepts in macroeconomics used in business and public policy','Explain concepts in microeconomics used in business and public policy','Explain fundamental economic principles'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Project Management',term:6,cu:3,area:'Business Management',
-       desc:'Manage projects from start to finish. Covers project-management methods, project profiling and phases, constraints, building teams, scheduling, and risk management.',
-       comp:['Apply elements of project planning to prepare key documents','Construct a project scheduling network diagram including critical path','Describe the project life cycle and how constraints impact a project','Explain how different types of project-management methods are used','Explain how project management helps organizations achieve goals','Explain key activities for executing, monitoring, controlling, and closing projects','Explain criteria and methods used for project selection'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Integrated Physical Sciences',term:6,cu:3,area:'General Education',
-       desc:'Overview of the basic principles and unifying ideas of the physical sciences: physics, chemistry, and earth sciences. Focus on scientific reasoning and practical applications.',
-       comp:['Describe the nature and process of science','Describe the underlying organization, interactions, and processes within the Earth system','Examine applications of key chemistry concepts including structure of matter','Examine applications of physics including forces, motion, energy, and waves'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Innovative and Strategic Thinking',term:6,cu:3,area:'Business Core',
-       desc:'Knowledge and skills used in building and implementing business strategy. Covers management, innovative thinking, risk management, and strategic concepts. Quantitative literacy and data analysis for strategy.',
-       comp:['Apply appropriate business practices to formulate recommendations impacting organizational effectiveness','Identify the impact of innovation in personal and professional settings','Utilize evidence-based techniques to make strategic decisions'],
-       status:'not-started',notes:'',tag:'wgu'},
-      // ── TERM 7 ──
-      {title:'Change Management',term:7,cu:3,area:'Business Management',
-       desc:'Understanding change and successfully managing it using various methods and tools. Change theories and best practices, including approaches to recognizing, diagnosing, implementing, and sustaining change.',
-       comp:['Describe different innovation strategies and the role leaders play in innovation','Explain how learning organizations develop and approach change','Explain how organizations diagnose the need for change and approaches for implementing it','Explain strategies, principles, roles, and models for sustaining change','Summarize theories related to change management'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Business Communication',term:7,cu:3,area:'Business Management',
-       desc:'Survey of communication skills needed in the business environment. Writing messages, reports, and résumés; delivering oral presentations. Emphasizes communication processes, writing skills, and message types.',
-       comp:['Apply business research and writing skills to present information','Apply effective communication techniques and principles to business environments','Apply principles of business writing to communicate','Compose multiple types of business messages','Create messages using technology and social media','Create professional communication documents for employment and advancement'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Introduction to Business Finance',term:7,cu:3,area:'Business Core',
-       desc:'The discipline of finance in the business environment. Financial ratios, time value of money concepts, and capital budgeting. Prerequisite: Introduction to Business Accounting.',
-       comp:['Describe capital budgeting','Describe the systems, structure, roles, and impact of finance in business','Describe the uses of financial ratios to manage a business','Explain the application of time value of money concepts to business'],
-       status:'not-started',notes:'Prerequisite: Introduction to Business Accounting',tag:'wgu'},
-      {title:'Emergency Management and Planning in Healthcare',term:7,cu:4,area:'Healthcare Administration',
-       desc:'Knowledge and skills to effectively manage emergencies in healthcare organizations. Covers crisis communication, ethical considerations, leadership in critical situations, public health, and community resilience.',
-       comp:['Apply emergency management principles in various healthcare settings','Evaluate the impact of emergencies on healthcare organizations','Recommend strategies for creating and improving emergency response plans'],
-       status:'not-started',notes:'',tag:'wgu'},
-      // ── TERM 8 ──
-      {title:'Strategic Training and Development',term:8,cu:3,area:'Human Resources',
-       desc:'Development of human capital by applying effective learning theories and practices for training and developing employees. Improving and empowering organizations through high-caliber training processes.',
-       comp:['Analyze training and development needs and solutions to support organizational goals','Apply best practices for developing training programs and measuring their effectiveness','Describe the development and impact of talent management programs'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Operations and Supply Chain Management',term:8,cu:3,area:'Business Management',
-       desc:'Introduction to efficiently producing goods and services, supply chain management strategies, and performance measurement. Covers forecasting, capacity planning, quality control, and inventory management.',
-       comp:['Analyze factors involved in process design, capacity planning, and location analysis','Analyze forecasting models, measurement techniques, and scheduling methods','Analyze how just-in-time, TPS, and lean systems improve operating efficiency','Analyze the supply chain for competitive advantage','Explain appropriate quality management strategies','Explain how a business achieves goals through operations and inventory management'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Concepts in Marketing, Sales, and Customer Contact',term:8,cu:3,area:'Business Core',
-       desc:'The discipline of marketing and its role in strategic and operational environments. Marketing planning, marketing mix, brand management, digital marketing, CRM, and personal selling.',
-       comp:['Describe basic elements used in marketing planning','Describe how strategic marketing influences overall success of a business','Identify personal selling and negotiating strategies within the sales management process'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'American Politics and the US Constitution',term:8,cu:3,area:'General Education',
-       desc:'Evolution of representative government and changing interpretations of civil rights and liberties protected by the Constitution. Covers powers of federal branches, federalism, and civic institutions.',
-       comp:['Describe the influence of competing political ideologies on U.S. government development','Examine influence of political parties and NGOs on elections and political processes','Examine influence of media, public opinion, and political discourse on democracy','Examine the struggle to balance individual liberty, public order, and state's rights','Explain how structure and powers of U.S. government interact to form public policy'],
-       status:'not-started',notes:'',tag:'wgu'},
-      // ── TERM 9 ──
-      {title:'Exploring Emerging Trends in Healthcare Administration',term:9,cu:4,area:'Healthcare Administration',
-       desc:'Impact of trends on healthcare administration, patient care, and industry transformation. Evaluates advancements transforming the healthcare industry. Integrates DEI principles, health disparities, and inclusive care.',
-       comp:['Analyze emerging and evolving trends in healthcare','Create an implementation plan for emerging and evolving trends to advance organizational goals','Evaluate the impact of emerging and evolving trends in healthcare management and operations'],
-       status:'not-started',notes:'',tag:'wgu'},
-      {title:'Healthcare Administration Capstone',term:9,cu:4,area:'Healthcare Administration',
-       desc:'Culminating experience of healthcare business administration. Integrates and synthesizes managerial skills with healthcare knowledge. Final project demonstrating professional managerial proficiency in a real-world scenario.',
-       comp:['Exhibit artifacts demonstrating competency across all program areas and evidence of professional growth'],
-       status:'not-started',notes:'Capstone project — apply learning to a real issue in your place of business',tag:'wgu'},
-    ],
-
-    faith:[
-      {title:'GoLife100 · Sec 1: Life as Discovery',author:'GoLife100 · Dudley Hall · biblical foundations, virtue, patience, love',done:false,tag:'faith'},
-      {title:'GoLife100 · Sec 2: Introduction to Worldview and Philosophy',author:'GoLife100 · Dr. Walter Duerr · metaphysics, ontology, ethics',done:false,tag:'faith'},
-      {title:'GoLife100 · Sec 3: Root Presuppositions of the Christian Faith',author:'GoLife100 · Nature of God, Man, and Truth',done:false,tag:'faith'},
-      {title:'GoLife100 · Sec 4: Becoming a Prophetic Voice to Your Culture',author:'GoLife100 · Five spheres of government · Kingdom citizenship',done:false,tag:'faith'},
-      {title:'GoLife200 · Sec 1: Embracing God\'s Sovereignty',author:"GoLife200 · Finding your place on the wall · destiny · God's call",done:false,tag:'faith'},
-      {title:'GoLife200 · Sec 2: Embracing Community',author:'GoLife200 · Covenant · relational joining · building generationally',done:false,tag:'faith'},
-      {title:'GoLife200 · Sec 3: Strategic Lifestyle',author:'GoLife200 · Strategic thinking · disciplines · discerning seasons · Sabbath',done:false,tag:'faith'},
-      {title:'GoLife200 · Sec 4: Problems as Opportunities',author:'GoLife200 · Becoming problem solvers · discerning the nature of a problem',done:false,tag:'faith'},
-      {title:'GoLife200 · Sec 5: Engaging Culture',author:"GoLife200 · Hard questions · God's green light · preserving spiritual growth",done:false,tag:'faith'},
-      {title:'GoBusiness200 · Sec 1: Foundations of Marketplace Ministry',author:'GoBusiness200 · Biblical economics · kings and priests · financial freedom',done:false,tag:'faith'},
-      {title:'GoBusiness200 · Sec 2: Spiritual Foundations for Building',author:'GoBusiness200 · Hearing God for business · discerning trust · spiritual warfare in orgs',done:false,tag:'faith'},
-      {title:'GoBusiness200 · Sec 3: Keys to Successful Business Life',author:'GoBusiness200 · Biblical ethics · organizational calling · transformation begins with you',done:false,tag:'faith'},
-      {title:'GoBusiness200 · Sec 4: Solving Problems God\'s Way',author:'GoBusiness200 · Problem solving · execution + delegation · stimulating commitment',done:false,tag:'faith'},
-      {title:'GoBusiness200 · Sec 5: Managing and Mentoring People with Destiny',author:'GoBusiness200 · Relational foundation · teaching vs training · knowing when the game is on',done:false,tag:'faith'},
-    ],
-  },
-  crm:[
-    {name:'Patient Advocate Foundation',cat:'Patient Advocacy Org',note:'National org — partnership + content collaboration',date:'—',status:'research'},
-    {name:'National Patient Advocate Foundation (NPAF)',cat:'Patient Advocacy Org',note:'Policy-focused arm — op-ed or speaking opportunity',date:'—',status:'research'},
-    {name:'Patients Rising',cat:'Patient Advocacy Org',note:'Medication access focus — good crossover audience',date:'—',status:'research'},
-    {name:'Society for Participatory Medicine',cat:'Patient Advocacy Org',note:'Strong alignment with Osler argument',date:'—',status:'research'},
-    {name:'Disabled American Veterans (DAV)',cat:'Veteran Org',note:'VSO interview connection + large audience reach',date:'—',status:'research'},
-    {name:'VFW — Veterans of Foreign Wars',cat:'Veteran Org',note:'Large membership — content distribution potential',date:'—',status:'research'},
-    {name:'American Legion',cat:'Veteran Org',note:'Agent Orange survivor network connection possible',date:'—',status:'research'},
-    {name:'Team Red White & Blue',cat:'Veteran Org',note:'Younger veteran audience — strong social media presence',date:'—',status:'research'},
-    {name:'Wounded Warrior Project',cat:'Veteran Org',note:'Major reach — speaking / advocacy collaboration',date:'—',status:'research'},
-    {name:'Mission 22',cat:'Veteran Mental Health',note:'Veteran mental health + faith angle strong fit',date:'—',status:'research'},
-    {name:'Stonebridge Bible Church — Nashville',cat:'Faith Community',note:'Home church — speaking + community amplification',date:'—',status:'research'},
-    {name:'The Gospel Coalition',cat:'Faith Media',note:'Frankl + faith + suffering angle — strong content fit',date:'—',status:'research'},
-    {name:'STAT News',cat:'Healthcare Media',note:'Top healthcare journalism outlet — patient advocacy angle',date:'—',status:'research'},
-    {name:'KevinMD',cat:'Healthcare Blog',note:'High-traffic platform — submit op-ed',date:'—',status:'research'},
-    {name:'MedPage Today',cat:'Healthcare Media',note:'Provider-facing — good for clinical credibility',date:'—',status:'research'},
-    {name:'The Atlantic — Health Desk',cat:'General Media',note:'Long-form narrative fit — pitch "The Medic Who Became the Patient"',date:'—',status:'research'},
-    {name:'NPR — Health Coverage',cat:'Public Radio',note:'Human interest angle — surgery day story is NPR-ready',date:'—',status:'research'},
-    {name:'The Nocturnists Podcast',cat:'Healthcare Podcast',note:'Clinician storytelling — strong crossover fit',date:'—',status:'research'},
-    {name:'Bedside Manner Podcast',cat:'Healthcare Podcast',note:'Patient-provider communication focus',date:'—',status:'research'},
-    {name:'Fixing Healthcare Podcast',cat:'Healthcare Podcast',note:'System critique — Phase 3+7 content alignment',date:'—',status:'research'},
-    {name:'Veteran On The Move',cat:'Veteran Podcast',note:'Veteran entrepreneur / advocacy audience',date:'—',status:'research'},
-    {name:'Grunt Work Podcast',cat:'Veteran Podcast',note:'Mil-to-civilian transition — medic story fits well',date:'—',status:'research'},
-    {name:'Patient Experience Institute (PXI)',cat:'Speaking / Conference',note:'Annual conference — submit speaker proposal',date:'—',status:'research'},
-    {name:'HIMSS Global Conference',cat:'Speaking / Conference',note:'Health IT — Cerner/Epic post + documentation argument',date:'—',status:'research'},
-    {name:'National Veterans Creative Arts Festival',cat:'Speaking / Veterans',note:'VA-affiliated arts + healing — faith angle strong',date:'—',status:'research'},
-    {name:'American Association for Patient Experience (AAPEx)',cat:'Speaking / Conference',note:'Patient experience keynote opportunity',date:'—',status:'research'},
-    {name:'Institute for Healthcare Improvement (IHI)',cat:'Healthcare Org',note:'Patient safety + quality — Osler argument alignment',date:'—',status:'research'},
-    {name:'Beryl Institute',cat:'Healthcare Org',note:'Patient experience community — content partnership',date:'—',status:'research'},
-    {name:'National Alliance for Mental Illness (NAMI)',cat:'Mental Health Org',note:'Medical trauma + phase 5 content angle',date:'—',status:'research'},
-    {name:'Caregiver Action Network',cat:'Caregiver Org',note:'Phase 7 caregivers post — partnership + distribution',date:'—',status:'research'},
-    {name:'Rare Disease Legislative Advocates (RDLA)',cat:'Patient Advocacy',note:'Rare disease interview + Phase 5 content',date:'—',status:'research'},
-    {name:'Global Genes — Rare Disease Alliance',cat:'Patient Advocacy',note:'Large rare disease network — content distribution',date:'—',status:'research'},
-    {name:'HealthStories Project',cat:'Patient Stories Media',note:'Patient narrative platform — strong content fit',date:'—',status:'research'},
-    {name:'Costs of Care',cat:'Healthcare Org',note:'Medical billing transparency — Phase 3 alignment',date:'—',status:'research'},
-    {name:'American College of Healthcare Executives (ACHE)',cat:'Healthcare Professional Org',note:'Admin audience — speaking + credibility building',date:'—',status:'research'},
-    {name:'NEJM Catalyst',cat:'Healthcare Journal',note:'Healthcare delivery innovation — submit op-ed',date:'—',status:'research'},
-    {name:'Health Affairs',cat:'Healthcare Policy Media',note:'Policy + admin — Phase 3 + 7 content',date:'—',status:'research'},
-    {name:'Modern Healthcare',cat:'Healthcare Media',note:'Healthcare business — VP of Operations interview hook',date:'—',status:'research'},
-    {name:'Doximity (DocsInProgress)',cat:'Healthcare Media',note:'Physician-facing platform — provider audience',date:'—',status:'research'},
-    {name:'Christianity Today',cat:'Faith Media',note:'Faith + suffering + meaning-making — Frankl angle',date:'—',status:'research'},
-    {name:'The Way Home Podcast (Carl Trueman)',cat:'Faith Podcast',note:'Christian worldview + culture — Phase 7 system critique',date:'—',status:'research'},
-    {name:'Military.com',cat:'Veteran Media',note:'Large veteran readership — medic-as-patient story',date:'—',status:'research'},
-    {name:'Task & Purpose',cat:'Veteran Media',note:'Younger veteran audience — strong social engagement',date:'—',status:'research'},
-    {name:'We Are The Mighty',cat:'Veteran Media',note:'Veteran culture + healthcare + identity',date:'—',status:'research'},
-    {name:'Vanderbilt University Medical Center — Communications',cat:'Healthcare Institution',note:'Surgery at Vanderbilt — pitch collaboration / editorial',date:'—',status:'research'},
-  ]
-};
-
-
-const YAG=[
-  {q:'Q1 · Mar–May 2026',color:'var(--red)',items:[
-    {text:'Surgery recovery + site launch',done:false},
-    {text:'Publish Posts 01–12 (Phases 1–2)',done:false},
-    {text:'First 4 interviews recorded',done:false},
-    {text:'500 email subscribers',done:false},
-    {text:'Begin WGU Term 1',done:false},
-  ]},
-  {q:'Q2 · Jun–Aug 2026',color:'var(--gold)',items:[
-    {text:'Publish Posts 13–28 (Phases 2–3)',done:false},
-    {text:'8 interviews recorded total',done:false},
-    {text:'1,500 email subscribers',done:false},
-    {text:'First speaking inquiry',done:false},
-    {text:'WGU Term 2 complete',done:false},
-  ]},
-  {q:'Q3 · Sep–Nov 2026',color:'#3a8a50',items:[
-    {text:'Publish Posts 29–44 (Phases 4–5)',done:false},
-    {text:'20 interviews recorded total',done:false},
-    {text:'3,000 email subscribers',done:false},
-    {text:'First paid speaking engagement',done:false},
-    {text:'WGU Term 3 complete',done:false},
-  ]},
-  {q:'Q4 · Dec 26–Feb 27',color:'#9aadcc',items:[
-    {text:'Publish Posts 45–64 (Phases 6–7)',done:false},
-    {text:'52 interviews recorded total',done:false},
-    {text:'5,000 email subscribers',done:false},
-    {text:'Book proposal drafted',done:false},
-    {text:'WGU Term 4 complete',done:false},
-  ]},
-];
-function renderYAG(){
-  const el=document.getElementById('yag-body');if(!el)return;
-  el.innerHTML=YAG.map((q,qi)=>`
-    <div style="margin-bottom:12px;">
-      <div style="font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:${q.color};margin-bottom:5px;padding-bottom:4px;border-bottom:1px solid var(--rule-lt);">${q.q}</div>
-      ${q.items.map((it,ii)=>`<div style="display:flex;align-items:flex-start;gap:7px;padding:4px 0;cursor:pointer;" onclick="togYAG(${qi},${ii})">
-        <div style="width:13px;height:13px;border:1.5px solid ${it.done?'var(--navy)':'var(--rule)'};background:${it.done?'var(--navy)':'transparent'};flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;">
-          ${it.done?'<svg width="8" height="7" viewBox="0 0 8 7"><path d="M1 3.5L3 5.5L7 1" stroke="#fff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>':''}
-        </div>
-        <div style="font-family:var(--fs);font-size:11.5px;color:${it.done?'var(--muted-lt)':'var(--ink-md)'};${it.done?'text-decoration:line-through;':''};line-height:1.3;">${it.text}</div>
-      </div>`).join('')}
-    </div>`).join('');
-}
-function togYAG(qi,ii){YAG[qi].items[ii].done=!YAG[qi].items[ii].done;renderYAG();}
-
-// TASKS
-function renderTasks(){
-  const map={priority:'c-p',content:'c-c',team:'c-t','outreach-daily':'c-o',edu:'c-e'};
-  Object.entries(map).forEach(([type,cid])=>{
-    const el=document.getElementById('tl-'+type);
-    const cnt=document.getElementById(cid);
-    if(!el)return;
-    const tasks=S.tasks[type];
-    const rem=tasks.filter(t=>!t.done).length;
-    if(cnt)cnt.textContent=rem+' remaining';
-    el.innerHTML=tasks.length===0?'<div class="empty">No tasks — add one below</div>':tasks.map(t=>`
-      <div class="tr ${t.done?'done':''}" data-id="${t.id}">
-        <div class="tpb pr-${t.pr||'l'}"></div>
-        <div class="tcb" onclick="toggleT('${type}',${t.id})">${CK}</div>
-        <div class="tb" onclick="toggleT('${type}',${t.id})"><div class="tt">${t.text}</div>${t.note?`<div class="tn">${t.note}</div>`:''}</div>
-        <span class="tdel" onclick="delT('${type}',${t.id})">✕</span>
-      </div>`).join('');
-    updateStats();
-  });
-}
-function updateStats(){
-  const all=Object.values(S.tasks).flat();
-  document.getElementById('s-done').textContent=all.filter(t=>t.done).length;
-  document.getElementById('s-rem').textContent=all.filter(t=>!t.done).length;
-}
-function toggleT(type,id){const t=S.tasks[type].find(t=>t.id===id);if(t)t.done=!t.done;renderTasks();}
-function delT(type,id){S.tasks[type]=S.tasks[type].filter(t=>t.id!==id);renderTasks();}
-function addT(type){
-  const inp=document.getElementById('ai-'+type);
-  if(!inp||!inp.value.trim())return;
-  S.tasks[type].push({id:++_id,text:inp.value.trim(),pr:'m',done:false});
-  inp.value='';renderTasks();
-}
-function toggleComms(cell){
-  cell.classList.toggle('cleared');
-  const n=cell.querySelector('.cn');
-  n.textContent=cell.classList.contains('cleared')?'✓':'Check';
-}
-
-// CALENDAR
-const CAL=[
-  {ph:'Phase 1 · The Personal Record',posts:[
-    {n:'01',t:'ch',ti:"Stand In Front of Me",gu:'Chart+Story · Surgery Day · Neuro assessments, pain documentation',st:'drafting'},
-    {n:'02',t:'ch',ti:"Manage the Pain First",gu:'Chart+Story · Surgery Day · MRI order, pain scores, medication log',st:'planned'},
-    {n:'03',t:'co',ti:"From the Other Side of the Table",gu:'Brain Surgery Survivor',st:'planned'},
-    {n:'04',t:'ch',ti:"The Results My Family Was Waiting On",gu:'Chart+Story · Surgery Day · Lab orders, CBC, metabolic panel',st:'planned'},
-    {n:'05',t:'ch',ti:"What Nobody Warned Me About Recovery",gu:"Chart+Story · Surgery Day · OT/PT notes, vital signs",st:'planned'},
-    {n:'06',t:'in',ti:"The Medical Lab Scientist — The Person You'll Never Meet",gu:'Medical Lab Scientist · Barnes Jewish, St. Louis',st:'planned'},
-    {n:'07',t:'ch',ti:"Continuity Isn't a Protocol — It's a Person",gu:'Chart+Story · Surgery Day · Shift change notes, nursing assignments',st:'planned'},
-    {n:'08',t:'sl',ti:"The Thorn I Got to Have Removed",gu:'Solo · 2 Corinthians 12:9 expansion · theological center of the site',st:'planned'},
-  ]},
-  {ph:'Phase 2 · The Human Side of Care',posts:[
-    {n:'09',t:'co',ti:"The Miracle and the Work",gu:'Car Accident Survivor · Roy Benavidez companion post',st:'planned'},
-    {n:'10',t:'sl',ti:"What You're Wearing Tells Me Everything",gu:'Solo · Provider appearance / dress code · appearance is communication',st:'planned'},
-    {n:'11',t:'sl',ti:"The Way You Talk to Me Matters More Than What You Say",gu:"Solo · Provider voice + tone · Dad's 7/38/55 framework",st:'planned'},
-    {n:'12',t:'in',ti:"The CVICU Nurse — What We See That You Don't",gu:'CVICU Nurse · shared floor, two vantage points',st:'planned'},
-    {n:'13',t:'ch',ti:"The Hiccup Trick and What It Taught Me",gu:'Chart+Story · Surgery Day · Nursing interventions log · two fingers below the neck',st:'planned'},
-    {n:'14',t:'sl',ti:"What the Walker Taught Me That the Bench Never Could",gu:'Solo · Roy Benavidez · Fort Sam Houston · recovery as training',st:'planned'},
-    {n:'15',t:'in',ti:"The Float Nurse — A Hospital Seen From Every Floor",gu:'Float Nurse · care culture variation across units',st:'planned'},
-    {n:'16',t:'sl',ti:"The Gospel According to a Vision Test",gu:'Solo · Easter card moment · Surgery Day · faith without performance',st:'planned'},
-    {n:'17',t:'in',ti:"The Ultrasound Tech — The Invisible Clinician",gu:'Ultrasound Technician · trained silence · what the note misses',st:'planned'},
-    {n:'18',t:'sl',ti:"Patch Adams Was Right — And He Was Missing Something",gu:"Solo · Patch Adams + medic-to-patient arc · where he was right, what he missed",st:'planned'},
-  ]},
-  {ph:'Phase 3 · The System',posts:[
-    {n:'19',t:'in',ti:"The Nurse Who Had Cancer — The Floor and the Bed",gu:'Nurse with Cancer · years giving care, then receiving it',st:'planned'},
-    {n:'20',t:'sl',ti:"What the Chart Can't Capture",gu:"Solo · Chart synthesis · official vs full record · where patients get lost",st:'planned'},
-    {n:'21',t:'in',ti:"The PA — What Makes a Good Doc",gu:"Physician's Assistant · inside the clinical system · Osler gap",st:'planned'},
-    {n:'22',t:'sl',ti:"What Cerner Knows That Epic Doesn't — And Vice Versa",gu:'Solo · NP Cerner-to-Epic transition · documentation systems shape care',st:'planned'},
-    {n:'23',t:'in',ti:"The Combat Medic Drill Sergeant — What We Built and What We Left Out",gu:'68W Combat Medic Drill Sergeant · origin post',st:'planned'},
-    {n:'24',t:'sl',ti:"The Artillery Man's Diagnosis",gu:"Solo · Field artillery soldier companion · Doc vs Band-Aid argument",st:'planned'},
-    {n:'25',t:'in',ti:"The VP of Operations — Where the System Breaks and Why",gu:'VP of Operations · Level 1 Trauma Hospital · operational diagnosis',st:'planned'},
-  ]},
-  {ph:'Phase 4 · The Stakes',posts:[
-    {n:'26',t:'sl',ti:"What We Owe the People Who Signed the Blank Check",gu:'Solo · Veteran healthcare · bridge from system critique to veteran stakes',st:'planned'},
-    {n:'27',t:'in',ti:"The VSO — What the VA Doesn't Tell You",gu:'Veteran Service Officer · VSA claim denials · patient advocacy',st:'planned'},
-    {n:'28',t:'co',ti:"What Agent Orange Taught Me About What the System Really Is",gu:'Agent Orange Survivor · Vietnam veteran · extreme version of the argument',st:'planned'},
-    {n:'29',t:'sl',ti:"The Mission Behind the Mission",gu:"Solo · pecksmission.com origin + faith · Patch Adams + Frankl + Benavidez + 2 Cor · closing statement",st:'planned'},
-  ]},
-  {ph:'Phase 5 · The Disbelief Gap',posts:[
-    {n:'30',t:'sl',ti:"They Worked Next to Me and Still Didn't Believe It",gu:'Solo · Colleagues + diagnosis disbelief · disbelief as clinical failure',st:'planned'},
-    {n:'31',t:'sl',ti:"What Misdiagnosis Actually Costs",gu:'Solo · Structural argument · physical, financial, psychological cost',st:'planned'},
-    {n:'32',t:'in',ti:"Business Development, Vanderbilt — The Institutional View of the Gap",gu:'Leader of Business Development · Vanderbilt University Medical Center',st:'planned'},
-    {n:'33',t:'sl',ti:"The Patient Who Knew Too Much",gu:'Solo · Clinical training as patient — double-edged sword',st:'planned'},
-    {n:'34',t:'sl',ti:"25 Years Is Not a Fluke — It's a Pattern",gu:'Solo · Diagnostic delay · system built for clear presentations',st:'planned'},
-    {n:'35',t:'in',ti:"Emergency Physician — The First Five Minutes",gu:'Emergency Physician · triage of humanity before triage of medicine',st:'planned'},
-    {n:'36',t:'sl',ti:"You Don't Look Sick",gu:"Solo · Invisible illness · burden of proof falls on the patient",st:'planned'},
-    {n:'37',t:'sl',ti:"The Difference Between a Symptom and a Story",gu:"Solo · Medicine's diagnostic language · what gets lost in translation",st:'planned'},
-    {n:'38',t:'in',ti:"Neurologist — What the Imaging Misses",gu:'Neurologist · structural vs experiential · decade before the scan',st:'planned'},
-    {n:'39',t:'sl',ti:"The Field Sobriety Test I Failed Stone Cold Sober",gu:'Solo · Military + neurological symptoms · failed test, blowing zeros · compressed brainstem',st:'planned'},
-    {n:'40',t:'sl',ti:"What Osler Knew That We Keep Forgetting",gu:'Solo · Osler / system critique · 100+ years and still',st:'planned'},
-    {n:'41',t:'in',ti:"Rare Disease Patient Advocate — When the System Has No Template",gu:'Rare Disease Patient Advocate · surviving a system not built for your condition',st:'planned'},
-  ]},
-  {ph:'Phase 6 · The Communication Gap',posts:[
-    {n:'42',t:'sl',ti:"What Your Voice Does to Me Before Your Words Do Anything",gu:"Solo · 7/38/55 framework · Dad's model · Surgery Day moments · clinical case for vocal delivery",st:'planned'},
-    {n:'43',t:'sl',ti:"What You're Wearing When You Walk in the Room",gu:'Solo · Provider appearance · Part Two version',st:'planned'},
-    {n:'44',t:'in',ti:"Float Nurse — A Hospital Seen From Every Floor",gu:'Float Nurse · Part Two appearance',st:'planned'},
-    {n:'45',t:'sl',ti:"Continuity Is a Person, Not a Protocol",gu:"Solo · Shift change · Matt's name on the board · what continuity actually means",st:'planned'},
-    {n:'46',t:'sl',ti:"The Language of Medicine Was Never Written for Patients",gu:'Solo · Medical literacy · patient navigation · system designed for providers',st:'planned'},
-    {n:'47',t:'in',ti:"Patient Experience Officer — What the Scores Don't Capture",gu:'Patient Experience Officer / Director · HCAHPS measures satisfaction, not humanity',st:'planned'},
-    {n:'48',t:'sl',ti:"How to Advocate for Yourself When Nobody Is Listening",gu:'Solo · Practical patient advocacy · specific moves that work · caregivers share this',st:'planned'},
-    {n:'49',t:'in',ti:"Hospital Chaplain — The Room Nobody Thinks to Enter",gu:'Hospital Chaplain · spiritual layer the system has no language for',st:'planned'},
-    {n:'50',t:'sl',ti:"What Happens in the Break Room Ends Up at the Bedside",gu:'Solo · Care culture · culture is set between patients, not in the mission statement',st:'planned'},
-    {n:'51',t:'sl',ti:"Pain Is Not a Number",gu:'Solo · 1–10 pain scale as documentation tool, not a clinical one · what it costs to translate lived pain',st:'planned'},
-    {n:'52',t:'in',ti:"Nurse Who Became the Patient — The Floor and the Bed",gu:'Nurse with Personal Medical Crisis · Part Two version · what changed in practice',st:'planned'},
-  ]},
-  {ph:'Phase 7 · The System Gap',posts:[
-    {n:'53',t:'sl',ti:"The Chart Is the Official Version. It Is Not the Full Version.",gu:'Solo · Chart synthesis · accurate vs complete · where patients get lost',st:'planned'},
-    {n:'54',t:'sl',ti:"What the Documentation System Rewards — And What It Punishes",gu:'Solo · EHR incentive structures · tool changes workflow · workflow changes care',st:'planned'},
-    {n:'55',t:'in',ti:"VP of Operations, Level 1 Trauma — Where the System Breaks and Why",gu:'VP of Operations · Level 1 Trauma · Part Two version',st:'planned'},
-    {n:'56',t:'sl',ti:"What the Second Opinion Actually Costs",gu:'Solo · Patient trust · emotional and social cost of telling the system you don\'t trust it',st:'planned'},
-    {n:'57',t:'sl',ti:"The Caregiver Nobody Asked About",gu:'Solo · Sapp + family in the waiting room · what caregivers go through that the system has no language for',st:'planned'},
-    {n:'58',t:'in',ti:"PA — What Makes a Good Provider, From Inside the System",gu:"Physician's Assistant · Part Two version",st:'planned'},
-    {n:'59',t:'sl',ti:"What We Owe the People Who Signed the Blank Check",gu:'Solo · Veteran healthcare · Part Two version · your combat medic background earns the right',st:'planned'},
-    {n:'60',t:'sl',ti:"The Medic Who Became the Patient",gu:'Solo · Full identity arc · what transferred from training · what had to be unlearned · walker as starting line',st:'planned'},
-    {n:'61',t:'in',ti:"VSO — What the VA Doesn't Tell You",gu:'Veteran Service Officer · Part Two version',st:'planned'},
-    {n:'62',t:'sl',ti:"The Combat Medic Training Gap",gu:'Solo · 68W pipeline · civilian healthcare transition · what it costs when the training stops at the field',st:'planned'},
-    {n:'63',t:'sl',ti:"What Comes After the Chart",gu:'Solo · Discharge + post-hospitalization · recovery is not a clinical event, it\'s a human one',st:'planned'},
-    {n:'64',t:'in',ti:"Combat Medic Drill Sergeant — What We Built and What We Left Out",gu:'Combat Medic DS · Part Two version · final interview on the calendar',st:'planned'},
-  ]},
-];
-
-function renderCal(){
-  const b=document.getElementById('cal-body');
-  if(!b)return;
-  const bc={ch:'ct-ch',sl:'ct-sl',in:'ct-in',co:'ct-co'};
-  const bl={ch:'Chart+Story',sl:'Solo',in:'Interview',co:'Collab'};
-  const sc={planned:'st-pl',drafting:'st-dr',ready:'st-rd',live:'st-lv'};
-  const sl={planned:'Planned',drafting:'Drafting',ready:'Ready',live:'Live'};
-  let h='';
-  CAL.forEach((ph,pi)=>{
-    h+=`<div class="cph sec-head" onclick="toggleSec(this)" style="cursor:pointer;"><span class="sec-toggle" style="color:#9aadbb;">▾</span><span class="cph-t">${ph.ph}</span><span class="cph-s">${ph.posts.length} posts</span><button class="sec-drill" onclick="event.stopPropagation();drillPhase(${pi})" style="margin-left:auto;">Phase Detail</button></div>`;
-    h+=`<div class="sec-body" style="max-height:6000px;"><table class="cal"><thead><tr><th style="width:36px;">#</th><th style="width:90px;">Type</th><th>Title &amp; Format / Guest</th><th style="width:86px;">Status</th></tr></thead><tbody>`;
-    ph.posts.forEach((p,i)=>{
-      h+=`<tr data-t="${p.t}"><td style="font-family:var(--fn);font-size:10px;color:var(--muted-lt);">${p.n}</td><td><span class="ctb ${bc[p.t]}">${bl[p.t]}</span></td><td><div class="cal-ti">${p.ti}</div><div class="cal-gu">${p.gu}</div></td><td><span class="stb ${sc[p.st]}" onclick="cycSt(${pi},${i},this)">${sl[p.st]}</span></td></tr>`;
-    });
-    h+='</tbody></table></div>';
-  });
-  b.innerHTML=h;
-}
-function cycSt(pi,i,el){
-  const nx={planned:'drafting',drafting:'ready',ready:'live',live:'planned'};
-  const sc={planned:'st-pl',drafting:'st-dr',ready:'st-rd',live:'st-lv'};
-  const sl={planned:'Planned',drafting:'Drafting',ready:'Ready',live:'Live'};
-  CAL[pi].posts[i].st=nx[CAL[pi].posts[i].st];
-  el.className='stb '+sc[CAL[pi].posts[i].st];el.textContent=sl[CAL[pi].posts[i].st];
-  event.stopPropagation();
-}
-function filterCal(t,btn){
-  document.querySelectorAll('.cfb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
-  document.querySelectorAll('#cal-body tr[data-t]').forEach(r=>{r.style.display=(t==='all'||r.dataset.t===t)?'':'none';});
-}
-
-// INTERVIEWS
-const IN={outreach:'is-ou',confirmed:'is-co',scheduled:'is-sc',recorded:'is-re',published:'is-pu'};
-const IL={outreach:'Outreach',confirmed:'Confirmed',scheduled:'Scheduled',recorded:'Recorded',published:'Published'};
-const INX={outreach:'confirmed',confirmed:'scheduled',scheduled:'recorded',recorded:'published',published:'outreach'};
-function renderInt(){
-  const b=document.getElementById('it-body');if(!b)return;
-  let h='';
-  S.interviews.forEach((iv,i)=>{
-    h+=`<tr class="im" onclick="togPrep(${i})">
-      <td><div class="ir">${String(iv.rank).padStart(2,'0')}</div></td>
-      <td><div class="ig">${iv.guest}</div><div class="ito">${iv.topic}</div></td>
-      <td><div class="iph">${iv.phase}</div></td>
-      <td><span class="ist ${IN[iv.status]}" onclick="cycInt(${i},this,event)">${IL[iv.status]}</span></td>
-      <td style="text-align:center;">
-        <span style="color:var(--muted-lt);font-size:13px);cursor:pointer;" onclick="togPrep(${i})">▾</span>
-        <button class="sec-drill" style="margin-left:4px;" onclick="event.stopPropagation();drillInt(${i})">Detail</button>
-      </td>
-    </tr>
-    <tr class="ipr" id="pr-${i}">
-      <td colspan="5"><div class="ipr-in">
-        <div class="pr-lbl">Suggested Interview Questions</div>
-        <div style="margin-bottom:9px;">${iv.questions.length>0?iv.questions.map(q=>`<div class="pr-q">${q}</div>`).join(''):'<div style="font-family:var(--fs);font-size:12px;font-style:italic;color:var(--muted-lt);padding:4px 0;">No questions yet — add notes below.</div>'}</div>
-        <div class="pr-lbl">Your Prep Notes</div>
-        <textarea class="pr-notes" placeholder="Add scheduling details, contact info, prep notes, follow-up reminders…" oninput="S.interviews[${i}].notes=this.value">${iv.notes}</textarea>
-      </div></td>
-    </tr>`;
-  });
-  b.innerHTML=h;
-}
-function togPrep(i){document.getElementById('pr-'+i).classList.toggle('open');}
-function cycInt(i,el,e){e.stopPropagation();S.interviews[i].status=INX[S.interviews[i].status];el.className='ist '+IN[S.interviews[i].status];el.textContent=IL[S.interviews[i].status];}
-function addInt(){
-  const g=document.getElementById('ng').value.trim();if(!g)return;
-  S.interviews.push({rank:S.interviews.length+1,guest:g,topic:document.getElementById('nt').value.trim()||'—',phase:document.getElementById('nph').value.trim()||'TBD',status:'outreach',notes:document.getElementById('nn').value.trim(),questions:[]});
-  document.getElementById('ng').value='';document.getElementById('nt').value='';document.getElementById('nph').value='';document.getElementById('nn').value='';
-  renderInt();
-}
-
-// TEAM
-function renderTeam(){
-  const el=document.getElementById('tcols');if(!el)return;
-  const mb=[{k:'jonah',n:'Jonah Sapp',r:'IT / Web',i:'JO'},{k:'marketer',n:'Marketer',r:'Marketing / Social',i:'MK'},{k:'artist',n:'Artist',r:'Design / Brand',i:'AR'}];
-  el.innerHTML=mb.map(m=>`
-    <div class="tcol">
-      <div class="tch"><div class="tca">${m.i}</div><div><div class="tcn">${m.n}</div><div class="tcr">${m.r}</div></div></div>
-      <div id="tc-${m.k}">${S.teamTasks[m.k].map((t,i)=>`
-        <div class="ttask ${t.done?'done':''}">
-          <div class="ttcb" onclick="togTT('${m.k}',${i})">${CK}</div>
-          <div style="flex:1;" onclick="togTT('${m.k}',${i})"><div class="ttt">${t.text}</div>${t.meta?`<div class="ttm">${t.meta}</div>`:''}</div>
-          <span class="ttd" onclick="delTT('${m.k}',${i})">✕</span>
-        </div>`).join('')}</div>
-      <div class="tadd"><input class="tainp" id="ta-${m.k}" placeholder="Add task for ${m.n}…" onkeydown="if(event.key==='Enter')addTT('${m.k}')"/><button class="ab" style="font-size:9px;padding:5px 10px;" onclick="addTT('${m.k}')">Add</button></div>
-    </div>`).join('');
-}
-function togTT(m,i){S.teamTasks[m][i].done=!S.teamTasks[m][i].done;renderTeam();}
-function delTT(m,i){S.teamTasks[m].splice(i,1);renderTeam();}
-function addTT(m){const i=document.getElementById('ta-'+m);if(!i||!i.value.trim())return;S.teamTasks[m].push({text:i.value.trim(),done:false,meta:''});i.value='';renderTeam();}
-
-// ANALYTICS
-function renderAnalytics(){
-  const el=document.getElementById('ag');if(!el)return;
-  const cats={web:'Web Traffic',email:'Email',social:'Social',content:'Content Output',speaking:'Speaking'};
-  const months=S.analytics.months;
-  const catKeys=[...new Set(S.analytics.metrics.map(m=>m.cat))];
-  const postsLive=(S.analytics.metrics.find(m=>m.key==='postslive')?.monthly||[]).reduce((a,b)=>a+(parseInt(b)||0),0);
-  const intsDone=(S.analytics.metrics.find(m=>m.key==='intdone')?.monthly||[]).reduce((a,b)=>a+(parseInt(b)||0),0);
-  let html=`<div style="grid-column:1/-1;background:var(--navy);border:1px solid var(--rule);padding:11px 16px;display:flex;gap:28px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
-    <div style="font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#8a9dbb;">2026–27 Year Overview</div>
-    <div style="display:flex;gap:24px;flex-wrap:wrap;">
-      <div><div style="font-family:var(--fd);font-size:22px;font-weight:700;color:var(--gold-lt);line-height:1;">${postsLive}</div><div style="font-family:var(--fn);font-size:9px;color:#8a9dbb;letter-spacing:.1em;text-transform:uppercase;">Posts Live</div></div>
-      <div><div style="font-family:var(--fd);font-size:22px;font-weight:700;color:var(--gold-lt);line-height:1;">${intsDone}<span style="font-size:13px;color:#6a7a99;">/52</span></div><div style="font-family:var(--fn);font-size:9px;color:#8a9dbb;letter-spacing:.1em;text-transform:uppercase;">Interviews</div></div>
-    </div>
-  </div>`;
-  catKeys.forEach(cat=>{
-    const ms=S.analytics.metrics.filter(m=>m.cat===cat);
-    html+=`<div style="grid-column:1/-1;overflow-x:auto;margin-bottom:8px;border:1px solid var(--rule);">
-      <table style="width:100%;border-collapse:collapse;min-width:900px;">
-        <thead><tr>
-          <th style="background:var(--navy-mid);font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#9aadcc;padding:8px 12px;text-align:left;border-bottom:1px solid rgba(255,255,255,.12);white-space:nowrap;min-width:160px;">${cats[cat]||cat}</th>
-          ${months.map(mo=>`<th style="background:var(--navy-mid);font-family:var(--fn);font-size:9px;color:#7a8faa;padding:6px 8px;text-align:center;border-bottom:1px solid rgba(255,255,255,.12);white-space:nowrap;min-width:68px;">${mo}</th>`).join('')}
-          <th style="background:var(--navy-mid);font-family:var(--fn);font-size:9px;color:#7a8faa;padding:6px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.12);min-width:140px;">Notes</th>
-        </tr></thead>
-        <tbody>${ms.map((m,ri)=>`<tr style="background:${ri%2===0?'var(--navy-deep)':'rgba(26,39,68,.65)'};">
-          <td style="font-family:var(--fn);font-size:11px;color:var(--cream);padding:7px 12px;border-right:1px solid rgba(255,255,255,.06);"><div>${m.label}</div><div style="font-size:9px;color:#6a7a99;margin-top:1px;">${m.hint}</div></td>
-          ${months.map((mo,mi)=>`<td style="padding:3px 4px;border-right:1px solid rgba(255,255,255,.04);text-align:center;"><input style="width:60px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:4px 5px;font-family:var(--fn);font-size:11px;color:var(--cream);text-align:center;outline:none;transition:border-color .15s;" value="${m.monthly[mi]||''}" placeholder="—" oninput="upM2('${m.key}',${mi},this.value)" onfocus="this.style.borderColor='var(--gold)'" onblur="this.style.borderColor='rgba(255,255,255,.08)'"/></td>`).join('')}
-          <td style="padding:4px 8px;"><input style="width:100%;background:transparent;border:none;font-family:var(--fs);font-size:11px;font-style:italic;color:#8a9dbb;outline:none;" placeholder="Notes…" value="${m.notes||''}" oninput="upMnotes('${m.key}',this.value)"/></td>
-        </tr>`).join('')}</tbody>
-      </table>
-    </div>`;
-  });
-  el.innerHTML=html;
-  el.style.gridColumn='1/-1';
-}
-function upM2(k,mi,v){const m=S.analytics.metrics.find(m=>m.key===k);if(m)m.monthly[mi]=v;}
-function upMnotes(k,v){const m=S.analytics.metrics.find(m=>m.key===k);if(m)m.notes=v;}
-
-// EDUCATION
-function renderEdu(){
-  const el=document.getElementById('ecols');if(!el)return;
-  const tc={core:'bcore',rec:'brec',clin:'bclin',vet:'bvet',wgu:'bwgu',faith:'bfaith'};
-  const GOAL=100;
-  // Count all done books across all lists for the annual counter
-  const allDone=Object.values(S.books).flat().filter(b=>b.done).length;
-  const allTotal=Object.values(S.books).flat().length;
-  const pct=Math.min(100,Math.round((allDone/GOAL)*100));
-  const cols=[
-    {k:'mission',t:'Mission Reading List',s:'Patient Advocacy · Faith · Veteran · Clinical'},
-    {k:'wgu',t:'WGU · BSHA Coursework',s:'Bachelor of Science, Healthcare Administration · 110 CU · 9 Terms'},
-    {k:'faith',t:'Faith Leadership Courses',s:'GoLife100 · GoLife200 · GoBusiness200 · Stonebridge'},
-  ];
-  el.innerHTML=`<div style="grid-column:span 3;background:var(--navy-deep);padding:11px 18px;display:flex;align-items:center;gap:20px;border-bottom:2px solid var(--gold);">
-    <div><div style="font-family:var(--fn);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#8a9dbb;">Annual Reading Goal</div><div style="font-family:var(--fd);font-size:26px;font-weight:700;color:var(--gold-lt);line-height:1;">${allDone} <span style="font-size:13px;color:#6a7a99;">/ ${GOAL} books</span></div></div>
-    <div style="flex:1;"><div style="height:6px;background:rgba(255,255,255,.08);border-radius:1px;"><div style="height:100%;width:${pct}%;background:var(--gold);transition:width .4s;"></div></div><div style="font-family:var(--fn);font-size:9px;color:#6a7a99;margin-top:4px;">${pct}% · ${GOAL-allDone} remaining · Counts all lists including WGU and Faith courses</div></div>
-    <div style="font-family:var(--fs);font-size:11px;font-style:italic;color:#6a7a99;">${allTotal} total tracked</div>
-  </div>`+cols.map(c=>`
-    <div class="ecol">
-      <div class="ech sec-head" onclick="toggleSec(this)" style="cursor:pointer;display:flex;align-items:center;gap:10px;"><span class="sec-toggle" style="color:#9aadbb;font-size:11px;">▾</span><div style="flex:1;"><div class="ect">${c.t}</div><div class="ecs">${c.s}</div></div><button class="sec-drill" onclick="event.stopPropagation();drillBooks('${c.k}','${c.t}','${c.s}')" style="font-size:8px;">Full View</button></div>
-      <div class="sec-body" style="max-height:5000px;"><div id="bl-${c.k}">${S.books[c.k].map((b,i)=>`
-        <div class="br ${b.done?'done':''}" onclick="togBook('${c.k}',${i})">
-          <div class="bcb">${CK}</div>
-          <div class="bi"><div class="bt">${b.title}</div><div class="ba">${b.author}</div></div>
-          <span class="btg ${tc[b.tag]||''}">${b.tag}</span>
-        </div>`).join('')}</div>
-      <div class="ar" style="padding:7px 17px;border-top:1px solid var(--rule-lt);">
-        <input class="ai" id="ba-${c.k}" placeholder="Add to ${c.t}…" onkeydown="if(event.key==='Enter')addBook('${c.k}')"/>
-        <button class="ab" style="font-size:9px;padding:5px 10px;" onclick="addBook('${c.k}')">Add</button>
-      </div>
-    </div>`).join('');
-}
-function togBook(c,i){S.books[c][i].done=!S.books[c][i].done;renderEdu();}
-function addBook(c){const i=document.getElementById('ba-'+c);if(!i||!i.value.trim())return;S.books[c].push({title:i.value.trim(),author:'Added manually',done:false,tag:'rec'});i.value='';renderEdu();}
-
-// OUTREACH CRM
-const CRMN={research:'pitched',pitched:'replied',replied:'confirmed',confirmed:'passed',passed:'research'};
-const CRMC={research:'cs-rs',pitched:'cs-pi',replied:'cs-rp',confirmed:'cs-cf',passed:'cs-ps'};
-const CRML={research:'Research',pitched:'Pitched',replied:'Replied',confirmed:'Confirmed',passed:'Passed'};
-function renderCRM(){
-  const b=document.getElementById('crm-body');if(!b)return;
-  b.innerHTML=S.crm.map((c,i)=>`
-    <tr onclick="cycCRM(${i})">
-      <td><div class="crm-n">${c.name}</div><div class="crm-o">${c.note||''}</div></td>
-      <td style="font-family:var(--fn);font-size:11px;color:var(--muted);">${c.cat}</td>
-      <td style="font-family:var(--fn);font-size:11px;color:var(--muted);">${c.date}</td>
-      <td><span class="cst ${CRMC[c.status]}">${CRML[c.status]}</span></td>
-    </tr>`).join('');
-}
-function cycCRM(i){S.crm[i].status=CRMN[S.crm[i].status];S.crm[i].date=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});renderCRM();}
-function addCRM(){
-  const nm=document.getElementById('crm-nm').value.trim();if(!nm)return;
-  S.crm.push({name:nm,cat:document.getElementById('crm-ct').value.trim()||'General',note:document.getElementById('crm-no').value.trim(),date:'—',status:'research'});
-  document.getElementById('crm-nm').value='';document.getElementById('crm-ct').value='';document.getElementById('crm-no').value='';
-  renderCRM();
-}
-
-// NAV
-function nav(id,btn){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.ni,.ul').forEach(b=>b.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
-  if(btn&&btn.classList)btn.classList.add('active');
-}
-
-// CLOCK
-function tick(){
-  const n=new Date(),h=n.getHours(),m=String(n.getMinutes()).padStart(2,'0'),ap=h>=12?'PM':'AM';
-  document.getElementById('clk').textContent=`${h%12||12}:${m} ${ap}`;
-  const dy=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-  const mo=['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const lbl=`${dy[n.getDay()]} · ${mo[n.getMonth()]} ${n.getDate()}, ${n.getFullYear()}`;
-  document.getElementById('today-lbl').textContent=lbl;
-  document.getElementById('dd').textContent=n.getDate();
-  document.getElementById('df').textContent=`${dy[n.getDay()]} · ${mo[n.getMonth()]} ${n.getFullYear()}`;
-}
-
-// ═══ LOGIN ═══
-const PW="Samps0n2001$&@";
-let USERS=["joe","peck"];
-function doLogin(){
-  const u=document.getElementById("l-user").value.trim().toLowerCase();
-  const p=document.getElementById("l-pass").value;
-  const e=document.getElementById("lerr");
-  if(!u){e.textContent="Enter a username.";return;}
-  if(!USERS.includes(u)){e.textContent="Username not recognized.";return;}
-  if(p!==PW){e.textContent="Incorrect password.";return;}
-  document.getElementById("login-screen").classList.add("hidden");
-  sessionStorage.setItem("pm_auth","1");
-  e.textContent="";
-}
-function openUsers(){
-  renderUserList();
-  document.getElementById("users-modal").classList.add("open");
-}
-function closeUsers(){document.getElementById("users-modal").classList.remove("open");}
-function renderUserList(){
-  document.getElementById("user-list").innerHTML=USERS.map((u,i)=>`<div class="user-row"><span class="user-name">${u}</span>${USERS.length>1?`<button class="user-del" onclick="delUser(${i})">Remove</button>`:""}</div>`).join("");
-}
-function addUser(){
-  const inp=document.getElementById("new-user");
-  const v=inp.value.trim().toLowerCase();
-  if(!v||USERS.includes(v))return;
-  USERS.push(v);inp.value="";
-  renderUserList();
-}
-function delUser(i){if(USERS.length<=1)return;USERS.splice(i,1);renderUserList();}
-// auto-login if session active
-if(sessionStorage.getItem("pm_auth")==="1")document.getElementById("login-screen").classList.add("hidden");
-
-// ═══ COLLAPSE / EXPAND ═══
-function toggleSec(headEl){
-  headEl.classList.toggle('collapsed');
-  const body=headEl.nextElementSibling;
-  if(body&&body.classList.contains('sec-body')){
-    body.classList.toggle('collapsed');
-  }
-}
-
-// ═══ DETAIL MODAL ═══
-function openDM(title,sub,bodyHTML){
-  document.getElementById('dm-title').textContent=title;
-  document.getElementById('dm-sub').textContent=sub;
-  document.getElementById('dm-body').innerHTML=bodyHTML;
-  document.getElementById('dm').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function closeDM(){
-  document.getElementById('dm').classList.remove('open');
-  document.body.style.overflow='';
-}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDM();});
-
-// ─── BRIEFING TASK DRILL-DOWN ───
-function drillTask(type,label){
-  const tasks=S.tasks[type];
-  const prL={h:'High',m:'Med',l:'Low'};
-  let body=`<div class="dm-section">
-    <div class="dm-sec-lbl">${label} — ${tasks.filter(t=>!t.done).length} remaining / ${tasks.length} total</div>`;
-  body+=tasks.map((t,i)=>`
-    <div class="dm-task ${t.done?'done':''}" onclick="dmToggleT('${type}',${t.id})">
-      <div class="dm-cb">${t.done?'<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</div>
-      <div style="flex:1;"><div class="dm-tt">${t.text}</div>${t.note?`<div style="font-family:var(--fs);font-size:11px;font-style:italic;color:var(--muted-lt);margin-top:2px;">${t.note}</div>`:''}</div>
-      <span class="dm-pri ${t.pr||'l'}">${prL[t.pr||'l']}</span>
-    </div>`).join('');
-  body+=`<div class="dm-add" style="margin-top:10px;">
-    <input class="dm-inp" id="dma-${type}" placeholder="Add task…" onkeydown="if(event.key==='Enter')dmAddT('${type}','${label}')"/>
-    <button class="ab" onclick="dmAddT('${type}','${label}')">Add</button>
-  </div></div>`;
-  openDM(label,'Daily Briefing · Task Lane Detail',body);
-}
-function dmToggleT(type,id){
-  const t=S.tasks[type].find(t=>t.id===id);
-  if(t){t.done=!t.done;}
-  renderTasks();
-  // refresh modal
-  const lbl={priority:'Priority',content:'Content',team:'Team','outreach-daily':'Outreach',edu:'Education'};
-  drillTask(type,lbl[type]||type);
-}
-function dmAddT(type,label){
-  const inp=document.getElementById('dma-'+type);
-  if(!inp||!inp.value.trim())return;
-  S.tasks[type].push({id:++_id,text:inp.value.trim(),pr:'m',done:false});
-  renderTasks();
-  drillTask(type,label);
-}
-
-// ─── CALENDAR PHASE DRILL-DOWN ───
-function drillPhase(pi){
-  const ph=CAL[pi];
-  const bc={ch:'ct-ch',sl:'ct-sl',in:'ct-in',co:'ct-co'};
-  const bl={ch:'Chart+Story',sl:'Solo',in:'Interview',co:'Collab'};
-  const sc={planned:'st-pl',drafting:'st-dr',ready:'st-rd',live:'st-lv'};
-  const sl={planned:'Planned',drafting:'Drafting',ready:'Ready',live:'Live'};
-  const live=ph.posts.filter(p=>p.st==='live').length;
-  let body=`<div class="dm-section"><div class="dm-sec-lbl">${ph.posts.length} posts · ${live} live · click status to advance</div>`;
-  ph.posts.forEach((p,i)=>{
-    body+=`<div class="dm-post">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-        <span class="dm-post-n">#${p.n}</span>
-        <span class="ctb ${bc[p.t]}" style="font-size:8px;">${bl[p.t]}</span>
-        <span class="stb ${sc[p.st]}" onclick="cycSt(${pi},${i},this);drillPhase(${pi})" style="margin-left:auto;">${sl[p.st]}</span>
-      </div>
-      <div class="dm-post-t">${p.ti}</div>
-      <div class="dm-post-g">${p.gu}</div>
-    </div>`;
-  });
-  body+='</div>';
-  openDM(ph.ph,'Content Calendar · Phase Detail',body);
-}
-
-// ─── INTERVIEW DRILL-DOWN ───
-function drillInt(i){
-  const iv=S.interviews[i];
-  const IN2={outreach:'is-ou',confirmed:'is-co',scheduled:'is-sc',recorded:'is-re',published:'is-pu'};
-  const IL2={outreach:'Outreach',confirmed:'Confirmed',scheduled:'Scheduled',recorded:'Recorded',published:'Published'};
-  let body=`<div class="dm-section">
-    <div class="dm-sec-lbl">Rank #${String(iv.rank).padStart(2,'0')} · <span class="ist ${IN2[iv.status]}" onclick="cycInt(${i},this,event);drillInt(${i})" style="cursor:pointer;">${IL2[iv.status]}</span> · Phase ${iv.phase}</div>
-    <div class="dm-int">
-      <div class="dm-int-name">${iv.guest}</div>
-      <div class="dm-int-topic">${iv.topic}</div>
-      ${iv.questions.length>0?`<div class="dm-sec-lbl" style="margin-top:10px;">Interview Questions</div><div class="dm-int-qs">${iv.questions.map(q=>`<div class="dm-q">${q}</div>`).join('')}</div>`:''}
-      <div class="dm-sec-lbl" style="margin-top:10px;">Prep Notes &amp; Scheduling</div>
-      <textarea class="dm-notes" placeholder="Contact info, scheduling notes, follow-ups, prep ideas…" oninput="S.interviews[${i}].notes=this.value;document.querySelectorAll('.pr-notes')[${i}]&&(document.querySelectorAll('.pr-notes')[${i}].value=this.value)">${iv.notes}</textarea>
-    </div>
-  </div>`;
-  openDM(iv.guest,'Interview Pipeline · Full Detail',body);
-}
-
-// ─── EDUCATION DRILL-DOWN ───
-function drillBooks(col,title,sub){
-  const books=S.books[col];
-  const tc2={core:'bcore',rec:'brec',clin:'bclin',vet:'bvet',wgu:'bwgu',faith:'bfaith'};
-  const done=books.filter(b=>b.done).length;
-  let body=`<div class="dm-section">
-    <div class="dm-sec-lbl">${done} completed / ${books.length} total</div>`;
-  books.forEach((b,i)=>{
-    body+=`<div class="dm-book ${b.done?'done':''}" onclick="togBook('${col}',${i});drillBooks('${col}','${title}','${sub}')">
-      <div class="dm-cb" style="flex-shrink:0;margin-top:3px;">${b.done?'<svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4L3.5 6.5L9 1" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>':''}</div>
-      <div style="flex:1;"><div class="dm-bt">${b.title}</div><div class="dm-ba">${b.author}</div></div>
-      <span class="btg ${tc2[b.tag]||''}">${b.tag}</span>
-    </div>`;
-  });
-  body+=`<div class="dm-add" style="margin-top:10px;">
-    <input class="dm-inp" id="dba-${col}" placeholder="Add title…" onkeydown="if(event.key==='Enter')dmAddBook('${col}','${title}','${sub}')"/>
-    <button class="ab" onclick="dmAddBook('${col}','${title}','${sub}')">Add</button>
-  </div></div>`;
-  openDM(title,sub,body);
-}
-function dmAddBook(col,title,sub){
-  const inp=document.getElementById('dba-'+col);
-  if(!inp||!inp.value.trim())return;
-  S.books[col].push({title:inp.value.trim(),author:'Added manually',done:false,tag:'rec'});
-  renderEdu();
-  drillBooks(col,title,sub);
-}
-
-
-// ── WGU COURSE FUNCTIONS ──
-function cycWGU(i){
-  const c=S.books.wgu[i];
-  const cyc={'not-started':'in-progress','in-progress':'complete','complete':'not-started'};
-  c.status=cyc[c.status]||'not-started';
-  renderEdu();
-}
-function drillWGU(i){
-  const c=S.books.wgu[i];
-  const stL={'not-started':'Not Started','in-progress':'In Progress','complete':'Complete'};
-  const stCyc={'not-started':'in-progress','in-progress':'complete','complete':'not-started'};
-  const stCol={'not-started':'color:var(--muted-lt);border-color:var(--rule);','in-progress':'color:var(--gold);border-color:var(--gold);','complete':'color:var(--green-lt);border-color:var(--green-lt);'};
-  const body=`<div class="dm-section">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-      <span style="font-family:var(--fn);font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border:1px solid;cursor:pointer;${stCol[c.status]}" onclick="cycWGU(${i});drillWGU(${i})">${stL[c.status]} — click to advance</span>
-      <span style="font-family:var(--fn);font-size:9px;color:var(--muted);">Term ${c.term} · ${c.cu} Competency Units · ${c.area}</span>
-    </div>
-    <div class="dm-sec-lbl">About This Course</div>
-    <div style="font-family:var(--fs);font-size:13.5px;line-height:1.65;color:var(--ink-md);margin-bottom:16px;">${c.desc}</div>
-    <div class="dm-sec-lbl">Competencies (${c.comp.length})</div>
-    <div style="margin-bottom:16px;">${c.comp.map(cp=>`<div style="font-family:var(--fs);font-size:12.5px;color:var(--ink-md);padding:6px 0;border-bottom:1px solid var(--rule-lt);line-height:1.4;"><span style="font-family:var(--fn);font-size:9px;font-weight:700;color:var(--muted-lt);margin-right:6px;">●</span>${cp}</div>`).join('')}</div>
-    <div class="dm-sec-lbl">Notes &amp; Prep</div>
-    <textarea class="dm-notes" placeholder="Study notes, links, key concepts, exam prep…" oninput="S.books.wgu[${i}].notes=this.value">${c.notes||''}</textarea>
-  </div>`;
-  openDM(c.title,`BSHA · Term ${c.term} · ${c.cu} CU · ${c.area}`,body);
-}
-
-tick();setInterval(tick,30000);
-renderTasks();renderCal();renderInt();renderTeam();renderAnalytics();renderEdu();renderCRM();renderYAG();
-</script>
 </body>
 </html>
