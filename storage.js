@@ -18,9 +18,9 @@ function saveState() {
         notes: iv.notes,
       })),
       books: {
-        mission: S.books.mission.map(b => ({ done: b.done })),
+        mission: S.books.mission.map(b => ({ done: b.done, notes: b.notes || '' })),
         wgu: S.books.wgu.map(b => ({ done: b.done, status: b.status, notes: b.notes })),
-        faith: S.books.faith.map(b => ({ done: b.done })),
+        faith: S.books.faith.map(b => ({ done: b.done, notes: b.notes || '' })),
       },
       cal: CAL.map(ph => ({ posts: ph.posts.map(p => ({ st: p.st })) })),
       yag: YAG.map(q => ({ items: q.items.map(it => ({ done: it.done })) })),
@@ -81,7 +81,10 @@ function loadState() {
     // Books — mission
     if (p.books && p.books.mission) {
       p.books.mission.forEach((sv, i) => {
-        if (S.books.mission[i]) S.books.mission[i].done = sv.done;
+        if (S.books.mission[i]) {
+          S.books.mission[i].done = sv.done;
+          S.books.mission[i].notes = sv.notes || '';
+        }
       });
     }
 
@@ -99,7 +102,10 @@ function loadState() {
     // Books — faith
     if (p.books && p.books.faith) {
       p.books.faith.forEach((sv, i) => {
-        if (S.books.faith[i]) S.books.faith[i].done = sv.done;
+        if (S.books.faith[i]) {
+          S.books.faith[i].done = sv.done;
+          S.books.faith[i].notes = sv.notes || '';
+        }
       });
     }
 
